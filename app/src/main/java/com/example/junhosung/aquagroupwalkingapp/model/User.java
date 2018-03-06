@@ -1,4 +1,4 @@
-package com.example.junhosung.aquagroupwalkingapp;
+package com.example.junhosung.aquagroupwalkingapp.model;
 
 /**
  * Created by David-Yoga on 2018-03-02.

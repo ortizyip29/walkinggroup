@@ -1,6 +1,6 @@
-package com.example.junhosung.aquagroupwalkingapp;
+package com.example.junhosung.aquagroupwalkingapp.UI;
 /** Login Activity Java Code
- * First page user sees upon opening the app
+ * First page loginEmail sees upon opening the app
  *
  */
 
@@ -16,15 +16,20 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import static com.example.junhosung.aquagroupwalkingapp.UserCollection.countUsers;
+import com.example.junhosung.aquagroupwalkingapp.R;
+
+
+import com.example.junhosung.aquagroupwalkingapp.model.Model;
+
+
 
 public class LoginActivity extends AppCompatActivity {
-    private UserCollection users = new UserCollection();        // Instantiates usercollection
-    public static final int REQUEST_CODE_NEWUSER = 1234;
-    EditText usertemp;          //EditText variable that holds user input for Email
-    EditText passwordtemp;      //EditText variable that holds user input for Password
-    String user;                //holds the string version of the user inputted email
-    String password;            //holds the string version of the user inputted password
+    private Model model = Model.getInstance();
+
+    EditText usertemp;          //EditText variable that holds loginEmail input for Email
+    EditText passwordtemp;      //EditText variable that holds loginEmail input for Password
+    String loginEmail;                //holds the string version of the loginEmail inputted email
+    String password;            //holds the string version of the loginEmail inputted password
 
 
     @Override
@@ -38,8 +43,8 @@ public class LoginActivity extends AppCompatActivity {
         setupLoginbtn();
 
         /**
-         * The following textwatchers update as user types email/password.
-         * And updates the variables user and password that store this information
+         * The following textwatchers update as loginEmail types email/password.
+         * And updates the variables loginEmail and password that store this information
          */
         usertemp.addTextChangedListener(new TextWatcher() {
             @Override
@@ -49,14 +54,13 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
 
                 try{
-                    user = usertemp.getText().toString();
+                    loginEmail = usertemp.getText().toString();
                 }catch(NumberFormatException a){
                     return;
                 }
@@ -94,18 +98,15 @@ public class LoginActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(LoginActivity.this, user, Toast.LENGTH_LONG);
-                Log.i("A", user);
+                Toast.makeText(LoginActivity.this, loginEmail, Toast.LENGTH_LONG);
+                Log.i("A", loginEmail);
                 Log.i("A", password);
-                for (int i = 0; i<countUsers(); i++) {
-                    Log.i("lel", UserCollection.getEmail(i).getUsername());
-                    Log.i("lel", UserCollection.getEmail(i).getPassword());
-                    if (UserCollection.getEmail(i).getPassword().equals(password)){
-
-                        Toast.makeText(LoginActivity.this, "Login successful",Toast.LENGTH_SHORT).show();
-                    }
-                //    Toast.makeText(LoginActivity.this, "We made it here", Toast.LENGTH_LONG).show();
-                    }
+                boolean success = model.logIn(loginEmail, password);
+                if (success) {
+                    Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
+                    startActivity(intent);
+                }
             }
         });
     }
@@ -119,30 +120,11 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = RegisterActivity.makeIntent(LoginActivity.this);
-                startActivityForResult(intent, REQUEST_CODE_NEWUSER);
+                startActivity(intent);
             }
         });
         }
 
-    //Retrieves the information from Register Activity
-    //Stores the information in the UserCollection class
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case REQUEST_CODE_NEWUSER:
-                if (resultCode == Activity.RESULT_OK) {
-                    //get message
-                    String userEmail = data.getStringExtra("newUserEmail");
-                    String userPassword = data.getStringExtra("newUserPassword");
-                    //store new user details in userCollection
-
-                    UserCollection.addUser(new User(userEmail, userPassword));
-                } else {
-                    Log.i("Login page", "Activity cancelled");
-                }
-
-
-        }
-    }
 
 
 }
