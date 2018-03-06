@@ -14,4 +14,23 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+
+
+    <!-- Strings related to options tab on the MapActivity -->
+    <string name="text_choose_following_option">Choose one of the following options: </string>
+    <string name="btn_monitoring">SEE WHO YOU ARE MONITORING!</string>
+    <string name="btn_monitored_by">SEE WHO YOU ARE BEING MONITORED BY!</string>
+
+    <!-- Strings related to SeeMonitoredByActivity -->
+
+    <string name="btn_stop_being_monitored">STOP BEING MONITORED</string>
+    <string name="text_click_to_stop_monitoredBy">Select user and click below to stop being monitored</string>
+
+    <!-- Strings related to SeeMonitoringActivity -->
+
+    <string name="btn_add_monitoree">ADD</string>
+    <string name="btn_delete_monitoree">DELETE</string>
+    <string name="text_click_to_add_or_delete">Click to add a user to your monitoring list.
+    Click delete to remove a user from your monitoring list</string>
+
 </resources>

@@ -11,7 +11,7 @@ public class Model {
     private UserCollection users;
 
     private Model() {
-        users = new UserCollection();//get from server
+        users = new UserCollection(); //get from server
     }
 
     private static Model modelInstance;
