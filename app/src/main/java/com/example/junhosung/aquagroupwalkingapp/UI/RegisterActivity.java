@@ -1,4 +1,4 @@
-package com.example.junhosung.aquagroupwalkingapp;
+package com.example.junhosung.aquagroupwalkingapp.UI;
 /**
  * Register Activity
  * Allows users to enter an Email and Password, and add it to UserCollection
@@ -16,8 +16,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.junhosung.aquagroupwalkingapp.R;
+import com.example.junhosung.aquagroupwalkingapp.model.Model;
+
 public class RegisterActivity extends AppCompatActivity {
 
+    Model model = Model.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,12 +52,8 @@ public class RegisterActivity extends AppCompatActivity {
                 }else{
                     try{
                         Intent intent = new Intent();
-                        intent.putExtra("newUserEmail", emailNew);
-                        intent.putExtra("newUserPassword", passwordNew);
-                        setResult(Activity.RESULT_OK, intent);
-
+                        model.addUser(emailNew,passwordNew);
                         finish();
-
                     }catch (NumberFormatException a) {
                         return;
                     }

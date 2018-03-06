@@ -1,7 +1,12 @@
-package com.example.junhosung.aquagroupwalkingapp;
+package com.example.junhosung.aquagroupwalkingapp.UI;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.example.junhosung.aquagroupwalkingapp.R;
+
+import com.example.junhosung.aquagroupwalkingapp.model.Model;
+
 
 public class MainActivity extends AppCompatActivity {
 

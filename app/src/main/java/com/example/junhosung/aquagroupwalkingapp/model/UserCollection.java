@@ -1,4 +1,6 @@
-package com.example.junhosung.aquagroupwalkingapp;
+package com.example.junhosung.aquagroupwalkingapp.model;
+
+import com.example.junhosung.aquagroupwalkingapp.model.Model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,17 +11,17 @@ import java.util.List;
 
 public class UserCollection {
 
-    private static List<User> Users = new ArrayList<>();
+    private  List<User> Users = new ArrayList<>();
 
-    public static void addUser(User user){
+    public void addUser(User user){
         Users.add(user);
     }
 
-    public static int countUsers() {
+    public int countUsers() {
         return Users.size();
     }
 
-    public static User getEmail(int index) {
+    public  User getEmail(int index) {
         return Users.get(index);
 
     }
