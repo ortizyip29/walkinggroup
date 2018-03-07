@@ -20,7 +20,7 @@ import com.example.junhosung.aquagroupwalkingapp.R;
 
 
 import com.example.junhosung.aquagroupwalkingapp.model.Model;
-
+import com.example.junhosung.aquagroupwalkingapp.model.SharedPreferenceLoginState;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -90,7 +90,10 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-
+    //Checking if user input is an email
+    boolean isEmailValid(CharSequence email) {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
     //Login button set up
     //loops through UserCollection activity to compare email and passwords to confirm login
     private void setupLoginbtn() {
@@ -98,14 +101,23 @@ public class LoginActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(LoginActivity.this, loginEmail, Toast.LENGTH_LONG);
-                Log.i("A", loginEmail);
-                Log.i("A", password);
-                boolean success = model.logIn(loginEmail, password);
-                if (success) {
-                    Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
-                    startActivity(intent);
+                if(loginEmail.isEmpty() || password.isEmpty()){
+                    Toast.makeText(LoginActivity.this, "Invalid Email or password", Toast.LENGTH_LONG).show();
+                }else if(!isEmailValid(loginEmail)) {
+                    Toast.makeText(LoginActivity.this, "Please enter a valid Email", Toast.LENGTH_LONG).show();
+                }else {
+                    Toast.makeText(LoginActivity.this, loginEmail, Toast.LENGTH_LONG);
+                    Log.i("A", loginEmail);
+                    Log.i("A", password);
+                    boolean success = model.logIn(loginEmail, password);
+                    if (success) {
+                        Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
+                        SharedPreferenceLoginState.setEmail(LoginActivity.this, loginEmail);
+                        Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
+                        startActivity(intent);
+                    }else{
+                        Toast.makeText(LoginActivity.this, "Email does not exist", Toast.LENGTH_LONG).show();
+                    }
                 }
             }
         });

@@ -32,6 +32,27 @@ public class RegisterActivity extends AppCompatActivity {
 
 
     }
+    //Checks if String is a email
+    //Takes a charSequence which is a String as input argument to verify
+    boolean isEmailValid(CharSequence email) {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
+    boolean isPasswordValid(String password){
+        if (password.isEmpty()){
+            return false;
+        }else if(!password.equals(password.toLowerCase())){
+            if(password.matches(".*\\d+.*")){
+                return true;
+            }else{
+                Toast.makeText(RegisterActivity.this, "Password must contain at least 1 Capital letter and 1 number/symbol", Toast.LENGTH_LONG).show();
+                return false;
+            }
+        }else{
+            Toast.makeText(RegisterActivity.this, "Password must contain at least 1 Capital letter and 1 number/symbol", Toast.LENGTH_LONG).show();
+            return false;
+        }
+    }
 
     //Register Button set up
     //Button will take the email and password entered, and return the data from this activity to the LoginActivity page
@@ -45,16 +66,28 @@ public class RegisterActivity extends AppCompatActivity {
                 EditText password = (EditText) findViewById(R.id.textNewPassword);
                 String emailNew = username.getText().toString();
                 String passwordNew = password.getText().toString();
+
                 if (emailNew.isEmpty()) {
                     Log.i("Walk", "Empty Username");
                     String message = "Please enter an Email";
                     Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_LONG).show();
-                }else{
-                    try{
-                        Intent intent = new Intent();
-                        model.addUser(emailNew,passwordNew);
-                        finish();
-                    }catch (NumberFormatException a) {
+                }else if(passwordNew.isEmpty()) {
+                    Log.i("Walk", "Empty Password");
+                    String message = "Please enter a password";
+                    Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_LONG).show();
+                }else if( !isEmailValid(emailNew)){
+                    Log.i("Walk", "Input not email");
+                }else if(isEmailValid(emailNew)) {
+                    Log.i("Walk", "Input is email");
+                    if (isPasswordValid(passwordNew)) {
+                        try {
+                            Intent intent = new Intent();
+                            model.addUser(emailNew, passwordNew);
+                            finish();
+                        } catch (NumberFormatException a) {
+                            return;
+                        }
+                    }else{
                         return;
                     }
                 }
