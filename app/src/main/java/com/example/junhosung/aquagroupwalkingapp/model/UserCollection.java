@@ -13,6 +13,8 @@ public class UserCollection {
 
     private  List<User> Users = new ArrayList<>();
 
+
+
     public void addUser(User user){
         Users.add(user);
     }
@@ -21,9 +23,12 @@ public class UserCollection {
         return Users.size();
     }
 
+    //maybe this should be renamed getUser ...
+
     public  User getEmail(int index) {
         return Users.get(index);
 
     }
+
 
 }

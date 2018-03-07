@@ -24,6 +24,7 @@ import com.example.junhosung.aquagroupwalkingapp.model.Model;
 
 
 public class LoginActivity extends AppCompatActivity {
+
     private Model model = Model.getInstance();
 
     EditText usertemp;          //EditText variable that holds loginEmail input for Email
@@ -46,6 +47,7 @@ public class LoginActivity extends AppCompatActivity {
          * The following textwatchers update as loginEmail types email/password.
          * And updates the variables loginEmail and password that store this information
          */
+
         usertemp.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -93,6 +95,11 @@ public class LoginActivity extends AppCompatActivity {
 
     //Login button set up
     //loops through UserCollection activity to compare email and passwords to confirm login
+
+    //logIn button temporarily starts activity MapOptionsActivity since MapsActivity doesn't work yet,
+    //and we need to test the MapOptionsActivity
+
+
     private void setupLoginbtn() {
         Button btn = (Button) findViewById(R.id.btnLogin);
         btn.setOnClickListener(new View.OnClickListener() {
@@ -104,7 +111,7 @@ public class LoginActivity extends AppCompatActivity {
                 boolean success = model.logIn(loginEmail, password);
                 if (success) {
                     Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, MapOptionsActivity.class);
                     startActivity(intent);
                 }
             }
@@ -124,7 +131,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         }
-
 
 
 }
