@@ -29,7 +29,9 @@
         <activity android:name=".UI.MapsActivity" />
         <activity android:name=".UI.SeeMonitoringActivity" />
         <activity android:name=".UI.SeeMonitoredByActivity" />
-        <activity android:name=".UI.MapOptionsActivity"></activity>
+        <activity android:name=".UI.MapOptionsActivity" />
+        <activity android:name=".UI.AddMonitoringActivity" />
+        <activity android:name=".UI.AddMonitoredByActivity"></activity>
     </application>
 
 </manifest>
