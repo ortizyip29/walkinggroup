@@ -11,8 +11,8 @@ import com.example.junhosung.aquagroupwalkingapp.R;
 public class MapOptionsActivity extends AppCompatActivity {
 
     private Button seeMonitoringButton;
-
     private Button seeMonitoredByButton;
+    private Button backToMapButton;
 
 
     @Override
@@ -39,8 +39,13 @@ public class MapOptionsActivity extends AppCompatActivity {
             }
         });
 
-
-
+        backToMapButton = (Button) findViewById(R.id.btnBackToMap);
+        backToMapButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 }
 
