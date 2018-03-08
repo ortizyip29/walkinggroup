@@ -96,10 +96,13 @@ public class LoginActivity extends AppCompatActivity {
     //Login button set up
     //loops through UserCollection activity to compare email and passwords to confirm login
 
-    //logIn button temporarily starts activity MapOptionsActivity since MapsActivity doesn't work yet,
+
     //and we need to test the MapOptionsActivity
 
 
+    //commented out the success flag to bypass log-in in order to reach mapactivity
+    // type a random username & password to bypass the login and reach mapactivity
+    // uncomment if(success) condition when login authentication is complete
     private void setupLoginbtn() {
         Button btn = (Button) findViewById(R.id.btnLogin);
         btn.setOnClickListener(new View.OnClickListener() {
@@ -109,11 +112,11 @@ public class LoginActivity extends AppCompatActivity {
                 Log.i("A", loginEmail);
                 Log.i("A", password);
                 boolean success = model.logIn(loginEmail, password);
-                if (success) {
+                //if (success) {
                     Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(LoginActivity.this, MapOptionsActivity.class);
+                    Intent intent = new Intent(LoginActivity.this,MapsActivity.class);
                     startActivity(intent);
-                }
+                //}
             }
         });
     }

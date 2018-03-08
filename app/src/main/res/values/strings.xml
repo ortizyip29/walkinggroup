@@ -32,5 +32,7 @@
     <string name="btn_delete_monitoree">DELETE</string>
     <string name="text_click_to_add_or_delete">Click to add a user to your monitoring list.
     Click delete to remove a user from your monitoring list</string>
+    <string name="Check_Monitoring_Status">Check Monitoring Status</string>
+    <string name="title_activity_maps2">Map</string>
 
 </resources>
