@@ -23,8 +23,10 @@
 
     <!-- Strings related to SeeMonitoredByActivity -->
 
-    <string name="btn_stop_being_monitored">STOP BEING MONITORED</string>
+    <string name="btn_stop_being_monitored">DELETE</string>
+    <string name="btn_add_monitored_by">ADD NEW</string>
     <string name="text_click_to_stop_monitoredBy">Select user and click below to stop being monitored</string>
+
 
     <!-- Strings related to SeeMonitoringActivity -->
 
@@ -34,5 +36,15 @@
     Click delete to remove a user from your monitoring list</string>
     <string name="Check_Monitoring_Status">Check Monitoring Status</string>
     <string name="title_activity_maps2">Map</string>
+
+    <!-- Strings related to AddMonitoringActivityvity -->
+
+    <string name="choose_email_to_add_monitor">Type the email address of the person who would like to
+    monitor.</string>
+
+    <!-- Strings related to AddMonitoredByActivity -->
+
+    <string name="choose_email_to_add_monitored_by">Type the email address of the person you would like to be
+    monitored by.</string>
 
 </resources>

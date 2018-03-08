@@ -7,7 +7,7 @@
     tools:context="com.example.junhosung.aquagroupwalkingapp.UI.SeeMonitoringActivity">
 
     <Button
-        android:id="@+id/btn_add_monitor"
+        android:id="@+id/btnAddMonitoree"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="44dp"
@@ -17,7 +17,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/btn_delete_monitor"
+        android:id="@+id/btnDeleteMonitoree"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="44dp"
@@ -30,8 +30,7 @@
         android:id="@+id/textMonitoredBy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
         android:text="@string/text_click_to_add_or_delete"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

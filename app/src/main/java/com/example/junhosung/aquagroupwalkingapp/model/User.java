@@ -87,7 +87,7 @@ public class User {
 
     public String[] getMonitoredByUsers() {
         String[] monitoredByUsers = new String[countMonitoredBy()];
-        for (int i = 0; i < countMonitoring(); i++) {
+        for (int i = 0; i < countMonitoredBy(); i++) {
             User monitored = getMonitoredBy(i);
             monitoredByUsers[i] = "real name comes here ... " + monitored.getUsername();
 
@@ -95,7 +95,6 @@ public class User {
 
         return monitoredByUsers;
     }
-
 
 
     public boolean checkPassword(String userpw) {
