@@ -6,6 +6,7 @@ package com.example.junhosung.aquagroupwalkingapp.UI;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -41,6 +42,13 @@ public class LoginActivity extends AppCompatActivity {
         password = passwordtemp.getText().toString();
         setupRegisterBtn();
         setupLoginbtn();
+
+        if (SharedPreferenceLoginState.getEmail(LoginActivity.this).length() != 0){
+            Log.i("Login Activity", SharedPreferenceLoginState.getEmail(LoginActivity.this));
+            Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
+            startActivity(intent);
+        }
+
 
         /**
          * The following textwatchers update as loginEmail types email/password.

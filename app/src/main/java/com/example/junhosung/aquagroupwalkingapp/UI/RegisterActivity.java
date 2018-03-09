@@ -8,6 +8,7 @@ package com.example.junhosung.aquagroupwalkingapp.UI;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -54,6 +55,7 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
+
     //Register Button set up
     //Button will take the email and password entered, and return the data from this activity to the LoginActivity page
     //while also ending this activity simultaneously
@@ -83,6 +85,9 @@ public class RegisterActivity extends AppCompatActivity {
                         try {
                             Intent intent = new Intent();
                             model.addUser(emailNew, passwordNew);
+                            SharedPreferences data = getSharedPreferences("UserData", RegisterActivity.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = data.edit();
+
                             finish();
                         } catch (NumberFormatException a) {
                             return;

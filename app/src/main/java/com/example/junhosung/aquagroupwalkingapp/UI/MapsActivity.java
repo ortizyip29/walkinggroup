@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import com.example.junhosung.aquagroupwalkingapp.R;
 import com.example.junhosung.aquagroupwalkingapp.model.SharedPreferenceLoginState;
@@ -14,13 +16,18 @@ public class MapsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        if (SharedPreferenceLoginState.getEmail(MapsActivity.this).length() == 0){
-            Log.i("Login Activity", SharedPreferenceLoginState.getEmail(MapsActivity.this));
-            Intent intent = new Intent(MapsActivity.this, LoginActivity.class);
-            startActivity(intent);
 
-        }else{
+        setUpLogoutBtn();
+    }
 
-        }
+    private void setUpLogoutBtn() {
+        Button btn = (Button) findViewById(R.id.btnLogout);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferenceLoginState.clearSharedPref(MapsActivity.this);
+                finish();
+            }
+        });
     }
 }

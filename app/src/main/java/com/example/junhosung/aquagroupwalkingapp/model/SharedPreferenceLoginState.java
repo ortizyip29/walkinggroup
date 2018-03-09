@@ -28,4 +28,11 @@ public class SharedPreferenceLoginState {
         return getSharedPreferences(login).getString(LOGIN_EMAIL, "");
 
     }
+
+    public static void clearSharedPref(Context login){
+        SharedPreferences.Editor edit = getSharedPreferences(login).edit();
+        edit.remove(LOGIN_EMAIL);
+        edit.commit();
+
+    }
 }
