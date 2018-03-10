@@ -6,8 +6,7 @@ package com.example.junhosung.aquagroupwalkingapp.UI;
  * Allows the user to see list of people the user is being monitored by.
  * The user can then select people to be deleted from list.
  *
- * TODO: When you click on the listView, you should be able to select ppl to delete - coming soon ...
- * TODO: Actually ... for the time being, just refer to a separate activity
+ * TODO: When you click on the listView, you should be able to select ppl to delete - coming soon
  */
 
 
@@ -31,7 +30,6 @@ public class SeeMonitoredByActivity extends AppCompatActivity {
     private Model model = Model.getInstance();
     User user = model.users.getEmail(0);
     Button btnAddMonitoredBy;
-    String selectedUser;
 
 
     @Override
@@ -48,10 +46,7 @@ public class SeeMonitoredByActivity extends AppCompatActivity {
         user.addNewMonitoredByUsers(user4);
 
         setUpAddButton();
-        setUpDeleteButton();
         populateListView();
-
-
 
     }
 
@@ -65,11 +60,7 @@ public class SeeMonitoredByActivity extends AppCompatActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                User selected = user.getMonitoredBy(i);
-                Toast.makeText(SeeMonitoredByActivity.this,"you've selected " + selected.getUsername(),
-                        Toast.LENGTH_SHORT).show();
-                selectedUser = selected.getUsername();
-
+                // do something here
             }
         });
 
@@ -87,14 +78,6 @@ public class SeeMonitoredByActivity extends AppCompatActivity {
 
     }
 
-    private void setUpDeleteButton() {
-        for (int i = 0; i < user.countMonitoredBy();i++ ) {
-            if (user.getMonitoredBy(i).getUsername().equals(selectedUser)) {
-                // do smth
-            }
-        }
-    }
-
     @Override
     protected void onActivityResult(int requestCode,int resultCode,Intent intent) {
         switch (requestCode) {
@@ -106,5 +89,7 @@ public class SeeMonitoredByActivity extends AppCompatActivity {
                 }
         }
     }
+
+
 
 }

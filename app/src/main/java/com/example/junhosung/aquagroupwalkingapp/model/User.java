@@ -56,7 +56,7 @@ public class User {
 
     public int countMonitoredBy() {return monitoredByUsers.size();}
 
-    public User getMonitoring(int index) {
+    public User getMonitoree(int index) {
         validateIndexWithException1(index);
         return monitorsUsers.get(index);
 
@@ -75,7 +75,7 @@ public class User {
     public String[] getMonitorsUsers() {
         String[] monitorsUsers = new String[countMonitoring()];
         for (int i = 0; i < countMonitoring(); i++) {
-            User monitoree = getMonitoring(i);
+            User monitoree = getMonitoree(i);
             monitorsUsers[i] = "real name comes here ... " + monitoree.getUsername();
 
         }
@@ -113,7 +113,7 @@ public class User {
         }
     }
 
-    // a method to check for out of index search for getMonitoring method - seen in Assignment2
+    // a method to check for out of index search for getMonitoree method - seen in Assignment2
 
     private void validateIndexWithException1(int index) {
         if (index < 0 || index >= countMonitoring()) {

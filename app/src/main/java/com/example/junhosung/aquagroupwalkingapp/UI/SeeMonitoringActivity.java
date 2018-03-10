@@ -51,6 +51,7 @@ public class SeeMonitoringActivity extends AppCompatActivity {
         setUpAddButton();
 
 
+
     }
 
     @Override
@@ -61,8 +62,6 @@ public class SeeMonitoringActivity extends AppCompatActivity {
                     Toast.makeText(SeeMonitoringActivity.this,"number of monitoring: "+String.valueOf(user.countMonitoring()),Toast.LENGTH_SHORT).show();
                     populateListView();
                 }
-
-
         }
     }
 
@@ -77,7 +76,7 @@ public class SeeMonitoringActivity extends AppCompatActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
+                // do something here
             }
         });
 
@@ -102,11 +101,9 @@ public class SeeMonitoringActivity extends AppCompatActivity {
         btnDeleteMonitoring.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(SeeMonitoringActivity.this,DeleteMonitoringActivity.class);
-                startActivityForResult(i,2);
+                // do smth here
             }
         });
-
     }
 
 
