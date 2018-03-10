@@ -33,6 +33,7 @@ public class Server extends AppCompatActivity {
         ProxyBuilder.callProxy(Server.class, caller, returnedUser -> response(returnedUser));
 
     }
+
     private void response(User user) {
       //  Log.w(TAG, "Server replied with user: " + user.toString());
       //  userId = user.getId();
