@@ -41,7 +41,7 @@
         <activity android:name=".UI.AddMonitoredByActivity"></activity>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCBMkfTV6OqHdOBanGfg4Zd92kxsjUaj_o"/>
+            android:value="AIzaSyDl8KbGAvoRWCqGRB8mzJo8EZZ7S2-q6lE"/>
 
         <meta-data
             android:name="com.google.android.gms.version"

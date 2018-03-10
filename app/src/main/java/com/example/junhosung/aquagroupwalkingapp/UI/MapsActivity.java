@@ -44,7 +44,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         setUpLogoutBtn();
 
     }
-
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mapDisplay = googleMap;
