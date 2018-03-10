@@ -1,4 +1,6 @@
 <resources>
+    <string name="apikey">D43B2DCD-D2A8-49EF-AFCC-6B1E309D1B58</string>
+    
     <string name="app_name">aquaGroupWalkingApp</string>
     <string name="title_activity_login">Sign in</string>
 

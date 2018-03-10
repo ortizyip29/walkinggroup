@@ -2,18 +2,22 @@ package com.example.junhosung.aquagroupwalkingapp.model;
 
 import android.util.Log;
 
+import com.example.junhosung.aquagroupwalkingapp.R;
+
 /**
  * Created by karti on 2018-03-04.
  */
 
 public class Model {
 
+
     // users should be public no?
 
     public UserCollection users;
 
     private Model() {
-        users = new UserCollection(); //get from server
+        users = new UserCollection();
+            //get from server
     }
 
     private static Model modelInstance;
@@ -24,6 +28,11 @@ public class Model {
         }
         return modelInstance;
     }
+
+
+
+
+
 
     public boolean logIn(String loginEmail, String password) {
         boolean returnFlag = false;
