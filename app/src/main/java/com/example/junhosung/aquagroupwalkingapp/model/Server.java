@@ -34,6 +34,7 @@ public class Server extends AppCompatActivity {
 
     //}
 
+
     private void response(User user) {
       //  Log.w(TAG, "Server replied with user: " + user.toString());
       //  userId = user.getId();
