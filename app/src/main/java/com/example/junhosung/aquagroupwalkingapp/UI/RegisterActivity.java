@@ -23,6 +23,7 @@ import com.example.junhosung.aquagroupwalkingapp.model.Model;
 public class RegisterActivity extends AppCompatActivity {
 
     Model model = Model.getInstance();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

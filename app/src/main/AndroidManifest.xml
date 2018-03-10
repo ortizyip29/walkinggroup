@@ -7,6 +7,19 @@
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
+    <permission
+        android:name="com.pkg.map.permission.MAPS_RECEIVE"
+        android:protectionLevel="signature" >
+    </permission>
+
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -14,8 +27,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".UI.MainActivity"/>
-            <activity
+        <activity android:name=".UI.MainActivity" />
+        <activity
             android:name=".UI.LoginActivity"
             android:label="@string/title_activity_login">
             <intent-filter>
@@ -23,9 +36,22 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>/>
-        <activity android:name=".UI.RegisterActivity"></activity>
-        <activity android:name=".UI.MapsActivity"></activity>
+        </activity>
+        />
+        <activity android:name=".UI.RegisterActivity" />
+        <activity android:name=".UI.MapsActivity" />
+        <activity android:name=".UI.SeeMonitoringActivity" />
+        <activity android:name=".UI.SeeMonitoredByActivity" />
+        <activity android:name=".UI.MapOptionsActivity" />
+        <activity android:name=".UI.AddMonitoringActivity" />
+        <activity android:name=".UI.AddMonitoredByActivity"></activity>
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCBMkfTV6OqHdOBanGfg4Zd92kxsjUaj_o"/>
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
     </application>
 
 </manifest>

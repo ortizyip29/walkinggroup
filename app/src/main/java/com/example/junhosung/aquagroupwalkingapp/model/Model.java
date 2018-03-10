@@ -1,6 +1,5 @@
 package com.example.junhosung.aquagroupwalkingapp.model;
 
-import android.content.SharedPreferences;
 import android.util.Log;
 
 /**
@@ -9,10 +8,12 @@ import android.util.Log;
 
 public class Model {
 
-    private UserCollection users;
+    // users should be public no?
+
+    public UserCollection users;
 
     private Model() {
-        users = new UserCollection();//get from server
+        users = new UserCollection(); //get from server
     }
 
     private static Model modelInstance;
@@ -23,7 +24,6 @@ public class Model {
         }
         return modelInstance;
     }
-
 
     public boolean logIn(String loginEmail, String password) {
         boolean returnFlag = false;
@@ -36,14 +36,12 @@ public class Model {
         }
         return returnFlag;
     }
-
-
     public boolean addUser(String loginEmail, String password){
-
         User newUser = new User(loginEmail,password);
         users.addUser(newUser);
 
-
-        return true;//if successful
+        return true; //if successful
     }
+
+
 }
