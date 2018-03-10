@@ -37,8 +37,8 @@ public class Model {
         return returnFlag;
     }
     public boolean addUser(String loginEmail, String password){
-        User newUser = new User(loginEmail,password);
-        users.addUser(newUser);
+        User2 newUser2 = new User2(loginEmail,password);
+        users.addUser(newUser2);
 
         return true; //if successful
     }

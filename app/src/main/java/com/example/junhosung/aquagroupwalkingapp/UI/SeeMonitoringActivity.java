@@ -4,9 +4,9 @@ package com.example.junhosung.aquagroupwalkingapp.UI;
 /**
  * SeeMonitoreding Activity
  *
- * Allows the user to see list of people the user is monitoring
- * The user can then select the add button to add another user to monitor
- * The user can select on the listView, make selection
+ * Allows the mUser2 to see list of people the mUser2 is monitoring
+ * The mUser2 can then select the add button to add another mUser2 to monitor
+ * The mUser2 can select on the listView, make selection
  *
  * TODO: The button functionalities not built in yet ... coming soon
  */
@@ -26,13 +26,13 @@ import android.widget.Toast;
 
 import com.example.junhosung.aquagroupwalkingapp.R;
 import com.example.junhosung.aquagroupwalkingapp.model.Model;
-import com.example.junhosung.aquagroupwalkingapp.model.User;
+import com.example.junhosung.aquagroupwalkingapp.model.User2;
 
 public class SeeMonitoringActivity extends AppCompatActivity {
 
 
     private Model model = Model.getInstance();
-    User user = model.users.getEmail(0);
+    User2 mUser2 = model.users.getEmail(0);
     Button btnAddMonitoring;
     Button btnDeleteMonitoring;
 
@@ -41,16 +41,14 @@ public class SeeMonitoringActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_see_monitoring);
 
-        User user2 = new User("harro@gmail.com","1");
-        User user3 = new User("harro1@gmail.com","2");
+        User2 user22 = new User2("harro@gmail.com","1");
+        User2 user23 = new User2("harro1@gmail.com","2");
 
-        user.addNewMonitorsUsers(user2);
-        user.addNewMonitorsUsers(user3);
+        mUser2.addNewMonitorsUsers(user22);
+        mUser2.addNewMonitorsUsers(user23);
 
         populateListView();
         setUpAddButton();
-
-
 
     }
 
@@ -59,7 +57,7 @@ public class SeeMonitoringActivity extends AppCompatActivity {
         switch (requestCode) {
             case 1:
                 if (resultCode == Activity.RESULT_OK) {
-                    Toast.makeText(SeeMonitoringActivity.this,"number of monitoring: "+String.valueOf(user.countMonitoring()),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SeeMonitoringActivity.this,"number of monitoring: "+String.valueOf(mUser2.countMonitoring()),Toast.LENGTH_SHORT).show();
                     populateListView();
                 }
         }
@@ -68,7 +66,7 @@ public class SeeMonitoringActivity extends AppCompatActivity {
 
     private void populateListView() {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,R.layout.see_monitoring,
-                user.getMonitorsUsers());
+                mUser2.getMonitorsUser2s());
 
         ListView list = (ListView) findViewById(R.id.monitorList);
         list.setAdapter(adapter);
