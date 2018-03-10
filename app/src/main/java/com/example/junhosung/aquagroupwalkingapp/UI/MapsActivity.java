@@ -49,7 +49,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
         mapDisplay = googleMap;
         LatLng defaultLocation = new LatLng(49.2827, -123.1207);
-        mapDisplay.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        mapDisplay.setMapType(GoogleMap.MAP_TYPE_HYBRID);
         mapDisplay.addMarker(new MarkerOptions().position(defaultLocation).title("I'm here"));
         mapDisplay.moveCamera(CameraUpdateFactory.newLatLng(defaultLocation));
         CameraUpdate defaultDisplay = CameraUpdateFactory.newLatLngZoom(defaultLocation, 16);
