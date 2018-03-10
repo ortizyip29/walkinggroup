@@ -9,6 +9,8 @@ import com.example.junhosung.aquagroupwalkingapp.model.User2;
 import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
+import retrofit2.http.Field;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -37,7 +39,36 @@ public interface WGServerProxy {
     @GET("/users/byEmail")
     Call<User2> getUserByEmail(@Query("email") String email);
 
-    // Monitoring
+    // Get Who a User Monitors:
+
+    @GET("/users/{id}/monitorsUsers")
+    Call<List<User2>> getMonitorsById(@Path("id") Long userId);
+
+    // Make it so that User Monitors Another User:
+
+    @POST("/users/{id}/monitorsUsers")
+    Call<User2> addNewMonitors(@Path("id") Long userId, @Field("id") Long targetId);
+
+    // Stop Monitoring a User: A stops monitoring B
+
+    @DELETE("/users/{idA}/monitorsUsers/{idB}")
+    Call<List<User2>> stopMonitors(@Path("idA") Long userId, @Path("idB") long targetId);
+
+    // Get Who is Monitored By a User:
+
+    @GET("/users/{id}/monitoredByUsers")
+    Call<List<User2>> getMonitoredByById(@Path("id") Long userId);
+
+    // Make it so that User is Monitored By Another User:
+
+    @POST("/users{id}/monitoredByUsers")
+    Call<User2> addNewMonitoredBy(@Path("id") long userId,@Field("id") Long targetId);
+
+    // Stop Being Monitored By a User: A stops being monitored by B
+
+    @DELETE("/users/{idA}/monitoredByUsers/{idB}")
+    Call<List<User2>> stopMonitoredBy(@Path("idA") long userId, @Field("id") Long targetId);
+
 
 
 
@@ -48,6 +79,6 @@ public interface WGServerProxy {
     /**
      * MORE GOES HERE:
      * - Monitoring
-     * - Groups
+     * - Group
      */
 }

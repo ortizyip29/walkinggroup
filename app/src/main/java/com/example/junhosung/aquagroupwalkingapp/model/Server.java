@@ -28,11 +28,11 @@ public class Server extends AppCompatActivity {
         return instance;
     }
 
-    public void updataUser(User user){
-        Call<User> caller = proxy.createNewUser(user);
-        ProxyBuilder.callProxy(Server.class, caller, returnedUser -> response(returnedUser));
+    //public void updateUser(User user){
+        //Call<User> caller = proxy.createNewUser(user);
+        //ProxyBuilder.callProxy(Server.class, caller, returnedUser -> response(returnedUser));
 
-    }
+    //}
 
     private void response(User user) {
       //  Log.w(TAG, "Server replied with user: " + user.toString());
