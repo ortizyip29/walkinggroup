@@ -16,6 +16,7 @@ import retrofit2.Call;
 
 public class MapOptionsActivity extends AppCompatActivity {
 
+    private static final String TAG = "MapOptionsActivity";
     private Button seeMonitoringButton;
     private Button seeMonitoredByButton;
     private Button backToMapButton;
@@ -59,7 +60,7 @@ public class MapOptionsActivity extends AppCompatActivity {
         });
     }
 
-    private void setupNewUserButton() {
+/*    private void setupNewUserButton() {
         Button btn = findViewById(R.id.btnBackToMap);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,8 +80,8 @@ public class MapOptionsActivity extends AppCompatActivity {
 
     private void response(User user) {
         Log.w(TAG, "Server replied with user: " + user.toString());
-        userId = user.getId();
-    }
+      //  userId = user.getId();
+    }*/
 }
 
 

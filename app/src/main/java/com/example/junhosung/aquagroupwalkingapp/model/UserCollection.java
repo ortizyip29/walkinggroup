@@ -9,9 +9,18 @@ import java.util.List;
 
 public class UserCollection {
 
+    private UserCollection() {
+
+    }
+    private static UserCollection instance;
+    public static UserCollection getInstance(){
+        if(instance == null){
+            instance = new UserCollection();
+        }
+        return instance;
+    }
+
     private  List<User2> mUser2s = new ArrayList<>();
-
-
 
     public void addUser(User2 user2){
         mUser2s.add(user2);

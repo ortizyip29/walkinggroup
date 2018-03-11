@@ -4,7 +4,7 @@ package com.example.junhosung.aquagroupwalkingapp.proxy;
  * Created by Junho Sung on 3/9/2018.
  */
 
-import com.example.junhosung.aquagroupwalkingapp.model.User2;
+import com.example.junhosung.aquagroupwalkingapp.model.User;
 
 import java.util.List;
 import retrofit2.Call;
@@ -21,59 +21,54 @@ import retrofit2.http.Query;
  * This is a Retrofit interface.
  */
 public interface WGServerProxy {
+
     @GET("getApiKey")
     Call<String> getApiKey(@Query("groupName") String groupName, @Query("sfuUserId") String sfuId);
 
     @POST("/users/signup")
-    Call<User2> createNewUser(@Body User2 user2);
+    Call<User> createNewUser(@Body User user);
 
     @POST("/login")
-    Call<Void> login(@Body User2 user2WithEmailAndPassword);
+    Call<Void> login(@Body User userWithEmailAndPassword);
 
     @GET("/users")
-    Call<List<User2>> getUsers();
+    Call<List<User>> getUsers();
 
     @GET("/users/{id}")
-    Call<User2> getUserById(@Path("id") Long userId);
+    Call<User> getUserById(@Path("id") Long userId);
 
     @GET("/users/byEmail")
-    Call<User2> getUserByEmail(@Query("email") String email);
+    Call<User> getUserByEmail(@Query("email") String email);
 
     // Get Who a User Monitors:
 
     @GET("/users/{id}/monitorsUsers")
-    Call<List<User2>> getMonitorsById(@Path("id") Long userId);
+    Call<List<User>> getMonitorsById(@Path("id") Long userId);
 
     // Make it so that User Monitors Another User:
 
     @POST("/users/{id}/monitorsUsers")
-    Call<User2> addNewMonitors(@Path("id") Long userId, @Field("id") Long targetId);
+    Call<User> addNewMonitors(@Path("id") Long userId, @Field("id") Long targetId);
 
     // Stop Monitoring a User: A stops monitoring B
 
     @DELETE("/users/{idA}/monitorsUsers/{idB}")
-    Call<List<User2>> stopMonitors(@Path("idA") Long userId, @Path("idB") long targetId);
+    Call<List<User>> stopMonitors(@Path("idA") Long userId, @Path("idB") long targetId);
 
     // Get Who is Monitored By a User:
 
     @GET("/users/{id}/monitoredByUsers")
-    Call<List<User2>> getMonitoredByById(@Path("id") Long userId);
+    Call<List<User>> getMonitoredByById(@Path("id") Long userId);
 
     // Make it so that User is Monitored By Another User:
 
     @POST("/users{id}/monitoredByUsers")
-    Call<User2> addNewMonitoredBy(@Path("id") long userId,@Field("id") Long targetId);
+    Call<User> addNewMonitoredBy(@Path("id") long userId,@Field("id") Long targetId);
 
     // Stop Being Monitored By a User: A stops being monitored by B
 
     @DELETE("/users/{idA}/monitoredByUsers/{idB}")
-    Call<List<User2>> stopMonitoredBy(@Path("idA") long userId, @Field("id") Long targetId);
-
-
-
-
-
-
+    Call<List<User>> stopMonitoredBy(@Path("idA") long userId, @Field("idB") Long targetId);
 
 
     /**

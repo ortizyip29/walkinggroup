@@ -22,6 +22,15 @@
       android:layout_weight = "40"
       android:gravity="top"
       android:orientation="vertical">
+
+   <EditText
+       android:id="@+id/textNewName"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:hint="Enter your Name"
+       android:inputType="textPassword"></EditText>
+
+
    <EditText
        android:id="@+id/textNewEmail"
        android:layout_width="match_parent"
@@ -34,6 +43,8 @@
        android:layout_height="wrap_content"
        android:hint="Enter your Password"
        android:inputType="textPassword"></EditText>
+
+
   </LinearLayout>
  <LinearLayout
      android:id="@+id/linearLayout3"
