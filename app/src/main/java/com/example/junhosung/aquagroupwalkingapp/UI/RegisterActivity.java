@@ -55,7 +55,6 @@ public class RegisterActivity extends AppCompatActivity {
                 }else{
                     try{
                         Intent intent = new Intent();
-                        model.addUser(emailNew,passwordNew);
                         model.createUser(nameNew,emailNew,passwordNew);
                         finish();
                     }catch (NumberFormatException a) {

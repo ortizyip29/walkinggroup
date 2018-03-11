@@ -4,6 +4,8 @@ import com.example.junhosung.aquagroupwalkingapp.R;
 import com.example.junhosung.aquagroupwalkingapp.SimpleCallback;
 import com.example.junhosung.aquagroupwalkingapp.SimpleCallback2;
 import com.example.junhosung.aquagroupwalkingapp.SimpleCallback4;
+import com.example.junhosung.aquagroupwalkingapp.SimpleCallback5;
+import com.example.junhosung.aquagroupwalkingapp.SimpleCallback6;
 import com.example.junhosung.aquagroupwalkingapp.proxy.ProxyBuilder;
 import com.example.junhosung.aquagroupwalkingapp.proxy.WGServerProxy;
 import android.support.v7.app.AppCompatActivity;
@@ -33,7 +35,9 @@ public class Server extends AppCompatActivity {
     private WGServerProxy proxy;
     private SimpleCallback serverCallback;
     private SimpleCallback2 serverCallbackForUser;
-    private SimpleCallback4 serverCallbackForLogin;
+    private SimpleCallback5 serverCallbackForLogin;
+    private SimpleCallback6 serverCallbackForList;
+    private String token;
 
     //    private boolean isUserLoggedIn = false;
 
@@ -45,9 +49,9 @@ public class Server extends AppCompatActivity {
 
     private void loginResponse(Void returnedNothing) {
         Log.w(TAG, "Server replied for user login: " );
-        serverCallbackForLogin.callback(returnedNothing);
+        serverCallbackForLogin.callback(this.token);
     }
-    public <T extends Object> void loginUser(User user, SimpleCallback4 callback){
+    public <T extends Object> void loginUser(User user, SimpleCallback5 callback){
         this.serverCallbackForLogin = callback;
         ProxyBuilder.setOnTokenReceiveCallback( token -> onReceiveToken(token));
         // Make call
@@ -74,16 +78,20 @@ public class Server extends AppCompatActivity {
            for (User user : returnedUsers) {
                Log.w(TAG, "    User: " + user.toString());
           }
-          serverCallback.callback(returnedUsers);
+          serverCallbackForList.callback(returnedUsers);
       }
 
-    public <T extends Object> void getListOfUsers(SimpleCallback<T> callback){
+    public <T extends Object> void getListOfUsers(String token, SimpleCallback6 callback){
+        onReceiveToken(token);
+        this.serverCallbackForList = callback;
         Call<List<User>> caller = proxy.getUsers();
         ProxyBuilder.callProxy(Server.this, caller, returnedUsers ->responseGetListOfUsers(returnedUsers) );
     }
 
+
     public void getParentGroup(){
     }
+
     public void getCoordinatesForGroup(){
     }
 
@@ -96,6 +104,7 @@ public class Server extends AppCompatActivity {
     private void onReceiveToken(String token) {
         // Replace the current proxy with one that uses the token!
         Log.w(TAG, "   --> NOW HAVE TOKEN: " + token);
+        this.token = token;
         proxy = ProxyBuilder.getProxy("D43B2DCD-D2A8-49EF-AFCC-6B1E309D1B58", token);
         //proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
     }
