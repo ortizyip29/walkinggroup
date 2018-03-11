@@ -44,8 +44,10 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View view) {
                 EditText username = (EditText) findViewById(R.id.textNewEmail);
                 EditText password = (EditText) findViewById(R.id.textNewPassword);
+                EditText name = (EditText) findViewById(R.id.textNewName);
                 String emailNew = username.getText().toString();
                 String passwordNew = password.getText().toString();
+                String nameNew = name.getText().toString();
                 if (emailNew.isEmpty()) {
                     Log.i("Walk", "Empty Username");
                     String message = "Please enter an Email";
@@ -54,6 +56,7 @@ public class RegisterActivity extends AppCompatActivity {
                     try{
                         Intent intent = new Intent();
                         model.addUser(emailNew,passwordNew);
+                        model.createUser(nameNew,emailNew,passwordNew);
                         finish();
                     }catch (NumberFormatException a) {
                         return;

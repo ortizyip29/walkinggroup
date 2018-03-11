@@ -111,14 +111,18 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(LoginActivity.this, loginEmail, Toast.LENGTH_LONG);
                 Log.i("A", loginEmail);
                 Log.i("A", password);
-                boolean success = model.logIn(loginEmail, password);
-                //if (success) {
-                    Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(LoginActivity.this,MapsActivity.class);
-                    startActivity(intent);
-                //}
+
+                model.logIn(loginEmail, password,returnNothing->responseForLogin(returnNothing));
+ /*                 Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();*/
             }
         });
+    }
+
+    private void responseForLogin(Void returnNothing) {
+        Toast.makeText(LoginActivity.this, "Server Login successful", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(LoginActivity.this,MapsActivity.class);
+        startActivity(intent);
+
     }
 
 

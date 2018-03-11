@@ -8,6 +8,8 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.junhosung.aquagroupwalkingapp.SimpleCallback;
+
 import java.io.IOException;
 
 import okhttp3.Interceptor;
@@ -84,9 +86,9 @@ public class ProxyBuilder {
     /**
      * Interface for simplifying the callbacks from the server.
      */
-    public interface SimpleCallback<T> {
-        void callback(T ans);
-    };
+//    public interface SimpleCallback<T> {
+//        void callback(T ans);
+//    };
 
     /**
      * Simplify the calling of the "Call"
@@ -113,7 +115,6 @@ public class ProxyBuilder {
         caller.enqueue(new Callback<T>() {
             @Override
             public void onResponse(Call<T> call, retrofit2.Response<T> response) {
-
                 // Process the response
                 if (response.errorBody() == null) {
                     // Check for authentication token:
