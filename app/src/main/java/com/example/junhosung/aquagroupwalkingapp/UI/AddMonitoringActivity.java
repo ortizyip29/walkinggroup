@@ -8,19 +8,18 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.junhosung.aquagroupwalkingapp.R;
 import com.example.junhosung.aquagroupwalkingapp.model.Model;
-import com.example.junhosung.aquagroupwalkingapp.model.User;
+import com.example.junhosung.aquagroupwalkingapp.model.User2;
 import com.example.junhosung.aquagroupwalkingapp.model.UserCollection;
 
 public class AddMonitoringActivity extends AppCompatActivity {
 
     private Button btnAddMonitoring;
     private Model model = Model.getInstance();
-    UserCollection users = model.users;
-    User user = model.users.getEmail(0);
+    UserCollection users = model.usersOld;
+    User2 mUser2 = model.usersOld.getEmail(0);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,16 +29,16 @@ public class AddMonitoringActivity extends AppCompatActivity {
 
         //test cases ...
 
-        User randUser1 = new User("harro5@gmail.com","2");
-        User randUser2 = new User("harro6@gmail.com","2");
+        User2 randUser21 = new User2("harro5@gmail.com","2");
+        User2 randUser22 = new User2("harro6@gmail.com","2");
 
-        // adding users to the UserCollection of the model so that we can check that they exist
+        // adding usersOld to the UserCollection of the model so that we can check that they exist
 
-        users.addUser(randUser1);
-        users.addUser(randUser2);
+        users.addUser(randUser21);
+        users.addUser(randUser22);
 
         // this is here since the for loop inside the onClickListenr gives me trouble about
-        // calling users.countUsers() from an inner class ...
+        // calling usersOld.countUsers() from an inner class ...
 
         final int counter = users.countUsers();
 
@@ -58,15 +57,15 @@ public class AddMonitoringActivity extends AppCompatActivity {
 
                 for (int i = 0; i< counter; i++) {
 
-                    // if the username (= email) is in the User Collection (later to be replace by model)
+                    // if the username (= email) is in the User2 Collection (later to be replace by model)
 
                     if (users.getEmail(i).getUsername().equals(email)) {
-                        user.addNewMonitorsUsers(users.getEmail(i));
+                        mUser2.addNewMonitorsUsers(users.getEmail(i));
 
                     }
 
                     //else {
-                        //Toast.makeText(AddMonitoringActivity.this,"user not found!",Toast.LENGTH_LONG).show();
+                        //Toast.makeText(AddMonitoringActivity.this,"mUser2 not found!",Toast.LENGTH_LONG).show();
 
                     //}
 

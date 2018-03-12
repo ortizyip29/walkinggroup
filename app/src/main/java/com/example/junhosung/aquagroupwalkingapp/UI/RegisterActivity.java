@@ -1,7 +1,7 @@
 package com.example.junhosung.aquagroupwalkingapp.UI;
 /**
  * Register Activity
- * Allows users to enter an Email and Password, and add it to UserCollection
+ * Allows usersOld to enter an Email and Password, and add it to UserCollection
  * TODO: need to implement Checking previously submitted emails for a duplicate register.
  */
 
@@ -60,6 +60,7 @@ public class RegisterActivity extends AppCompatActivity {
     //Register Button set up
     //Button will take the email and password entered, and return the data from this activity to the LoginActivity page
     //while also ending this activity simultaneously
+
     private void setUpRegisterbtn() {
         Button btnRegister = (Button) findViewById(R.id.btnAddNewUser);
         btnRegister.setOnClickListener(new View.OnClickListener() {
@@ -67,33 +68,20 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View view) {
                 EditText username = (EditText) findViewById(R.id.textNewEmail);
                 EditText password = (EditText) findViewById(R.id.textNewPassword);
+                EditText name = (EditText) findViewById(R.id.textNewName);
                 String emailNew = username.getText().toString();
                 String passwordNew = password.getText().toString();
-
+                String nameNew = name.getText().toString();
                 if (emailNew.isEmpty()) {
                     Log.i("Walk", "Empty Username");
                     String message = "Please enter an Email";
                     Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_LONG).show();
-                }else if(passwordNew.isEmpty()) {
-                    Log.i("Walk", "Empty Password");
-                    String message = "Please enter a password";
-                    Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_LONG).show();
-                }else if( !isEmailValid(emailNew)){
-                    Log.i("Walk", "Input not email");
-                }else if(isEmailValid(emailNew)) {
-                    Log.i("Walk", "Input is email");
-                    if (isPasswordValid(passwordNew)) {
-                        try {
-                            Intent intent = new Intent();
-                            model.addUser(emailNew, passwordNew);
-                            SharedPreferences data = getSharedPreferences("UserData", RegisterActivity.MODE_PRIVATE);
-                            SharedPreferences.Editor editor = data.edit();
-
-                            finish();
-                        } catch (NumberFormatException a) {
-                            return;
-                        }
-                    }else{
+                }else{
+                    try{
+                        Intent intent = new Intent();
+                        model.createUser(nameNew,emailNew,passwordNew);
+                        finish();
+                    }catch (NumberFormatException a) {
                         return;
                     }
                 }

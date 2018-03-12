@@ -104,31 +104,35 @@ public class LoginActivity extends AppCompatActivity {
     }
     //Login button set up
     //loops through UserCollection activity to compare email and passwords to confirm login
+
+
+    //and we need to test the MapOptionsActivity
+
+
+    //commented out the success flag to bypass log-in in order to reach mapactivity
+    // type a random username & password to bypass the login and reach mapactivity
+    // uncomment if(success) condition when login authentication is complete
+
     private void setupLoginbtn() {
         Button btn = (Button) findViewById(R.id.btnLogin);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(loginEmail.isEmpty() || password.isEmpty()){
-                    Toast.makeText(LoginActivity.this, "Invalid Email or password", Toast.LENGTH_LONG).show();
-                }else if(!isEmailValid(loginEmail)) {
-                    Toast.makeText(LoginActivity.this, "Please enter a valid Email", Toast.LENGTH_LONG).show();
-                }else {
-                    Toast.makeText(LoginActivity.this, loginEmail, Toast.LENGTH_LONG);
-                    Log.i("A", loginEmail);
-                    Log.i("A", password);
-                    boolean success = model.logIn(loginEmail, password);
-                    if (success) {
-                        Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
-                        SharedPreferenceLoginState.setEmail(LoginActivity.this, loginEmail);
-                        Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
-                        startActivity(intent);
-                    }else{
-                        Toast.makeText(LoginActivity.this, "Email does not exist", Toast.LENGTH_LONG).show();
-                    }
-                }
+                Toast.makeText(LoginActivity.this, loginEmail, Toast.LENGTH_LONG);
+                Log.i("A", loginEmail);
+                Log.i("A", password);
+
+                model.logIn(loginEmail, password,returnNothing->responseForLogin(returnNothing));
+ /*                 Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();*/
             }
         });
+    }
+
+    private void responseForLogin(Void returnNothing) {
+        Toast.makeText(LoginActivity.this, "Server Login successful", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(LoginActivity.this,MapsActivity.class);
+        startActivity(intent);
+
     }
 
 
