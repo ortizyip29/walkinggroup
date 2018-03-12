@@ -6,6 +6,7 @@ package com.example.junhosung.aquagroupwalkingapp.UI;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -20,11 +21,10 @@ import com.example.junhosung.aquagroupwalkingapp.R;
 
 
 import com.example.junhosung.aquagroupwalkingapp.model.Model;
-
+import com.example.junhosung.aquagroupwalkingapp.model.SharedPreferenceLoginState;
 
 
 public class LoginActivity extends AppCompatActivity {
-
     private Model model = Model.getInstance();
 
     EditText usertemp;          //EditText variable that holds loginEmail input for Email
@@ -43,11 +43,17 @@ public class LoginActivity extends AppCompatActivity {
         setupRegisterBtn();
         setupLoginbtn();
 
+        if (SharedPreferenceLoginState.getEmail(LoginActivity.this).length() != 0){
+            Log.i("Login Activity", SharedPreferenceLoginState.getEmail(LoginActivity.this));
+            Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
+            startActivity(intent);
+        }
+
+
         /**
          * The following textwatchers update as loginEmail types email/password.
          * And updates the variables loginEmail and password that store this information
          */
-
         usertemp.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -92,7 +98,10 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-
+    //Checking if user input is an email
+    boolean isEmailValid(CharSequence email) {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
     //Login button set up
     //loops through UserCollection activity to compare email and passwords to confirm login
 
@@ -139,6 +148,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         }
+
 
 
 }
