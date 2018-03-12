@@ -9,15 +9,13 @@
 
     <permission
         android:name="com.pkg.map.permission.MAPS_RECEIVE"
-        android:protectionLevel="signature" >
-    </permission>
+        android:protectionLevel="signature" />
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
 
     <application
@@ -44,14 +42,17 @@
         <activity android:name=".UI.SeeMonitoredByActivity" />
         <activity android:name=".UI.MapOptionsActivity" />
         <activity android:name=".UI.AddMonitoringActivity" />
-        <activity android:name=".UI.AddMonitoredByActivity"></activity>
+        <activity android:name=".UI.AddMonitoredByActivity" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCBMkfTV6OqHdOBanGfg4Zd92kxsjUaj_o"/>
+            android:value="AIzaSyCBMkfTV6OqHdOBanGfg4Zd92kxsjUaj_o" />
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
+        <activity android:name=".UI.ListUsers" />
+        <activity android:name=".UI.GroupSelected"></activity>
     </application>
 
 </manifest>
