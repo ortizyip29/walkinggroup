@@ -1,6 +1,7 @@
 package com.example.junhosung.aquagroupwalkingapp.model;
 
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Window;
 
 import com.example.junhosung.aquagroupwalkingapp.SimpleCallback;
@@ -18,7 +19,7 @@ public class Model extends AppCompatActivity {
     private SimpleCallback4 callbackForVoid;
     private boolean isUserLoggedin;
     // users should be public no?
-
+    final private String TAG ="Model Class";
     public UserCollection users;
     private String tokenForLogin;
 
@@ -84,8 +85,14 @@ public class Model extends AppCompatActivity {
         return  UserCollection2.getInstance().getUsersList();
     }
 */
-    public List<User> getUsers(){
-        return UserCollection2.getInstance().returnUsers();
+    public List<User> getUsers() {
+        List<User> returnValue = UserCollection2.getInstance().returnUsers();
+        if (returnValue == null) {
+            Log.i(TAG, "returnValue is null");
+        } else {
+            Log.i(TAG, "returnValue is not null");
+        }
+        return returnValue;
     }
 
 

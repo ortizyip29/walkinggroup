@@ -8,7 +8,7 @@
     <Button
         android:id="@+id/monitorbtn"
         android:layout_width="127dp"
-        android:layout_height="0dp"
+        android:layout_height="100dp"
         android:layout_marginBottom="32dp"
         android:layout_marginEnd="32dp"
         android:text="@string/Check_Monitoring_Status"
@@ -16,9 +16,18 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <Button
+        android:id="@+id/launchGroupActivity"
+        android:layout_width="127dp"
+        android:text="Swipe Right"
+        android:layout_height="100dp"
+        android:elevation="3dp" /><!--this button should turn into swipe right -->
+
     <fragment
         android:id="@+id/mapFrag"
         android:name="com.google.android.gms.maps.MapFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </android.support.constraint.ConstraintLayout>

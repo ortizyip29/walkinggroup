@@ -31,6 +31,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        swipeRight();
         MapFragment mapFrag = ((MapFragment) getFragmentManager().findFragmentById(R.id.mapFrag));
         mapFrag.getMapAsync(this);
         Button btn = (Button)findViewById(R.id.monitorbtn);
@@ -42,6 +43,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
         // Button updateButton = (Button)findViewById(R.id.btnUpdate);
+    }
+
+    private void swipeRight() {
+        Button btn = (Button) findViewById(R.id.launchGroupActivity);
+        btn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MapsActivity.this, GroupSelected.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

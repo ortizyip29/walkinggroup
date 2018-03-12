@@ -9,7 +9,7 @@
 
     <permission
         android:name="com.pkg.map.permission.MAPS_RECEIVE"
-        android:protectionLevel="signature"></permission>
+        android:protectionLevel="signature" />
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -51,7 +51,8 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".UI.ListUsers"></activity>
+        <activity android:name=".UI.ListUsers" />
+        <activity android:name=".UI.GroupSelected"></activity>
     </application>
 
 </manifest>

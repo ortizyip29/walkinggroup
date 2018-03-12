@@ -1,5 +1,6 @@
 package com.example.junhosung.aquagroupwalkingapp.model;
 
+import android.util.Log;
 import android.widget.ArrayAdapter;
 
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import java.util.List;
  */
 
 public class UserCollection2 {
+    private final String TAG = "UserCollection2";
     private UserCollection2() {
 
     }
@@ -47,8 +49,18 @@ public class UserCollection2 {
 
     }
     public List<User> returnUsers(){
-        ArrayList<User> newArrayList =(ArrayList)mUsers;
-        return (ArrayList)newArrayList.clone();
+        List<User> newList = new ArrayList<>(mUsers);
+        if(mUsers == null){
+            Log.i(TAG,"List is null");
+        } else{
+            Log.i(TAG,"List is not null");
+        }
+        if(newList == null){
+            Log.i(TAG,"newList is null");
+        } else{
+            Log.i(TAG,"newList is not null");
+        }
+        return newList;
     }
 
 

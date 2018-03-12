@@ -85,10 +85,8 @@ public class MapOptionsActivity extends AppCompatActivity implements  GestureDet
         seeMonitoringButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               // Intent monitoring = new Intent(MapOptionsActivity.this,SeeMonitoringActivity.class);
-               // startActivity(monitoring);
-                Intent intent = new Intent(MapOptionsActivity.this, ListUsers.class);
-                startActivity(intent);
+                Intent monitoring = new Intent(MapOptionsActivity.this,SeeMonitoringActivity.class);
+                startActivity(monitoring);
             }
         });
 
