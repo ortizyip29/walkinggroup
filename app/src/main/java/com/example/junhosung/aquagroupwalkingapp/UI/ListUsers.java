@@ -1,6 +1,5 @@
 package com.example.junhosung.aquagroupwalkingapp.UI;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -52,9 +51,9 @@ public class ListUsers extends AppCompatActivity implements  GestureDetector.OnG
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_users);
 
-        users = Model.getInstance().getUsers();
+        users = Model.getInstance().getUsersOld();
         if(users==null){
-            Log.i(TAG, "Model.getInstance().getUsers() is null");
+            Log.i(TAG, "Model.getInstance().getUsersOld() is null");
         }
         populateUsersList();
         wireSetOnClickListViewListerner();
@@ -65,7 +64,7 @@ public class ListUsers extends AppCompatActivity implements  GestureDetector.OnG
         ListView monitoringList = (ListView) findViewById(R.id.listUsers);
         List<String> monitoringListString = new ArrayList<>();
         if(users==null){
-            Log.i(TAG, "users is null");
+            Log.i(TAG, "usersOld is null");
         }
         else{
             for(User user : users){

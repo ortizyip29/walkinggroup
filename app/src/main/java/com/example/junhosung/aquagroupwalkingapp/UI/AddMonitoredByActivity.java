@@ -17,8 +17,8 @@ public class AddMonitoredByActivity extends AppCompatActivity {
 
     private Button btnAddMonitoring;
     private Model model = Model.getInstance();
-    UserCollection users = model.users;
-    User2 mUser2 = model.users.getEmail(0);
+    UserCollection users = model.usersOld;
+    User2 mUser2 = model.usersOld.getEmail(0);
 
 
 
@@ -32,13 +32,13 @@ public class AddMonitoredByActivity extends AppCompatActivity {
         User2 randUser23 = new User2("harro7@gmail.com","2");
         User2 randUser24 = new User2("harro8@gmail.com","2");
 
-        // adding users to the UserCollection of the model so that we can check that they exist there
+        // adding usersOld to the UserCollection of the model so that we can check that they exist there
 
         users.addUser(randUser23);
         users.addUser(randUser24);
 
         // this is here since the for loop inside the onClickListenr gives me trouble about
-        // calling users.countUsers() from an inner class ...
+        // calling usersOld.countUsers() from an inner class ...
 
         final int counter = users.countUsers();
 

@@ -62,7 +62,7 @@ public class Server extends AppCompatActivity {
     private void createNewUserResponse(User user) {
 
         ///delete this line later
-        //UserCollection2.getInstance().addUser(user);
+        //UserCollectionServer.getInstance().addUser(user);
         // the calling class should add the user
         Log.w(TAG, "Server replied with user: " + user.toString());
         serverCallbackForUser.callback(user);
@@ -86,7 +86,60 @@ public class Server extends AppCompatActivity {
         this.serverCallbackForList = callback;
         Call<List<User>> caller = proxy.getUsers();
         ProxyBuilder.callProxy(Server.this, caller, returnedUsers ->responseGetListOfUsers(returnedUsers) );
+
     }
+
+
+    //   Server Methods on Monitoring Activity
+
+    private void responseGetMonitorsUsers(List<User> returnedUsers) {
+        {
+            for (User user : returnedUsers) {
+                Log.w(TAG, "    User: " + user.toString());
+            }
+        }
+
+        serverCallbackForList.callback(returnedUsers);
+    }
+
+    public <T extends Object> void getMonitorsUsers(Long userId, String token, SimpleCallback6 callback) {
+        onReceiveToken(token);
+        this.serverCallbackForList = callback;
+        Call<List<User>> caller = proxy.getMonitorsById(userId);
+        ProxyBuilder.callProxy(Server.this,caller, returnedUsers -> responseGetMonitorsUsers(returnedUsers));
+    }
+
+    private void responseGetMonitoredByUsers(List<User> returnedUsers) {
+        {
+            for (User user : returnedUsers) {
+                Log.w(TAG, "   User: " +user.toString());
+            }
+        }
+
+        serverCallbackForList.callback(returnedUsers);
+    }
+
+    public <T extends Object> void getMonitoredByUsers(Long userId, String token, SimpleCallback6 callback) {
+        onReceiveToken(token);
+        this.serverCallbackForList = callback;
+        Call<List<User>> caller = proxy.getMonitoredByById(userId);
+        ProxyBuilder.callProxy(Server.this,caller,returnedUsers -> responseGetMonitoredByUsers(returnedUsers));
+    }
+
+    private User responseGetUserById(User returnedUser) {
+        return returnedUser;
+    }
+
+    public <T extends Object> void getUserById(Long userId, String token, SimpleCallback2<User> callback)
+    {
+        onReceiveToken(token);
+        serverCallbackForUser = callback;
+        Call<User> caller = proxy.getUserById(userId);
+        ProxyBuilder.callProxy(Server.this,caller,returnedUser -> responseGetUserById(returnedUser));
+
+    }
+
+    //public <T extends Object> void getUserByEmail(String email, String token, Simple)
 
 
     public void getParentGroup(){
@@ -96,10 +149,11 @@ public class Server extends AppCompatActivity {
     }
 
     public void pushUserGPSCoordinates(String longitude, String latitude) {
+
     }
     public void getUserGroup(){
-    }
 
+    }
 
     private void onReceiveToken(String token) {
         // Replace the current proxy with one that uses the token!

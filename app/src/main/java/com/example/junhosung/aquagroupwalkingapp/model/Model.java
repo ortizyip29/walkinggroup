@@ -2,12 +2,10 @@ package com.example.junhosung.aquagroupwalkingapp.model;
 
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Window;
 
 import com.example.junhosung.aquagroupwalkingapp.SimpleCallback;
 import com.example.junhosung.aquagroupwalkingapp.SimpleCallback4;
 
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -18,14 +16,21 @@ public class Model extends AppCompatActivity {
     private SimpleCallback callback;
     private SimpleCallback4 callbackForVoid;
     private boolean isUserLoggedin;
-    // users should be public no?
+    // usersOld should be public no?
     final private String TAG ="Model Class";
-    public UserCollection users;
+    public UserCollection usersOld;
+    public UserCollectionServer users;
     private String tokenForLogin;
+
+    // id of the current logged in user
+
+    private User currentUser;
 
 
     private Model() {
-        users = UserCollection.getInstance();
+        usersOld = UserCollection.getInstance();
+        users = UserCollectionServer.getInstance();
+
         //get from server
     }
 
@@ -37,26 +42,31 @@ public class Model extends AppCompatActivity {
         }
         return modelInstance;
     }
+
     private void responseLogin(String token) {
         isUserLoggedin = true;
         this.callbackForVoid.callback(null);
         this.tokenForLogin = token;
+
+
         listUsers();
     }
+
+    // Adding in currentUser
 
     public void logIn(String loginEmail, String password, SimpleCallback4 callback4) {
         isUserLoggedin = false;
         this.callbackForVoid = callback4;
         Server server = new Server();
-        User user = new User();
-        user.setEmail(loginEmail);
-        user.setPassword(password);
-        server.loginUser(user,(String token)->responseLogin(token));
+        currentUser = new User();
+        currentUser.setEmail(loginEmail);
+        currentUser.setPassword(password);
+        server.loginUser(currentUser,(String token)->responseLogin(token));
 
     }
 
     private void createNewUserResponse(User user) {
-        //UserCollection2.getInstance().addUser(user);
+        //UserCollectionServer.getInstance().addUser(user);
     }
 
     public void createUser(String nameNew, String emailNew, String passwordNew) {
@@ -77,22 +87,59 @@ public class Model extends AppCompatActivity {
     }
     private void responseUserList(List<User> userList){
         for(User user: userList){
-            UserCollection2.getInstance().addUser(user);
+            UserCollectionServer.getInstance().addUser(user);
         }
     }
 
-   /* public List<String> getUsers(){
-        return  UserCollection2.getInstance().getUsersList();
+    public void getMonitorsById(Long userId) {
+        Server server = new Server();
+        if(isUserLoggedin) {
+            server.getMonitorsUsers(userId, this.tokenForLogin, (List<User> usersList) -> responseGetMonitorsById(usersList));
+        }
+    }
+
+    private List<User> responseGetMonitorsById(List<User> userList) {
+        return userList;
+    }
+
+    private List<User> responseGetMonitoredById(List<User> userList) {
+        return userList;
+    }
+
+    public void getMonitoredById(Long userId) {
+        Server server = new Server();
+        if(isUserLoggedin) {
+            server.getMonitoredByUsers(userId,this.tokenForLogin,(List<User> usersList) -> responseGetMonitoredById(usersList));
+        }
+    }
+
+   /* public List<String> getUsersOld(){
+        return  UserCollectionServer.getInstance().getUsersList();
     }
 */
-    public List<User> getUsers() {
-        List<User> returnValue = UserCollection2.getInstance().returnUsers();
+    public List<User> getUsersOld() {
+        List<User> returnValue = UserCollectionServer.getInstance().returnUsers();
         if (returnValue == null) {
             Log.i(TAG, "returnValue is null");
         } else {
             Log.i(TAG, "returnValue is not null");
         }
         return returnValue;
+    }
+
+    public User getCurrentUser() {
+        return currentUser;
+    }
+
+    private User responseGetUserById(User returnedUser) {
+        return returnedUser;
+    }
+
+    public void getUserById(Long userId) {
+        Server server = new Server();
+        if(isUserLoggedin) {
+            server.getUserById(userId,this.tokenForLogin,(User returnedUser) -> responseGetUserById(returnedUser));
+        }
     }
 
 

@@ -103,6 +103,7 @@ public class LoginActivity extends AppCompatActivity {
     //commented out the success flag to bypass log-in in order to reach mapactivity
     // type a random username & password to bypass the login and reach mapactivity
     // uncomment if(success) condition when login authentication is complete
+
     private void setupLoginbtn() {
         Button btn = (Button) findViewById(R.id.btnLogin);
         btn.setOnClickListener(new View.OnClickListener() {

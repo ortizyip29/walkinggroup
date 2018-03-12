@@ -1,7 +1,7 @@
 package com.example.junhosung.aquagroupwalkingapp.UI;
 /**
  * Register Activity
- * Allows users to enter an Email and Password, and add it to UserCollection
+ * Allows usersOld to enter an Email and Password, and add it to UserCollection
  * TODO: need to implement Checking previously submitted emails for a duplicate register.
  */
 
@@ -37,6 +37,7 @@ public class RegisterActivity extends AppCompatActivity {
     //Register Button set up
     //Button will take the email and password entered, and return the data from this activity to the LoginActivity page
     //while also ending this activity simultaneously
+
     private void setUpRegisterbtn() {
         Button btnRegister = (Button) findViewById(R.id.btnAddNewUser);
         btnRegister.setOnClickListener(new View.OnClickListener() {
