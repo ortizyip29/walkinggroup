@@ -27,49 +27,49 @@ public interface WGServerProxy {
     @GET("getApiKey")
     Call<String> getApiKey(@Query("groupName") String groupName, @Query("sfuUserId") String sfuId);
 
-    @POST("/usersOld/signup")
+    @POST("/users/signup")
     Call<User> createNewUser(@Body User user);
 
     @POST("/login")
     Call<Void> login(@Body User userWithEmailAndPassword);
 
-    @GET("/usersOld")
+    @GET("/users")
     Call<List<User>> getUsers();
 
-    @GET("/usersOld/{id}")
+    @GET("/users/{id}")
     Call<User> getUserById(@Path("id") Long userId);
 
-    @GET("/usersOld/byEmail")
+    @GET("/users/byEmail")
     Call<User> getUserByEmail(@Query("email") String email);
 
     // Get Who a User Monitors:
 
-    @GET("/usersOld/{id}/monitorsUsers")
+    @GET("/users/{id}/monitorsUsers")
     Call<List<User>> getMonitorsById(@Path("id") Long userId);
 
     // Make it so that User Monitors Another User:
 
-    @POST("/usersOld/{id}/monitorsUsers")
+    @POST("/users/{id}/monitorsUsers")
     Call<User> addNewMonitors(@Path("id") Long userId, @Field("id") Long targetId);
 
     // Stop Monitoring a User: A stops monitoring B
 
-    @DELETE("/usersOld/{idA}/monitorsUsers/{idB}")
+    @DELETE("/users/{idA}/monitorsUsers/{idB}")
     Call<List<User>> stopMonitors(@Path("idA") Long userId, @Path("idB") Long targetId);
 
     // Get Who is Monitored By a User:
 
-    @GET("/usersOld/{id}/monitoredByUsers")
+    @GET("/users/{id}/monitoredByUsers")
     Call<List<User>> getMonitoredByById(@Path("id") Long userId);
 
     // Make it so that User is Monitored By Another User:
 
-    @POST("/usersOld{id}/monitoredByUsers")
+    @POST("/users{id}/monitoredByUsers")
     Call<User> addNewMonitoredBy(@Path("id") Long userId,@Field("id") Long targetId);
 
     // Stop Being Monitored By a User: A stops being monitored by B
 
-    @DELETE("/usersOld/{idA}/monitoredByUsers/{idB}")
+    @DELETE("/users/{idA}/monitoredByUsers/{idB}")
     Call<List<User>> stopMonitoredBy(@Path("idA") Long userId, @Field("idB") Long targetId);
 
     @GET("/groups")

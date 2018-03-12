@@ -119,24 +119,36 @@ public class Server extends AppCompatActivity {
         serverCallbackForList.callback(returnedUsers);
     }
 
-    public <T extends Object> void getMonitoredByUsers(Long userId, String token, SimpleCallback6 callback) {
+    public void getMonitoredByUsers(Long userId, String token, SimpleCallback6 callback) {
         onReceiveToken(token);
         this.serverCallbackForList = callback;
         Call<List<User>> caller = proxy.getMonitoredByById(userId);
         ProxyBuilder.callProxy(Server.this,caller,returnedUsers -> responseGetMonitoredByUsers(returnedUsers));
     }
 
-    private User responseGetUserById(User returnedUser) {
-        return returnedUser;
+    private void responseGetUserById(User returnedUser) {
+        serverCallback.callback(returnedUser);
     }
 
-    public <T extends Object> void getUserById(Long userId, String token, SimpleCallback2<User> callback)
+    public <T extends Object> void getUserById(Long userId, String token, SimpleCallback<User> callback)
     {
         onReceiveToken(token);
-        serverCallbackForUser = callback;
+        serverCallback = callback;
         Call<User> caller = proxy.getUserById(userId);
         ProxyBuilder.callProxy(Server.this,caller,returnedUser -> responseGetUserById(returnedUser));
 
+    }
+
+    public void getUserByEmail(String email, String token, SimpleCallback callback) {
+        onReceiveToken(token);
+        serverCallback = callback;
+        Call<User> caller = proxy.getUserByEmail(email);
+        ProxyBuilder.callProxy(Server.this,caller,this::responseGetUserByEmail);
+
+    }
+
+    private <T extends Object> void responseGetUserByEmail(User user) {
+        serverCallback.callback(user);
     }
 
     //public <T extends Object> void getUserByEmail(String email, String token, Simple)
