@@ -18,6 +18,7 @@ import com.google.android.gms.maps.GoogleMap;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.junhosung.aquagroupwalkingapp.R;
 import com.google.android.gms.maps.MapFragment;
@@ -28,7 +29,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Locale;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
@@ -40,6 +40,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         setUpLogoutBtn();
+        setUpViewGroupBtn();
         Button btn = (Button) findViewById(R.id.monitorbtn);
         btn.setOnClickListener(new OnClickListener() {
             @Override
@@ -63,6 +64,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     Geocoder geocoder = new Geocoder(getApplicationContext(),Locale.getDefault());
                     try {
                         geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 0);
+                        Toast.makeText(getApplicationContext(), "Latitude: " + location.getLatitude() + "Longitude: " + location.getLongitude(), Toast.LENGTH_LONG).show();
                         mapDisplay.setMapType(GoogleMap.MAP_TYPE_NORMAL);
                         mapDisplay.addMarker(new MarkerOptions().position(currentLocation).title("I'm here"));
                         mapDisplay.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
@@ -77,7 +79,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-
                 }
 
                 @Override
@@ -94,13 +95,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 public void onProviderDisabled(String s) {
 
                 }
+
             });
         }
         else{
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 1, new LocationListener() {
                 @Override
                 public void onLocationChanged(Location location) {
-                    Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.CANADA);
+                    Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
                     LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
                     try {
                         geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 0);
@@ -151,6 +153,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 finish();
             }
         });
-
+    }
+    private void setUpViewGroupBtn(){
+        Button groupButton = (Button)findViewById(R.id.viewGroupBtn);
+        groupButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MapsActivity.this, GroupManagementActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }

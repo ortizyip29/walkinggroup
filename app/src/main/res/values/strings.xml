@@ -1,4 +1,6 @@
 <resources>
+    <string name="apikey">D43B2DCD-D2A8-49EF-AFCC-6B1E309D1B58</string>
+
     <string name="app_name">aquaGroupWalkingApp</string>
     <string name="title_activity_login">Sign in</string>
 
@@ -25,15 +27,15 @@
 
     <string name="btn_stop_being_monitored">DELETE</string>
     <string name="btn_add_monitored_by">ADD NEW</string>
-    <string name="text_click_to_stop_monitoredBy">Select user and click below to stop being monitored</string>
+    <string name="text_click_to_stop_monitoredBy">Select user2 and click below to stop being monitored</string>
 
 
     <!-- Strings related to SeeMonitoringActivity -->
 
     <string name="btn_add_monitoree">ADD</string>
     <string name="btn_delete_monitoree">DELETE</string>
-    <string name="text_click_to_add_or_delete">Click to add a user to your monitoring list.
-    Click delete to remove a user from your monitoring list</string>
+    <string name="text_click_to_add_or_delete">Click to add a user2 to your monitoring list.
+    Click delete to remove a user2 from your monitoring list</string>
     <string name="Check_Monitoring_Status">Check Monitoring Status</string>
     <string name="title_activity_maps2">Map</string>
 

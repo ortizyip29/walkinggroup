@@ -4,130 +4,108 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by David-Yoga on 2018-03-02.
- * User class that holds the email and password attributes. Will be further updated as the project proceeds
- *
- * Will be inserting other attributes
- *
+ * Simple User class to store the data the server expects and returns.
+ * (Incomplete: Needs support for monitoring and groups).
  */
-
 public class User {
-    String username;
+    private Long id;
+    private String name;
+    private String email;
     private String password;
 
-    public User(String email, String pw) {
-        username = email;
-        password = pw;
+    private List<User> monitoredByUsers = new ArrayList<>();
+    private List<User> monitorsUsers = new ArrayList<>();
+    private List<Group> memberofGroups = new ArrayList<>();
+    private List<Group> leadsGroups = new ArrayList<>();
+
+    private String href;
+
+    public Long getId() {
+        return id;
     }
 
-    // This list holds the name and email of people whom the user is monitoring
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public List<User> monitorsUsers = new ArrayList<>();
+    public String getName() {
+        return name;
+    }
 
-    // This list holds the name and email of peop
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    public List<User> monitoredByUsers = new ArrayList<>();
+    public String getEmail() {
+        return email;
+    }
 
-
-    public String getUsername() {
-        return username;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
         return password;
     }
 
-    // This method adds a new user to the monitorsUsers List
-
-    public void addNewMonitorsUsers(User user) {
-
-        monitorsUsers.add(user);
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    // This method adds to new user to the monitoredByUsers List
-
-    public void addNewMonitoredByUsers(User user) {
-
-        monitoredByUsers.add(user);
-
-    }
-
-    public int countMonitoring() {return monitorsUsers.size();}
-
-    public int countMonitoredBy() {return monitoredByUsers.size();}
-
-    public User getMonitoree(int index) {
-        validateIndexWithException1(index);
-        return monitorsUsers.get(index);
-
-    }
-
-    public User getMonitoredBy(int index) {
-        validateIndexWithException2(index);
-        return monitoredByUsers.get(index);
-
-    }
-
-    // retrieves the userName (currently the email address - will have to display both actual name and email in the future
-    // similar to the method used in Pot Collection from the second assignment
-    // useful for integrating with an ArrayAdapter - Brian
-
-    public String[] getMonitorsUsers() {
-        String[] monitorsUsers = new String[countMonitoring()];
-        for (int i = 0; i < countMonitoring(); i++) {
-            User monitoree = getMonitoree(i);
-            monitorsUsers[i] = "real name comes here ... " + monitoree.getUsername();
-
-        }
-
-        return monitorsUsers;
-    }
-
-    // same thing here but with the other list
-
-    public String[] getMonitoredByUsers() {
-        String[] monitoredByUsers = new String[countMonitoredBy()];
-        for (int i = 0; i < countMonitoredBy(); i++) {
-            User monitored = getMonitoredBy(i);
-            monitoredByUsers[i] = "real name comes here ... " + monitored.getUsername();
-
-        }
-
+    public List<User> getMonitoredByUsers() {
         return monitoredByUsers;
     }
 
-
-    public boolean checkPassword(String userpw) {
-        if (userpw == password) {
-            return true;
-        } else {
-            return false;
-        }
+    public void setMonitoredByUsers(List<User> monitoredByUsers) {
+        this.monitoredByUsers = monitoredByUsers;
     }
 
-    public boolean checkUsername(String userin) {
-        if (userin == username) {
-            return true;
-        } else {
-            return false;
-        }
+    public List<User> getMonitorsUsers() {
+        return monitorsUsers;
     }
 
-    // a method to check for out of index search for getMonitoree method - seen in Assignment2
-
-    private void validateIndexWithException1(int index) {
-        if (index < 0 || index >= countMonitoring()) {
-            throw new IllegalArgumentException();
-        }
+    public void setMonitorsUsers(List<User> monitorsUsers) {
+        this.monitorsUsers = monitorsUsers;
     }
 
-    // same thing but for getMonitoredBy method
+    public List<Group> getMemberOfGroups() {
+        return memberofGroups;
+    }
 
-    private void validateIndexWithException2(int index) {
-        if (index < 0 || index >= countMonitoredBy()) {
-            throw new IllegalArgumentException();
-        }
+    public void setMemberofGroups(List<Group> memberofGroups) {
+        this.memberofGroups = memberofGroups;
+    }
+
+    public List<Group> getLeadsGroups() {
+        return leadsGroups;
+    }
+
+    public void setLeadsGroups(List<Group> leadsGroups) {
+        this.leadsGroups = leadsGroups;
+    }
+
+    public String getHref() {
+        return href;
+    }
+
+    public void setHref(String href) {
+        this.href = href;
+    }
+
+
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", monitoredByUsers=" + monitoredByUsers +
+                ", monitorsUsers=" + monitorsUsers +
+                ", memberOfGroups=" + memberofGroups +
+                ", leadsGroups=" + leadsGroups +
+                '}';
     }
 }
-
 

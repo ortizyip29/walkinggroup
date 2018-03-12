@@ -1,0 +1,42 @@
+Get Moba terminal:
+https://mobaxterm.mobatek.net/download-home-edition.html
+
+
+//dont need to type this commmand as it gets you the key but we already have the key
+curl -k -s -i -H "Content-Type: application/json" \
+   -X GET "${ADDR_276_SERVER}/getApiKey?groupName=aqua&sfuUserId=kartikj"
+
+
+Enter commands:
+ADDR_276_SERVER=https://cmpt276-1177-bf.cmpt.sfu.ca:8443
+
+API_KEY=D43B2DCD-D2A8-49EF-AFCC-6B1E309D1B58
+
+
+//CREATE USER
+curl -k -s -i -H "Content-Type: application/json" \
+   -H "apiKey: ${API_KEY}" \
+   -X POST -d '{
+    "name": "Alice daCoder",
+    "email": "test@gmail.com",
+    "password": "myPassword"
+}' ${ADDR_276_SERVER}/users/signup
+
+
+//lOGIN
+curl -k -s -i -H "Content-Type: application/json" \
+   -H "apiKey: ${API_KEY}" \
+   -X POST -d '{
+    "email": "test@gmail.com",
+    "password": "myPassword"
+}' ${ADDR_276_SERVER}/login
+
+
+//will get updated token on login
+TOKEN=eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGdtYWlsLmNvbSIsImV4cCI6MTUyMTU5NDA5NX0.FwN5wAWKfgg3iV6CEx-Rg30VkNZiDmPC9f-2GjXIFbVQ3_qAIy7jwak8V6xU2zLAuIFhSBmoBGnqv9TDFY3bTw
+
+//LIST USERS
+curl -k -s -i -H "Content-Type: application/json" \
+   -H "apiKey: ${API_KEY}" \
+   -H "Authorization: Bearer ${TOKEN}" \
+   -X GET ${ADDR_276_SERVER}/users
