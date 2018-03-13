@@ -140,10 +140,10 @@ public class Server extends AppCompatActivity {
         ProxyBuilder.callProxy(Server.this,caller,this::responseGetUserByEmail);
     }
 
-    public void addNewMonitors(Long userId, Long targetId, String token, SimpleCallback<List<User>> callback) {
+    public void addNewMonitors(Long userId, User targetUser, String token, SimpleCallback<List<User>> callback) {
         onReceiveToken(token);
         serverCallbackForAddNewMonitors = callback;
-        Call<List<User>> caller = proxy.addNewMonitors(userId,targetId);
+        Call<List<User>> caller = proxy.addNewMonitors(userId,targetUser);
         ProxyBuilder.callProxy(Server.this,caller,this::responseAddNewMonitors);
 
     }
