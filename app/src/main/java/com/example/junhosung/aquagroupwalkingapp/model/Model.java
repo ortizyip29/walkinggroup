@@ -119,6 +119,7 @@ public class Model extends AppCompatActivity {
         currentUser.setPassword(password);
         server.loginUser(currentUser,this::responseLogin);
 
+        return false;
     }
     public void listUsers() {
         Server server = new Server();
