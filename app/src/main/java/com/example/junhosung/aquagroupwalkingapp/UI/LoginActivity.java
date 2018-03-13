@@ -43,6 +43,9 @@ public class LoginActivity extends AppCompatActivity {
         setupRegisterBtn();
         setupLoginbtn();
 
+        /**
+         *
+         */
         if (SharedPreferenceLoginState.getEmail(LoginActivity.this).length() != 0){
             Log.i("Login Activity", SharedPreferenceLoginState.getEmail(LoginActivity.this));
             Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
@@ -118,12 +121,24 @@ public class LoginActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(LoginActivity.this, loginEmail, Toast.LENGTH_LONG);
-                Log.i("A", loginEmail);
-                Log.i("A", password);
-
-                model.logIn(loginEmail, password,returnNothing->responseForLogin(returnNothing));
- /*                 Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();*/
+                if(loginEmail.isEmpty() || password.isEmpty()){
+                    Toast.makeText(LoginActivity.this, "Invalid Email or password", Toast.LENGTH_LONG).show();
+                }else if(!isEmailValid(loginEmail)) {
+                    Toast.makeText(LoginActivity.this, "Please enter a valid Email", Toast.LENGTH_LONG).show();
+                }else {
+                    Toast.makeText(LoginActivity.this, loginEmail, Toast.LENGTH_LONG);
+                    Log.i("A", loginEmail);
+                    Log.i("A", password);
+                    boolean success = model.logIn(loginEmail, password);
+                    if (success) {
+                        Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
+                        SharedPreferenceLoginState.setEmail(LoginActivity.this, loginEmail, password);
+                        Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
+                        startActivity(intent);
+                    }else{
+                        Toast.makeText(LoginActivity.this, "Email does not exist", Toast.LENGTH_LONG).show();
+                    }
+                }
             }
         });
     }
