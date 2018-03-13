@@ -107,6 +107,15 @@ public class LoginActivity extends AppCompatActivity {
     }
     //Login button set up
     //loops through UserCollection activity to compare email and passwords to confirm login
+
+
+    //and we need to test the MapOptionsActivity
+
+
+    //commented out the success flag to bypass log-in in order to reach mapactivity
+    // type a random username & password to bypass the login and reach mapactivity
+    // uncomment if(success) condition when login authentication is complete
+
     private void setupLoginbtn() {
         Button btn = (Button) findViewById(R.id.btnLogin);
         btn.setOnClickListener(new View.OnClickListener() {
@@ -132,6 +141,13 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void responseForLogin(Void returnNothing) {
+        Toast.makeText(LoginActivity.this, "Server Login successful", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(LoginActivity.this,MapsActivity.class);
+        startActivity(intent);
+
     }
 
 

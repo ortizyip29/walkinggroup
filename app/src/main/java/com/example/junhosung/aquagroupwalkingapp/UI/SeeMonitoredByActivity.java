@@ -3,8 +3,8 @@ package com.example.junhosung.aquagroupwalkingapp.UI;
 /**
  * SeeMonitoredBy Activity
  *
- * Allows the user to see list of people the user is being monitored by.
- * The user can then select people to be deleted from list.
+ * Allows the mUser2 to see list of people the mUser2 is being monitored by.
+ * The mUser2 can then select people to be deleted from list.
  *
  * TODO: When you click on the listView, you should be able to select ppl to delete - coming soon
  */
@@ -23,12 +23,12 @@ import android.widget.Toast;
 
 import com.example.junhosung.aquagroupwalkingapp.R;
 import com.example.junhosung.aquagroupwalkingapp.model.Model;
-import com.example.junhosung.aquagroupwalkingapp.model.User;
+import com.example.junhosung.aquagroupwalkingapp.model.User2;
 
 public class SeeMonitoredByActivity extends AppCompatActivity {
 
     private Model model = Model.getInstance();
-    User user = model.users.getEmail(0);
+    User2 mUser2 = model.usersOld.getEmail(0);
     Button btnAddMonitoredBy;
 
 
@@ -39,11 +39,11 @@ public class SeeMonitoredByActivity extends AppCompatActivity {
 
         // test cases - not permanent
 
-        User user3 = new User("harro3@gmail.com","1");
-        User user4 = new User("harro4@gmail.com","2");
+        User2 user23 = new User2("harro3@gmail.com","1");
+        User2 user24 = new User2("harro4@gmail.com","2");
 
-        user.addNewMonitoredByUsers(user3);
-        user.addNewMonitoredByUsers(user4);
+        mUser2.addNewMonitoredByUsers(user23);
+        mUser2.addNewMonitoredByUsers(user24);
 
         setUpAddButton();
         populateListView();
@@ -52,7 +52,7 @@ public class SeeMonitoredByActivity extends AppCompatActivity {
 
     private void populateListView() {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.see_monitored_by,
-                user.getMonitoredByUsers());
+                mUser2.getMonitoredByUser2s());
 
         ListView list = (ListView) findViewById(R.id.monitoredByList);
         list.setAdapter(adapter);
@@ -83,7 +83,7 @@ public class SeeMonitoredByActivity extends AppCompatActivity {
         switch (requestCode) {
             case 2:
                 if (resultCode == Activity.RESULT_OK) {
-                    Toast.makeText(SeeMonitoredByActivity.this,"number of monitoredBy: "+String.valueOf(user.countMonitoredBy()),
+                    Toast.makeText(SeeMonitoredByActivity.this,"number of monitoredBy: "+String.valueOf(mUser2.countMonitoredBy()),
                             Toast.LENGTH_SHORT).show();
                     populateListView();
                 }

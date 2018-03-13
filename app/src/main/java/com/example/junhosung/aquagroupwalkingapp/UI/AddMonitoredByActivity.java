@@ -10,15 +10,15 @@ import android.widget.EditText;
 
 import com.example.junhosung.aquagroupwalkingapp.R;
 import com.example.junhosung.aquagroupwalkingapp.model.Model;
-import com.example.junhosung.aquagroupwalkingapp.model.User;
+import com.example.junhosung.aquagroupwalkingapp.model.User2;
 import com.example.junhosung.aquagroupwalkingapp.model.UserCollection;
 
 public class AddMonitoredByActivity extends AppCompatActivity {
 
     private Button btnAddMonitoring;
     private Model model = Model.getInstance();
-    UserCollection users = model.users;
-    User user = model.users.getEmail(0);
+    UserCollection users = model.usersOld;
+    User2 mUser2 = model.usersOld.getEmail(0);
 
 
 
@@ -29,16 +29,16 @@ public class AddMonitoredByActivity extends AppCompatActivity {
 
         //test cases ...
 
-        User randUser3 = new User("harro7@gmail.com","2");
-        User randUser4 = new User("harro8@gmail.com","2");
+        User2 randUser23 = new User2("harro7@gmail.com","2");
+        User2 randUser24 = new User2("harro8@gmail.com","2");
 
-        // adding users to the UserCollection of the model so that we can check that they exist there
+        // adding usersOld to the UserCollection of the model so that we can check that they exist there
 
-        users.addUser(randUser3);
-        users.addUser(randUser4);
+        users.addUser(randUser23);
+        users.addUser(randUser24);
 
         // this is here since the for loop inside the onClickListenr gives me trouble about
-        // calling users.countUsers() from an inner class ...
+        // calling usersOld.countUsers() from an inner class ...
 
         final int counter = users.countUsers();
 
@@ -52,10 +52,10 @@ public class AddMonitoredByActivity extends AppCompatActivity {
 
                 for (int i = 0; i< counter; i++) {
 
-                    // if the username (= email) is in the User Collection (later to be replace by model)
+                    // if the username (= email) is in the User2 Collection (later to be replace by model)
 
                     if (users.getEmail(i).getUsername().equals(email)) {
-                        user.addNewMonitoredByUsers(users.getEmail(i));
+                        mUser2.addNewMonitoredByUsers(users.getEmail(i));
 
                     }
 
