@@ -36,6 +36,7 @@ public class Model extends AppCompatActivity {
     private SimpleCallback callbackForGetMonitoredById;
     private SimpleCallback callbackForGetMonitorsById;
     private SimpleCallback callBackForAddNewMonitors;
+    private SimpleCallback callBackFOrAddNewMonitoredBy;
 
 
     //for internal model class
@@ -105,6 +106,10 @@ public class Model extends AppCompatActivity {
         callBackForAddNewMonitors.callback(users);
     }
 
+    private void responseAddNewMonitoredBy(List<User> users) {
+        callbackForGetMonitoredById.callback(users);
+    }
+
 
 
     //calls to server methods
@@ -119,7 +124,7 @@ public class Model extends AppCompatActivity {
         currentUser.setPassword(password);
         server.loginUser(currentUser,this::responseLogin);
 
-        return false;
+        //return false;
     }
     public void listUsers() {
         Server server = new Server();
@@ -170,6 +175,14 @@ public class Model extends AppCompatActivity {
         Server server = new Server();
         if(isUserLoggedin) {
             server.addNewMonitors(userId,targetUser,this.tokenForLogin,this::responseAddNewMonitors);
+        }
+    }
+
+    public void addNewMonitoredBy(Long userId, User targetUser,SimpleCallback<List<User>> callback) {
+        this.callbackForGetMonitoredById = callback;
+        Server server = new Server();
+        if(isUserLoggedin) {
+            server.addNewMonitoredBy(userId,targetUser,this.tokenForLogin,this::responseAddNewMonitoredBy);
         }
     }
 

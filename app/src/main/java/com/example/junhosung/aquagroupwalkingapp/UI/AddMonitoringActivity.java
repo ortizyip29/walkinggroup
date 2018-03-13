@@ -36,7 +36,6 @@ public class AddMonitoringActivity extends AppCompatActivity {
 
         //model.addNewMonitors(Long.valueOf(107),Long.valueOf(196),this::responseAddNewMonitors);
 
-
         btnAddMonitoring = (Button) findViewById(R.id.btnAddMonitoring);
         btnAddMonitoring.setOnClickListener(new View.OnClickListener() {
 
@@ -72,6 +71,8 @@ public class AddMonitoringActivity extends AppCompatActivity {
             }
 
             private void responseAddNewMonitors(List<User> users) {
+
+                // well this doesn't really return anything ... so what's below will probably removed ...
                 tempList = users;
                 Toast.makeText(AddMonitoringActivity.this,tempList.get(0).getId()+"",Toast.LENGTH_LONG).show();
             }
