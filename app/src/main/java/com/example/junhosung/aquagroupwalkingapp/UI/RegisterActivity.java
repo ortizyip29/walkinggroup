@@ -44,10 +44,10 @@ public class RegisterActivity extends AppCompatActivity {
         if (password.isEmpty()){
             return false;
         }else if(!password.equals(password.toLowerCase())){
-            if(password.matches(".*\\d+.*")){
+            if(password.matches(".*\\d+.*") && (password.length() >= 8) && (password.length() <= 22)){
                 return true;
             }else{
-                Toast.makeText(RegisterActivity.this, "Password must contain at least 1 Capital letter and 1 number/symbol", Toast.LENGTH_LONG).show();
+                Toast.makeText(RegisterActivity.this, "Password must contain at least 1 Capital letter and 1 number/symbol and between 8 to 22 characters long", Toast.LENGTH_LONG).show();
                 return false;
             }
         }else{
