@@ -110,7 +110,7 @@ public class Model extends AppCompatActivity {
     //calls to server methods
     // Adding in currentUser
 
-    public void logIn(String loginEmail, String password, SimpleCallback<Void> callback) {
+    public boolean logIn(String loginEmail, String password, SimpleCallback<Void> callback) {
         isUserLoggedin = false;
         this.callbackForVoid = callback;
         Server server = new Server();
