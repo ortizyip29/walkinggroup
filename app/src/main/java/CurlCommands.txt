@@ -17,8 +17,8 @@ API_KEY=D43B2DCD-D2A8-49EF-AFCC-6B1E309D1B58
 curl -k -s -i -H "Content-Type: application/json" \
    -H "apiKey: ${API_KEY}" \
    -X POST -d '{
-    "name": "Alice daCoder",
-    "email": "test@gmail.com",
+    "name": "Alice daCoder1",
+    "email": "test1@gmail.com",
     "password": "myPassword"
 }' ${ADDR_276_SERVER}/users/signup
 
@@ -27,16 +27,38 @@ curl -k -s -i -H "Content-Type: application/json" \
 curl -k -s -i -H "Content-Type: application/json" \
    -H "apiKey: ${API_KEY}" \
    -X POST -d '{
-    "email": "test@gmail.com",
+    "email": "test1@gmail.com",
     "password": "myPassword"
 }' ${ADDR_276_SERVER}/login
 
 
 //will get updated token on login
-TOKEN=eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGdtYWlsLmNvbSIsImV4cCI6MTUyMTU5NDA5NX0.FwN5wAWKfgg3iV6CEx-Rg30VkNZiDmPC9f-2GjXIFbVQ3_qAIy7jwak8V6xU2zLAuIFhSBmoBGnqv9TDFY3bTw
+TOKEN=eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0MUBnbWFpbC5jb20iLCJleHAiOjE1MjE3OTMyMzd9.BV98AYYCaJYdX7GXWQGYhDyba0hf3L-tCaiAWaQrLtjFw8qNXXyvwy9m2Y6jPzOUdQ_69DflVS8agSDD0jk0RA
+
 
 //LIST USERS
 curl -k -s -i -H "Content-Type: application/json" \
    -H "apiKey: ${API_KEY}" \
    -H "Authorization: Bearer ${TOKEN}" \
    -X GET ${ADDR_276_SERVER}/users
+
+// make userId 53 monitor userId 107 - big daddy will monitor big daddy 2
+
+curl -k -s -i -H "Content-Type: application/json" \
+    -H "Authorization: Bearer ${TOKEN}" \
+    -H "apiKey: ${API_KEY}" \
+    -X POST -d \
+    '{
+        "id": 243
+    }' ${ADDR_276_SERVER}/users/53/monitorsUsers
+
+
+// make userId 290 monitor userId 53 = jack monitors big daddy and big daddy is monitored by jack
+
+curl -k -s -i -H "Content-Type: application/json" \
+    -H "Authorization: Bearer ${TOKEN}" \
+    -H "apiKey: ${API_KEY}" \
+    -X POST -d \
+    '{
+        "id": 290
+    }' ${ADDR_276_SERVER}/users/53/monitoredByUsers

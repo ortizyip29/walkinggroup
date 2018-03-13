@@ -23,36 +23,55 @@ import android.widget.Toast;
 
 import com.example.junhosung.aquagroupwalkingapp.R;
 import com.example.junhosung.aquagroupwalkingapp.model.Model;
+import com.example.junhosung.aquagroupwalkingapp.model.User;
 import com.example.junhosung.aquagroupwalkingapp.model.User2;
+
+import java.util.List;
 
 public class SeeMonitoredByActivity extends AppCompatActivity {
 
     private Model model = Model.getInstance();
-    User2 mUser2 = model.usersOld.getEmail(0);
     Button btnAddMonitoredBy;
-
+    String currentUserEmail = model.getCurrentUser().getEmail();
+    User receivedUser;
+    List<User> monitoredByList;
+    String[] nameAndEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_see_monitored_by);
 
-        // test cases - not permanent
-
-        User2 user23 = new User2("harro3@gmail.com","1");
-        User2 user24 = new User2("harro4@gmail.com","2");
-
-        mUser2.addNewMonitoredByUsers(user23);
-        mUser2.addNewMonitoredByUsers(user24);
+        model.getUserByEmail(currentUserEmail,this::responseWithUserEmail);
 
         setUpAddButton();
+        //populateListView();
+
+    }
+
+    private void responseWithUserEmail(User user) {
+        receivedUser = user;
+        Toast.makeText(SeeMonitoredByActivity.this,""+receivedUser.getId(),Toast.LENGTH_LONG).show();
+        model.getMonitoredById(receivedUser.getId(),this::responseWithUserMonitoredBy);
+
+    }
+
+    private void responseWithUserMonitoredBy(List<User> users) {
+        monitoredByList = users;
+        nameAndEmail = new String [monitoredByList.size()];
+
+        for (int i = 0; i < monitoredByList.size();i++) {
+            nameAndEmail[i] ="        " + monitoredByList.get(i).getName() + "  :  " + monitoredByList.get(i).getEmail();
+        }
+
         populateListView();
 
     }
 
+
     private void populateListView() {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.see_monitored_by,
-                mUser2.getMonitoredByUser2s());
+                nameAndEmail);
 
         ListView list = (ListView) findViewById(R.id.monitoredByList);
         list.setAdapter(adapter);
@@ -83,8 +102,6 @@ public class SeeMonitoredByActivity extends AppCompatActivity {
         switch (requestCode) {
             case 2:
                 if (resultCode == Activity.RESULT_OK) {
-                    Toast.makeText(SeeMonitoredByActivity.this,"number of monitoredBy: "+String.valueOf(mUser2.countMonitoredBy()),
-                            Toast.LENGTH_SHORT).show();
                     populateListView();
                 }
         }

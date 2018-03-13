@@ -51,9 +51,9 @@ public class ListUsers extends AppCompatActivity implements  GestureDetector.OnG
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_users);
 
-        users = Model.getInstance().getUsersOld();
+        users = Model.getInstance().getUsers();
         if(users==null){
-            Log.i(TAG, "Model.getInstance().getUsersOld() is null");
+            Log.i(TAG, "Model.getInstance().getUsers() is null");
         }
         populateUsersList();
         wireSetOnClickListViewListerner();

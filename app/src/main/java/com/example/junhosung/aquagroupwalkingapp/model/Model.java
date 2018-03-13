@@ -32,8 +32,9 @@ public class Model extends AppCompatActivity {
     private SimpleCallback callback;
     private SimpleCallback callbackForUserId;
     private SimpleCallback callbackForVoid;
-    private SimpleCallback callbackForGetMonitorsById;
     private SimpleCallback callbackForGetUserByEmail;
+    private SimpleCallback callbackForGetMonitoredById;
+    private SimpleCallback callbackForGetMonitorsById;
 
 
     //for internal model class
@@ -52,7 +53,7 @@ public class Model extends AppCompatActivity {
 
 
     //methods for request from activities NOT related to the server
-    public List<User> getUsersOld() {
+    public List<User> getUsers() {
         List<User> returnValue = UserCollectionServer.getInstance().returnUsers();
         if (returnValue == null) {
             Log.i(TAG, "returnValue is null");
@@ -95,12 +96,15 @@ public class Model extends AppCompatActivity {
     private void responseGetUserByEmail(User user){
         callbackForGetUserByEmail.callback(user);
     }
-    private void responseGetMonitoredById(List<User> userList) {}
+    private void responseGetMonitoredById(List<User> userList) {
+        callbackForGetMonitoredById.callback(userList);
+    }
 
 
 
     //calls to server methods
     // Adding in currentUser
+
     public void logIn(String loginEmail, String password, SimpleCallback<Void> callback) {
         isUserLoggedin = false;
         this.callbackForVoid = callback;
@@ -146,7 +150,8 @@ public class Model extends AppCompatActivity {
             server.getMonitorsUsers(userId, this.tokenForLogin, this::responseGetMonitorsById);
         }
     }
-    public void getMonitoredById(Long userId) {
+    public void getMonitoredById(Long userId,SimpleCallback<List<User>> callback) {
+        this.callbackForGetMonitoredById = callback;
         Server server = new Server();
         if(isUserLoggedin) {
             server.getMonitoredByUsers(userId,this.tokenForLogin,this::responseGetMonitoredById);
