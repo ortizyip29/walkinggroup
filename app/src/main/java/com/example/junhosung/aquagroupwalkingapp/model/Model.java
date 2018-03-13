@@ -21,6 +21,7 @@ public class Model extends AppCompatActivity {
     public UserCollection usersOld;
     public UserCollectionServer users;
     private String tokenForLogin;
+    private SimpleCallback callbackForUserId;
 
     // id of the current logged in user
 
@@ -94,12 +95,12 @@ public class Model extends AppCompatActivity {
     public void getMonitorsById(Long userId) {
         Server server = new Server();
         if(isUserLoggedin) {
-            server.getMonitorsUsers(userId, this.tokenForLogin, (List<User> usersList) -> responseGetMonitorsById(usersList));
+            server.getMonitorsUsers(userId, this.tokenForLogin, this::responseGetMonitorsById);
         }
     }
 
-    private List<User> responseGetMonitorsById(List<User> userList) {
-        return userList;
+    private void responseGetMonitorsById(List<User> userList) {
+        callback.callback(userList);
     }
 
     private List<User> responseGetMonitoredById(List<User> userList) {
@@ -131,14 +132,15 @@ public class Model extends AppCompatActivity {
         return currentUser;
     }
 
-    private User responseGetUserById(User returnedUser) {
-        return returnedUser;
+    private void responseGetUserById(User returnedUser) {
+        callbackForUserId.callback(returnedUser);
     }
 
-    public void getUserById(Long userId) {
+    public void getUserById(Long userId ,SimpleCallback<User> callback) {
         Server server = new Server();
+        callbackForUserId = callback;
         if(isUserLoggedin) {
-            server.getUserById(userId,this.tokenForLogin,(User returnedUser) -> responseGetUserById(returnedUser));
+            server.getUserById(userId,this.tokenForLogin,this::responseGetUserById);
         }
     }
 
