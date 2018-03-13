@@ -164,11 +164,11 @@ public class Model extends AppCompatActivity {
         }
     }
 
-    public void addNewMonitors(Long userId,Long targetId,SimpleCallback<List<User>> callback) {
+    public void addNewMonitors(Long userId,User targetUser,SimpleCallback<List<User>> callback) {
         this.callBackForAddNewMonitors = callback;
         Server server = new Server();
         if(isUserLoggedin) {
-            server.addNewMonitors(userId,targetId,this.tokenForLogin,this::responseAddNewMonitors);
+            server.addNewMonitors(userId,targetUser,this.tokenForLogin,this::responseAddNewMonitors);
         }
     }
 

@@ -12,6 +12,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -49,13 +50,14 @@ public interface WGServerProxy {
 
     // Make it so that User Monitors Another User:
 
+
     @POST("/users/{id}/monitorsUsers")
-    Call<List<User>> addNewMonitors(@Path("id") Long userId, @Query("id") Long targetId);
+    Call<List<User>> addNewMonitors(@Path("id") Long userId, @Body User targetUser);
 
     // Stop Monitoring a User: A stops monitoring B
 
     @DELETE("/users/{idA}/monitorsUsers/{idB}")
-    Call<List<User>> stopMonitors(@Path("idA") Long userId, @Field("idB") Long targetId);
+    Call<List<User>> stopMonitors(@Path("idA") Long userId, @Path("idB") Long targetId);
 
     // Get Who is Monitored By a User:
 
