@@ -8,28 +8,29 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.junhosung.aquagroupwalkingapp.R;
 import com.example.junhosung.aquagroupwalkingapp.model.Model;
+import com.example.junhosung.aquagroupwalkingapp.model.User;
 import com.example.junhosung.aquagroupwalkingapp.model.User2;
 import com.example.junhosung.aquagroupwalkingapp.model.UserCollection;
+
+import java.util.List;
 
 public class AddMonitoringActivity extends AppCompatActivity {
 
     private Button btnAddMonitoring;
     private Model model = Model.getInstance();
+    String[] newList;
+    List<User> tempList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_monitoree);
 
-
-        //test cases ...
-
-
-        // this is here since the for loop inside the onClickListener gives me trouble about
-        // calling usersOld.countUsers() from an inner class ...
+        model.addNewMonitors(Long.valueOf(107),Long.valueOf(196),this::responseAddNewMonitors);
 
 
         btnAddMonitoring = (Button) findViewById(R.id.btnAddMonitoring);
@@ -56,6 +57,11 @@ public class AddMonitoringActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    private void responseAddNewMonitors(List<User> users) {
+        tempList = users;
+        Toast.makeText(AddMonitoringActivity.this,tempList.get(0).getId()+"",Toast.LENGTH_LONG).show();
     }
 
 

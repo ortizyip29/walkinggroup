@@ -50,12 +50,12 @@ public interface WGServerProxy {
     // Make it so that User Monitors Another User:
 
     @POST("/users/{id}/monitorsUsers")
-    Call<User> addNewMonitors(@Path("id") Long userId, @Field("id") Long targetId);
+    Call<List<User>> addNewMonitors(@Path("id") Long userId, @Query("id") Long targetId);
 
     // Stop Monitoring a User: A stops monitoring B
 
     @DELETE("/users/{idA}/monitorsUsers/{idB}")
-    Call<List<User>> stopMonitors(@Path("idA") Long userId, @Path("idB") Long targetId);
+    Call<List<User>> stopMonitors(@Path("idA") Long userId, @Field("idB") Long targetId);
 
     // Get Who is Monitored By a User:
 

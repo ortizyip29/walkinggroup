@@ -43,6 +43,7 @@ public class Server extends AppCompatActivity {
     private SimpleCallback serverCallbackForGetMonitoredByUsers;
     private SimpleCallback serverCallbackForUserById;
     private SimpleCallback serverCallbackForGetUserByEmail;
+    private SimpleCallback serverCallbackForAddNewMonitors;
 
 
 
@@ -80,6 +81,13 @@ public class Server extends AppCompatActivity {
     private void responseGetUserByEmail(User user) {
         serverCallbackForGetUserByEmail.callback(user);
     }
+
+    private void responseAddNewMonitors(List<User> users) {
+        serverCallbackForAddNewMonitors.callback(users);
+    }
+
+
+
 
 
 
@@ -130,6 +138,14 @@ public class Server extends AppCompatActivity {
         serverCallbackForGetUserByEmail = callback;
         Call<User> caller = proxy.getUserByEmail(email);
         ProxyBuilder.callProxy(Server.this,caller,this::responseGetUserByEmail);
+    }
+
+    public void addNewMonitors(Long userId, Long targetId, String token, SimpleCallback<List<User>> callback) {
+        onReceiveToken(token);
+        serverCallbackForAddNewMonitors = callback;
+        Call<List<User>> caller = proxy.addNewMonitors(userId,targetId);
+        ProxyBuilder.callProxy(Server.this,caller,this::responseAddNewMonitors);
+
     }
 
 }
