@@ -28,7 +28,7 @@ import com.example.junhosung.aquagroupwalkingapp.model.User2;
 public class SeeMonitoredByActivity extends AppCompatActivity {
 
     private Model model = Model.getInstance();
-    User2 mUser2 = model.users.getEmail(0);
+    User2 mUser2 = model.usersOld.getEmail(0);
     Button btnAddMonitoredBy;
 
 
