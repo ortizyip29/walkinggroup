@@ -33,6 +33,7 @@ public class SeeMonitoringActivity extends AppCompatActivity {
     Button btnDeleteMonitoring;
     String currentUserEmail = model.getCurrentUser().getEmail();
     User currentUser;
+    User receivedUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +46,9 @@ public class SeeMonitoringActivity extends AppCompatActivity {
         Toast.makeText(SeeMonitoringActivity.this, currentUserEmail,Toast.LENGTH_LONG).show();
 
         findCurrentUserByEmail(currentUserEmail);
+
+        model.getUserById(Long.valueOf(505),this::responseWithUser);
+
 
         //Toast.makeText(SeeMonitoringActivity.this,currentUser.getEmail(),Toast.LENGTH_LONG).show();
 
@@ -64,6 +68,10 @@ public class SeeMonitoringActivity extends AppCompatActivity {
                 Toast.makeText(SeeMonitoringActivity.this,currentUser.getName(),Toast.LENGTH_LONG).show();
             }
         }
+    }
+
+    private void responseWithUser(User user) {
+        this.receivedUser = user;
     }
 
     /**
