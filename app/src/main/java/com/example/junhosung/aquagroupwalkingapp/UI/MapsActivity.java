@@ -11,10 +11,14 @@ import android.location.LocationManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.example.junhosung.aquagroupwalkingapp.model.Group;
+import com.example.junhosung.aquagroupwalkingapp.model.Model;
 import com.example.junhosung.aquagroupwalkingapp.model.SharedPreferenceLoginState;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -23,19 +27,27 @@ import android.widget.Toast;
 import com.example.junhosung.aquagroupwalkingapp.R;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Locale;
+
+import static com.example.junhosung.aquagroupwalkingapp.model.Model.getInstance;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
     private GoogleMap mapDisplay;
     Circle myRadius;
     MarkerOptions marker;
+    MarkerOptions groupMarker;
     private LocationManager locationManager;
+    List<Group> groupList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +66,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         MapFragment mapFrag = ((MapFragment) getFragmentManager().findFragmentById(R.id.mapFrag));
         mapFrag.getMapAsync(this);
+        locationUpdate();
     }
+
+    // circle now set 500 meter radius from myself
     private void locationUpdate() {
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -62,20 +77,21 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         // choose between using network provider or gps provider since android chooses between the two
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, new LocationListener() {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 100, 1, new LocationListener() {
                 @Override
                 public void onLocationChanged(Location location) {
                     LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
                     Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
-                    if(myRadius!=null || marker != null){
+                    if (myRadius != null || marker != null) {
                         mapDisplay.clear();
                     }
                     try {
                         geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 0);
-                        Toast.makeText(getApplicationContext(), "Latitude: " + location.getLatitude() + "Longitude: " + location.getLongitude(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Our location is Latitude: " + location.getLatitude() + "  Longitude: " + location.getLongitude(), Toast.LENGTH_LONG).show();
                         mapDisplay.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-                        marker = new MarkerOptions().position(currentLocation).title("I'm here");
+                        marker = new MarkerOptions().position(currentLocation).title("We're here");
                         mapDisplay.addMarker(marker);
+                        markGroupsOnMap();
                         mapDisplay.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
                         CameraUpdate defaultDisplay = CameraUpdateFactory.newLatLngZoom(currentLocation, 17);
                         mapDisplay.animateCamera(defaultDisplay);
@@ -84,6 +100,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 .radius(100)
                                 .strokeColor(Color.BLUE)
                                 .fillColor(Color.TRANSPARENT));
+                        //markGroupsOnMap();
 
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -106,13 +123,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
 
             });
-        } else {
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 1, new LocationListener() {
+        } else if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 100, 1, new LocationListener() {
                 @Override
                 public void onLocationChanged(Location location) {
                     Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
                     LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
-                    if(myRadius!=null || marker != null){
+                    if (myRadius != null || marker != null) {
                         mapDisplay.clear();
                     }
                     try {
@@ -120,14 +137,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         mapDisplay.setMapType(GoogleMap.MAP_TYPE_HYBRID);
                         marker = new MarkerOptions().position(currentLocation).title("I'm here");
                         mapDisplay.addMarker(marker);
+                        markGroupsOnMap();
                         mapDisplay.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
-                        CameraUpdate defaultDisplay = CameraUpdateFactory.newLatLngZoom(currentLocation, 17);
+                        CameraUpdate defaultDisplay = CameraUpdateFactory.newLatLngZoom(currentLocation, 15);
                         mapDisplay.animateCamera(defaultDisplay);
                         myRadius = mapDisplay.addCircle(new CircleOptions()
                                 .center(currentLocation)
-                                .radius(100)
+                                .radius(1000)
                                 .strokeColor(Color.BLUE)
                                 .fillColor(Color.TRANSPARENT));
+                        //markGroupsOnMap();
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -148,13 +168,19 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 }
             });
+        } else {
+            Toast.makeText(this, "Turn on the gps and click update on the map!", Toast.LENGTH_LONG).show();
         }
     }
 
 
-   @Override
+    @Override
     public void onMapReady(GoogleMap googleMap) {
         mapDisplay = googleMap;
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        mapDisplay.setMyLocationEnabled(true);
     }
 
     private void setUpLogoutBtn() {
@@ -167,8 +193,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
     }
-    private void setUpViewGroupBtn(){
-        Button groupButton = (Button)findViewById(R.id.viewGroupBtn);
+
+    private void setUpViewGroupBtn() {
+        Button groupButton = (Button) findViewById(R.id.viewGroupBtn);
         groupButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -177,8 +204,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
     }
-    private void setUpUpdateBtn(){
-        Button updateButton = (Button)findViewById(R.id.updateBtn);
+
+    private void setUpUpdateBtn() {
+        Button updateButton = (Button) findViewById(R.id.updateBtn);
         updateButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -186,4 +214,26 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
     }
+
+    private void markGroupsOnMap() {
+        int i;
+        Double[] latitudeList = {49.2826, 49.2825, 49.2818,49.2819};
+        Double[] longitudeList = {-123.1206, -123.1209, -123.1219,-123.1221};
+        String[] groupList = {"group1", "group2", "Big Daddy's group","yipper"};
+        for (i = 0; i < latitudeList.length; i++) {
+                    LatLng markLocation = new LatLng(latitudeList[i], longitudeList[i]);
+                    mapDisplay.addMarker(groupMarker = new MarkerOptions().position(markLocation).title(groupList[i]).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
+                    mapDisplay.setOnMarkerClickListener(marker -> {
+                        Toast.makeText(MapsActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
+                        return false;
+                    }
+                    );
+        }
+    }
+    //private void getGroup(){
+      //  new Group listOfGroups = Model.getInstance().get
+    //}
+
+
+    //check whether the group will be in 500 meter radius
 }
