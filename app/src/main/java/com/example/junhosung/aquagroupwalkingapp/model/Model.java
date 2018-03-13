@@ -143,6 +143,7 @@ public class Model extends AppCompatActivity {
             server.getUserByEmail(email,this.tokenForLogin,this::responseGetUserByEmail);
         }
     }
+
      public void getMonitorsById(Long userId,SimpleCallback<List<User>> callback) {
         this.callbackForGetMonitorsById = callback;
         Server server = new Server();
