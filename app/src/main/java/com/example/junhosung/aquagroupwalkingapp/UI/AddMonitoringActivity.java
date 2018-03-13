@@ -22,15 +22,19 @@ public class AddMonitoringActivity extends AppCompatActivity {
 
     private Button btnAddMonitoring;
     private Model model = Model.getInstance();
+    List<User> usersServer = model.users.returnUsers();
     String[] newList;
     List<User> tempList;
+    User receivedUser;
+    String currentUserEmail = model.getCurrentUser().getEmail();
+    User userMatch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_monitoree);
 
-        model.addNewMonitors(Long.valueOf(107),Long.valueOf(196),this::responseAddNewMonitors);
+        //model.addNewMonitors(Long.valueOf(107),Long.valueOf(196),this::responseAddNewMonitors);
 
 
         btnAddMonitoring = (Button) findViewById(R.id.btnAddMonitoring);
@@ -43,6 +47,13 @@ public class AddMonitoringActivity extends AppCompatActivity {
 
                 EditText newUser = (EditText) findViewById(R.id.typeEmail);
                 String email = newUser.getText().toString();
+
+                for (int i  = 0; i < usersServer.size();i++ ){
+                    if (usersServer.get(i).getEmail().equals(email)) {
+                        userMatch = usersServer.get(i);
+                        model.getUserByEmail(currentUserEmail,this::responseWithUserEmail);
+                    }
+                }
                 //Toast.makeText(AddMonitoringActivity.this,email,Toast.LENGTH_SHORT);
 
                 // Going back to SeeMonitoringActivity
@@ -54,14 +65,20 @@ public class AddMonitoringActivity extends AppCompatActivity {
                 finish();
 
             }
+
+            private void responseWithUserEmail(User user) {
+                receivedUser = user;
+                model.addNewMonitors(receivedUser.getId(),userMatch,this::responseAddNewMonitors);
+            }
+
+            private void responseAddNewMonitors(List<User> users) {
+                tempList = users;
+                Toast.makeText(AddMonitoringActivity.this,tempList.get(0).getId()+"",Toast.LENGTH_LONG).show();
+            }
+
         });
 
 
-    }
-
-    private void responseAddNewMonitors(List<User> users) {
-        tempList = users;
-        Toast.makeText(AddMonitoringActivity.this,tempList.get(0).getId()+"",Toast.LENGTH_LONG).show();
     }
 
 
