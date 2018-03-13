@@ -43,6 +43,9 @@ public class LoginActivity extends AppCompatActivity {
         setupRegisterBtn();
         setupLoginbtn();
 
+        /**
+         *
+         */
         if (SharedPreferenceLoginState.getEmail(LoginActivity.this).length() != 0){
             Log.i("Login Activity", SharedPreferenceLoginState.getEmail(LoginActivity.this));
             Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
@@ -120,7 +123,7 @@ public class LoginActivity extends AppCompatActivity {
                     boolean success = model.logIn(loginEmail, password);
                     if (success) {
                         Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
-                        SharedPreferenceLoginState.setEmail(LoginActivity.this, loginEmail);
+                        SharedPreferenceLoginState.setEmail(LoginActivity.this, loginEmail, password);
                         Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
                         startActivity(intent);
                     }else{
