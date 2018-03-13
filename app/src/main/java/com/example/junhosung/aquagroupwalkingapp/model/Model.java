@@ -55,7 +55,7 @@ public class Model extends AppCompatActivity {
 
     // Adding in currentUser
 
-    public void logIn(String loginEmail, String password, SimpleCallback4 callback4) {
+    public boolean logIn(String loginEmail, String password, SimpleCallback4 callback4) {
         isUserLoggedin = false;
         this.callbackForVoid = callback4;
         Server server = new Server();
@@ -64,6 +64,7 @@ public class Model extends AppCompatActivity {
         currentUser.setPassword(password);
         server.loginUser(currentUser,(String token)->responseLogin(token));
 
+        return false;
     }
 
     private void createNewUserResponse(User user) {
