@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.junhosung.aquagroupwalkingapp">
 
+    <permission android:name="com.pkg.map.permission.MAPS_RECEIVE"
+        android:protectionLevel="signature" ></permission>
+
     <!-- To auto-complete the email text field in the login form with user2user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />

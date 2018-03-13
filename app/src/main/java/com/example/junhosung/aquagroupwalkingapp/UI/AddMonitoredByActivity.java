@@ -19,6 +19,7 @@ public class AddMonitoredByActivity extends AppCompatActivity {
     private Model model = Model.getInstance();
     UserCollection users = model.usersOld;
     User2 mUser2 = model.usersOld.getEmail(0);
+    String currentUserEmail = model.getCurrentUser().getEmail();
 
 
 
