@@ -42,12 +42,12 @@ public class LoginActivity extends AppCompatActivity {
         password = passwordtemp.getText().toString();
         setupRegisterBtn();
         setupLoginbtn();
-
         if (SharedPreferenceLoginState.getEmail(LoginActivity.this).length() != 0){
-            Log.i("Login Activity", SharedPreferenceLoginState.getEmail(LoginActivity.this));
-            Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
-            startActivity(intent);
+            loginEmail  = SharedPreferenceLoginState.getEmail(LoginActivity.this);
+            password = SharedPreferenceLoginState.getPassword(LoginActivity.this);
+            model.logIn(loginEmail, password, returnNothing-> responseForLogin(returnNothing));
         }
+
 
 
         /**
@@ -102,16 +102,14 @@ public class LoginActivity extends AppCompatActivity {
     boolean isEmailValid(CharSequence email) {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
-    //Login button set up
-    //loops through UserCollection activity to compare email and passwords to confirm login
 
 
-    //and we need to test the MapOptionsActivity
-
-
-    //commented out the success flag to bypass log-in in order to reach mapactivity
-    // type a random username & password to bypass the login and reach mapactivity
-    // uncomment if(success) condition when login authentication is complete
+    private void responseForLogin(Void returnNothing) {
+        Toast.makeText(LoginActivity.this, "Server Login successful", Toast.LENGTH_SHORT).show();
+        SharedPreferenceLoginState.setEmail(LoginActivity.this, loginEmail, password);
+        Intent intent = new Intent(LoginActivity.this,MapsActivity.class);
+        startActivity(intent);
+    }
 
     private void setupLoginbtn() {
         Button btn = (Button) findViewById(R.id.btnLogin);
@@ -122,18 +120,11 @@ public class LoginActivity extends AppCompatActivity {
                 Log.i("A", loginEmail);
                 Log.i("A", password);
 
-                model.logIn(loginEmail, password,returnNothing->responseForLogin(returnNothing));
- /*                 Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();*/
+                model.logIn(loginEmail, password, returnNothing-> responseForLogin(returnNothing));
             }
         });
     }
 
-    private void responseForLogin(Void returnNothing) {
-        Toast.makeText(LoginActivity.this, "Server Login successful", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(LoginActivity.this,MapsActivity.class);
-        startActivity(intent);
-
-    }
 
 
     //Wiring up Register Button
@@ -147,7 +138,7 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        }
+    }
 
 
 

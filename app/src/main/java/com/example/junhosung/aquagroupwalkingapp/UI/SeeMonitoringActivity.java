@@ -40,23 +40,15 @@ public class SeeMonitoringActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_see_monitoring);
 
-        //User2 user22 = new User2("harro@gmail.com","1");
-        //User2 user23 = new User2("harro1@gmail.com","2");
+        model.getUserByEmail("bigDaddy5@gmail.com",this::responseWithUserEmail);
 
-        Toast.makeText(SeeMonitoringActivity.this, currentUserEmail,Toast.LENGTH_LONG).show();
+        //Toast.makeText(SeeMonitoringActivity.this, currentUserEmail,Toast.LENGTH_LONG).show();
 
-        findCurrentUserByEmail(currentUserEmail);
+        //findCurrentUserByEmail(currentUserEmail);
 
-        model.getUserById(Long.valueOf(505),this::responseWithUser);
+        //model.getUserById(Long.valueOf(505),this::responseWithUser);
 
 
-        //Toast.makeText(SeeMonitoringActivity.this,currentUser.getEmail(),Toast.LENGTH_LONG).show();
-
-        //mUser2.addNewMonitorsUsers(user22);
-        //mUser2.addNewMonitorsUsers(user23);
-
-        //populateListView();
-        //setUpAddButton();
 
     }
 
@@ -70,65 +62,15 @@ public class SeeMonitoringActivity extends AppCompatActivity {
         }
     }
 
-    private void responseWithUser(User user) {
+    /*private void responseWithUser(User user) {
         this.receivedUser = user;
     }
-
-    /**
-
-    @Override
-    protected void onActivityResult(int requestCode,int resultCode,Intent intent) {
-        switch (requestCode) {
-            case 1:
-                if (resultCode == Activity.RESULT_OK) {
-                    Toast.makeText(SeeMonitoringActivity.this,"number of monitoring: "+String.valueOf(mUser2.countMonitoring()),Toast.LENGTH_SHORT).show();
-                    populateListView();
-                }
-        }
+*/
+    private void responseWithUserEmail(User user) {
+        receivedUser = user;
+        Toast.makeText(SeeMonitoringActivity.this,receivedUser.toString(),Toast.LENGTH_LONG).show();
     }
 
-
-    private void populateListView() {
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,R.layout.see_monitoring,
-                mUser2.getMonitorsUser2s());
-
-        ListView list = (ListView) findViewById(R.id.monitorList);
-        list.setAdapter(adapter);
-
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                // do something here
-            }
-        });
-
-    }
-
-    // takes you to the add monitoree section so that you
-
-    private void setUpAddButton() {
-        btnAddMonitoring = (Button) findViewById(R.id.btnAddMonitoree);
-        btnAddMonitoring.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(SeeMonitoringActivity.this,AddMonitoringActivity.class);
-                startActivityForResult(i,1);
-            }
-        });
-
-    }
-
-    private void setUpDeleteButton() {
-        btnDeleteMonitoring = (Button) findViewById(R.id.btnDeleteMonitoree);
-        btnDeleteMonitoring.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // do smth here
-            }
-        });
-    }
-
-    */
 
 
 }

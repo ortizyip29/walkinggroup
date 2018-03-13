@@ -4,7 +4,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.example.junhosung.aquagroupwalkingapp.SimpleCallback;
-import com.example.junhosung.aquagroupwalkingapp.SimpleCallback4;
 
 import java.util.List;
 
@@ -13,30 +12,35 @@ import java.util.List;
  */
 
 public class Model extends AppCompatActivity {
-    private SimpleCallback callback;
-    private SimpleCallback4 callbackForVoid;
-    private boolean isUserLoggedin;
-    // usersOld should be public no?
+    //internal class variables
     final private String TAG ="Model Class";
+    private static Model modelInstance;
+
+    //groups or collections
     public UserCollection usersOld;
     public UserCollectionServer users;
-    private String tokenForLogin;
-    private SimpleCallback callbackForUserId;
 
-    // id of the current logged in user
-
+    //information about current user
     private User currentUser;
+    private boolean isUserLoggedin;
+    private String tokenForLogin;
+    private List<User> currentGroupInUseByUser; //for david -modify btn activity
 
 
+
+    //callback variables
+    private SimpleCallback callback;
+    private SimpleCallback callbackForUserId;
+    private SimpleCallback callbackForVoid;
+    private SimpleCallback callbackForGetMonitorsById;
+    private SimpleCallback callbackForGetUserByEmail;
+
+
+    //for internal model class
     private Model() {
         usersOld = UserCollection.getInstance();
         users = UserCollectionServer.getInstance();
-
-        //get from server
     }
-
-    private static Model modelInstance;
-
     public static Model getInstance() {
         if (modelInstance == null) {
             modelInstance = new Model();
@@ -44,80 +48,10 @@ public class Model extends AppCompatActivity {
         return modelInstance;
     }
 
-    private void responseLogin(String token) {
-        isUserLoggedin = true;
-        this.callbackForVoid.callback(null);
-        this.tokenForLogin = token;
 
 
-        listUsers();
-    }
 
-    // Adding in currentUser
-
-    public void logIn(String loginEmail, String password, SimpleCallback4 callback4) {
-        isUserLoggedin = false;
-        this.callbackForVoid = callback4;
-        Server server = new Server();
-        currentUser = new User();
-        currentUser.setEmail(loginEmail);
-        currentUser.setPassword(password);
-        server.loginUser(currentUser,(String token)->responseLogin(token));
-
-    }
-
-    private void createNewUserResponse(User user) {
-        //UserCollectionServer.getInstance().addUser(user);
-    }
-
-    public void createUser(String nameNew, String emailNew, String passwordNew) {
-        User user = new User();
-        user.setName(nameNew);
-        user.setEmail(emailNew);
-        user.setPassword(passwordNew);
-        Server server = new Server();
-        server.createNewUser(user,  (User returnedUser) -> createNewUserResponse(returnedUser));
-    }
-
-    public void listUsers() {//SimpleCallback callback){
-        //this.callback = callback;
-        Server server = new Server();
-        if(isUserLoggedin){
-            server.getListOfUsers(this.tokenForLogin,(List<User> usersList) -> responseUserList(usersList));
-        }
-    }
-    private void responseUserList(List<User> userList){
-        for(User user: userList){
-            UserCollectionServer.getInstance().addUser(user);
-        }
-    }
-
-    public void getMonitorsById(Long userId) {
-        Server server = new Server();
-        if(isUserLoggedin) {
-            server.getMonitorsUsers(userId, this.tokenForLogin, this::responseGetMonitorsById);
-        }
-    }
-
-    private void responseGetMonitorsById(List<User> userList) {
-        callback.callback(userList);
-    }
-
-    private List<User> responseGetMonitoredById(List<User> userList) {
-        return userList;
-    }
-
-    public void getMonitoredById(Long userId) {
-        Server server = new Server();
-        if(isUserLoggedin) {
-            server.getMonitoredByUsers(userId,this.tokenForLogin,(List<User> usersList) -> responseGetMonitoredById(usersList));
-        }
-    }
-
-   /* public List<String> getUsersOld(){
-        return  UserCollectionServer.getInstance().getUsersList();
-    }
-*/
+    //methods for request from activities NOT related to the server
     public List<User> getUsersOld() {
         List<User> returnValue = UserCollectionServer.getInstance().returnUsers();
         if (returnValue == null) {
@@ -127,15 +61,70 @@ public class Model extends AppCompatActivity {
         }
         return returnValue;
     }
-
     public User getCurrentUser() {
         return currentUser;
     }
 
+
+
+
+
+    //response methods from server
+    private void responseLogin(String token) {
+        isUserLoggedin = true;
+        this.callbackForVoid.callback(null);
+        this.tokenForLogin = token;
+        //get the collection of user right away
+        listUsers();
+    }
+    private void responseUserList(List<User> userList){
+        for(User user: userList){
+            UserCollectionServer.getInstance().addUser(user);
+        }
+    }
+    private void responseGetMonitorsById(List<User> userList) {
+        callbackForGetMonitorsById.callback(userList);
+    }
+    private void createNewUserResponse(User user) {
+        //this is user we just added, do want to anything with user
+    }
     private void responseGetUserById(User returnedUser) {
         callbackForUserId.callback(returnedUser);
     }
 
+    private void responseGetUserByEmail(User user){
+        callbackForGetUserByEmail.callback(user);
+    }
+    private void responseGetMonitoredById(List<User> userList) {}
+
+
+
+    //calls to server methods
+    // Adding in currentUser
+    public void logIn(String loginEmail, String password, SimpleCallback<Void> callback) {
+        isUserLoggedin = false;
+        this.callbackForVoid = callback;
+        Server server = new Server();
+        currentUser = new User();
+        currentUser.setEmail(loginEmail);
+        currentUser.setPassword(password);
+        server.loginUser(currentUser,this::responseLogin);
+
+    }
+    public void listUsers() {
+        Server server = new Server();
+        if(isUserLoggedin){
+            server.getListOfUsers(this.tokenForLogin,this::responseUserList);
+        }
+    }
+    public void createUser(String nameNew, String emailNew, String passwordNew) {
+        User user = new User();
+        user.setName(nameNew);
+        user.setEmail(emailNew);
+        user.setPassword(passwordNew);
+        Server server = new Server();
+        server.createNewUser(user,  this::createNewUserResponse);
+    }
     public void getUserById(Long userId ,SimpleCallback<User> callback) {
         Server server = new Server();
         callbackForUserId = callback;
@@ -143,6 +132,25 @@ public class Model extends AppCompatActivity {
             server.getUserById(userId,this.tokenForLogin,this::responseGetUserById);
         }
     }
-
+    public void getUserByEmail(String email, SimpleCallback<User> responseWithUserEmail) {
+        Server server = new Server();
+        callbackForGetUserByEmail = responseWithUserEmail;
+        if(isUserLoggedin){
+            server.getUserByEmail(email,this.tokenForLogin,this::responseGetUserByEmail);
+        }
+    }
+     public void getMonitorsById(Long userId,SimpleCallback<List<User>> callback) {
+        this.callbackForGetMonitorsById = callback;
+        Server server = new Server();
+        if(isUserLoggedin) {
+            server.getMonitorsUsers(userId, this.tokenForLogin, this::responseGetMonitorsById);
+        }
+    }
+    public void getMonitoredById(Long userId) {
+        Server server = new Server();
+        if(isUserLoggedin) {
+            server.getMonitoredByUsers(userId,this.tokenForLogin,this::responseGetMonitoredById);
+        }
+    }
 
 }

@@ -24,13 +24,6 @@ public class UserCollectionServer {
 
     private List<User> mUsers = new ArrayList<>();
 
-/*    public List<String> getUsersList(){
-        List<String> usersList= new ArrayList<>();
-        for(User user:mUsers){
-            usersList.add(user.getName() + " , " + user.getUser());
-        }
-        return usersList;
-    }*/
 
     public void addUser(User user){
         mUsers.add(user);
@@ -44,8 +37,8 @@ public class UserCollectionServer {
 
     public User getUser(int index) {
         return mUsers.get(index);
-
     }
+
     public List<User> returnUsers(){
         List<User> newList = new ArrayList<>(mUsers);
         if(mUsers == null){
@@ -60,7 +53,6 @@ public class UserCollectionServer {
         }
         return newList;
     }
-
 
 
 }
