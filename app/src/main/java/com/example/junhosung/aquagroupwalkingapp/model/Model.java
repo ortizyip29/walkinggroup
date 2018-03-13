@@ -110,7 +110,7 @@ public class Model extends AppCompatActivity {
     //calls to server methods
     // Adding in currentUser
 
-    public boolean logIn(String loginEmail, String password, SimpleCallback<Void> callback) {
+    public void logIn(String loginEmail, String password, SimpleCallback<Void> callback) {
         isUserLoggedin = false;
         this.callbackForVoid = callback;
         Server server = new Server();
@@ -118,9 +118,8 @@ public class Model extends AppCompatActivity {
         currentUser.setEmail(loginEmail);
         currentUser.setPassword(password);
         server.loginUser(currentUser,this::responseLogin);
-
-        return false;
     }
+
     public void listUsers() {
         Server server = new Server();
         if(isUserLoggedin){
