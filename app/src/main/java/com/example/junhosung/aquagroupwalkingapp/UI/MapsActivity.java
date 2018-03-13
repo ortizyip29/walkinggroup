@@ -34,11 +34,13 @@ import java.util.Locale;
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
     private GoogleMap mapDisplay;
     Circle myRadius;
+    MarkerOptions marker;
     private LocationManager locationManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        setUpUpdateBtn();
         setUpLogoutBtn();
         setUpViewGroupBtn();
         Button btn = (Button) findViewById(R.id.monitorbtn);
@@ -49,24 +51,31 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 startActivity(intent);
             }
         });
+
         MapFragment mapFrag = ((MapFragment) getFragmentManager().findFragmentById(R.id.mapFrag));
         mapFrag.getMapAsync(this);
+    }
+    private void locationUpdate() {
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
         // choose between using network provider or gps provider since android chooses between the two
-        if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, new LocationListener() {
                 @Override
                 public void onLocationChanged(Location location) {
                     LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
-                    Geocoder geocoder = new Geocoder(getApplicationContext(),Locale.getDefault());
+                    Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
+                    if(myRadius!=null || marker != null){
+                        mapDisplay.clear();
+                    }
                     try {
                         geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 0);
                         Toast.makeText(getApplicationContext(), "Latitude: " + location.getLatitude() + "Longitude: " + location.getLongitude(), Toast.LENGTH_LONG).show();
                         mapDisplay.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-                        mapDisplay.addMarker(new MarkerOptions().position(currentLocation).title("I'm here"));
+                        marker = new MarkerOptions().position(currentLocation).title("I'm here");
+                        mapDisplay.addMarker(marker);
                         mapDisplay.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
                         CameraUpdate defaultDisplay = CameraUpdateFactory.newLatLngZoom(currentLocation, 17);
                         mapDisplay.animateCamera(defaultDisplay);
@@ -97,17 +106,20 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
 
             });
-        }
-        else{
+        } else {
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 1, new LocationListener() {
                 @Override
                 public void onLocationChanged(Location location) {
                     Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
                     LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                    if(myRadius!=null || marker != null){
+                        mapDisplay.clear();
+                    }
                     try {
                         geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 0);
                         mapDisplay.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-                        mapDisplay.addMarker(new MarkerOptions().position(currentLocation).title("I'm here"));
+                        marker = new MarkerOptions().position(currentLocation).title("I'm here");
+                        mapDisplay.addMarker(marker);
                         mapDisplay.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
                         CameraUpdate defaultDisplay = CameraUpdateFactory.newLatLngZoom(currentLocation, 17);
                         mapDisplay.animateCamera(defaultDisplay);
@@ -137,8 +149,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
             });
         }
-
     }
+
+
    @Override
     public void onMapReady(GoogleMap googleMap) {
         mapDisplay = googleMap;
@@ -161,6 +174,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onClick(View view) {
                 Intent intent = new Intent(MapsActivity.this, GroupManagementActivity.class);
                 startActivity(intent);
+            }
+        });
+    }
+    private void setUpUpdateBtn(){
+        Button updateButton = (Button)findViewById(R.id.updateBtn);
+        updateButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                locationUpdate();
             }
         });
     }

@@ -54,4 +54,14 @@
         app:layout_constraintEnd_toStartOf="@+id/btnLogout"
         app:layout_constraintStart_toEndOf="@+id/monitorbtn"
         app:layout_constraintTop_toTopOf="@+id/btnLogout" />
+
+    <Button
+        android:id="@+id/updateBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="27dp"
+        android:layout_marginTop="16dp"
+        android:text="update location"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>
