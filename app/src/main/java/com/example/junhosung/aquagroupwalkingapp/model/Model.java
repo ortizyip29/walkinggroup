@@ -35,8 +35,9 @@ public class Model extends AppCompatActivity {
     private SimpleCallback callbackForGetUserByEmail;
     private SimpleCallback callbackForGetMonitoredById;
     private SimpleCallback callbackForGetMonitorsById;
-    private SimpleCallback callBackForAddNewMonitors;
-    private SimpleCallback callBackFOrAddNewMonitoredBy;
+    private SimpleCallback callbackForAddNewMonitors;
+    private SimpleCallback callbackForAddNewMonitoredBy;
+    private SimpleCallback callbackForStopMonitoring;
 
 
     //for internal model class
@@ -50,8 +51,6 @@ public class Model extends AppCompatActivity {
         }
         return modelInstance;
     }
-
-
 
 
     //methods for request from activities NOT related to the server
@@ -103,12 +102,18 @@ public class Model extends AppCompatActivity {
     }
 
     private void responseAddNewMonitors(List<User> users) {
-        callBackForAddNewMonitors.callback(users);
+        callbackForAddNewMonitors.callback(users);
     }
 
     private void responseAddNewMonitoredBy(List<User> users) {
-        callbackForGetMonitoredById.callback(users);
+        callbackForAddNewMonitoredBy.callback(users);
     }
+
+    private void responseStopMonitoring(Void returnedNothing) {
+        callbackForStopMonitoring.callback(returnedNothing);
+    }
+
+
 
 
 
@@ -171,7 +176,7 @@ public class Model extends AppCompatActivity {
     }
 
     public void addNewMonitors(Long userId,User targetUser,SimpleCallback<List<User>> callback) {
-        this.callBackForAddNewMonitors = callback;
+        this.callbackForAddNewMonitors = callback;
         Server server = new Server();
         if(isUserLoggedin) {
             server.addNewMonitors(userId,targetUser,this.tokenForLogin,this::responseAddNewMonitors);
@@ -179,11 +184,20 @@ public class Model extends AppCompatActivity {
     }
 
     public void addNewMonitoredBy(Long userId, User targetUser,SimpleCallback<List<User>> callback) {
-        this.callbackForGetMonitoredById = callback;
+        this.callbackForAddNewMonitoredBy = callback;
         Server server = new Server();
         if(isUserLoggedin) {
             server.addNewMonitoredBy(userId,targetUser,this.tokenForLogin,this::responseAddNewMonitoredBy);
         }
+    }
+
+    public void stopMonitoring(Long userId, Long targetId, SimpleCallback<Void> callback) {
+        this.callbackForStopMonitoring = callback;
+        Server server = new Server();
+        if(isUserLoggedin) {
+            server.stopMonitoring(userId,targetId,this.tokenForLogin,this::responseStopMonitoring);
+        }
+
     }
 
 }

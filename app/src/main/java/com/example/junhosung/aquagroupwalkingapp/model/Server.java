@@ -45,6 +45,7 @@ public class Server extends AppCompatActivity {
     private SimpleCallback serverCallbackForGetUserByEmail;
     private SimpleCallback serverCallbackForAddNewMonitors;
     private SimpleCallback serverCallbackForAddNewMonitoredBy;
+    private SimpleCallback serverCallbackForStopMonitoring;
 
 
 
@@ -91,13 +92,9 @@ public class Server extends AppCompatActivity {
         serverCallbackForAddNewMonitoredBy.callback(users);
     }
 
-
-
-
-
-
-
-
+    private void responseStopMonitoring(Void returnedNothing) {
+        serverCallbackForStopMonitoring.callback(returnedNothing);
+    }
 
 
     //call function
@@ -161,6 +158,12 @@ public class Server extends AppCompatActivity {
 
     }
 
-    //public void stopMonitoring(Long userId, Long targetId, String token, SimpleCallback)
+    public void stopMonitoring(Long userId, Long targetId, String token, SimpleCallback<Void> callback) {
+        onReceiveToken(token);
+        serverCallbackForStopMonitoring = callback;
+        Call<Void> caller = proxy.stopMonitors(userId,targetId);
+        ProxyBuilder.callProxy(Server.this,caller,this::responseStopMonitoring);
+    }
+
 
 }
