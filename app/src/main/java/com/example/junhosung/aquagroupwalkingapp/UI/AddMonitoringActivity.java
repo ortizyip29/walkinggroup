@@ -73,8 +73,8 @@ public class AddMonitoringActivity extends AppCompatActivity {
             private void responseAddNewMonitors(List<User> users) {
 
                 // well this doesn't really return anything ... so what's below will probably removed ...
-                tempList = users;
-                Toast.makeText(AddMonitoringActivity.this,tempList.get(0).getId()+"",Toast.LENGTH_LONG).show();
+                //tempList = users;
+                //Toast.makeText(AddMonitoringActivity.this,tempList.get(0).getId()+"",Toast.LENGTH_LONG).show();
             }
 
         });
