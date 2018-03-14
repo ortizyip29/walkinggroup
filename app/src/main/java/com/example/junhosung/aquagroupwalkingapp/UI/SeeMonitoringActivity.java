@@ -152,7 +152,6 @@ public class SeeMonitoringActivity extends AppCompatActivity {
             case 1:
                 if (resultCode == Activity.RESULT_OK) {
                     model.getMonitorsById(model.getCurrentUser().getId(), this::responseWithUserMonitorsOnActivityResult);
-
                 }
 
         }
@@ -164,6 +163,7 @@ public class SeeMonitoringActivity extends AppCompatActivity {
         nameAndEmail = new String[monitorsList.size()];
         for (int i = 0; i < monitorsList.size();i++) {
             nameAndEmail[i] = "      " + monitorsList.get(i).getName() + "  :  " + monitorsList.get(i).getEmail();
+            isItemClicked.add(new Clicked());
         }
 
         Toast.makeText(SeeMonitoringActivity.this,"success!",Toast.LENGTH_LONG).show();

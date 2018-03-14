@@ -82,8 +82,21 @@ public interface WGServerProxy {
     @GET("/groups/{id}")
     Call<Group> getGroupDetails(@Path("id") Long groupId);
 
+    // delete Group
+
     @DELETE("/groups/{id}")
     Call<List<Group>> deleteGroup(@Path("id") Long groupId);
+
+    // Update group details - pass a group object with updated details
+
+    @POST("/groups{id}")
+    Call<Group> updateGroupDetails(@Path("id") Long groupId, @Body Group group);
+
+    @POST("/groups/{id}/membersUsers")
+    Call<List<User>> addNewMemberToGroup(@Path("id") Long groupId, @Body User user);
+
+    @DELETE("/group/{groupId}/membersUsers/{userId}")
+    Call<Void> deleteMemberOfGroup(@Path("groupId") Long groupId, @Path("userId") Long userId);
 
 
     /**
