@@ -7,15 +7,22 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.junhosung.aquagroupwalkingapp.R;
+import com.example.junhosung.aquagroupwalkingapp.model.Group;
+import com.example.junhosung.aquagroupwalkingapp.model.Model;
+import com.example.junhosung.aquagroupwalkingapp.model.User;
 
 import org.w3c.dom.Text;
 
-public class GroupManagementActivity extends AppCompatActivity {
+import java.util.ArrayList;
+import java.util.List;
 
+public class GroupManagementActivity extends AppCompatActivity {
+    Model model = Model.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,11 +35,17 @@ public class GroupManagementActivity extends AppCompatActivity {
         populateListView();
         backToMapsButton();
     }
+
+
+
     private void setupChangeGroupButton(){
-        Button changeGroupButton = (Button)findViewById(R.id.createGroupBtn);
+        Button changeGroupButton = (Button)findViewById(R.id.changeGroups);
         changeGroupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent(GroupManagementActivity.this,ChangeGroupActivity.class);
+                startActivity(intent);
+
             }
         });
     }
@@ -41,6 +54,7 @@ public class GroupManagementActivity extends AppCompatActivity {
         modifyGroupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                refreshPage();
             }
         });
     }
@@ -51,14 +65,27 @@ public class GroupManagementActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(GroupManagementActivity.this,CreateNewGroupActivity.class );
                 startActivity(intent);
+
             }
         });
 
     }
-    // remove tempMembers later
+
     private void populateListView() {
-        String[] tempMembers = {"joe","big daddy","small daddy","yipper","teddy","Nana"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,R.layout.members,tempMembers);
+        model.getGroups(this::responseForGetGroups);
+    }
+
+    private void responseForGetGroups(List<Group> groups) {
+        refreshPage();
+    }
+
+    private void refreshPage() {
+        List<String> members = new ArrayList<>();
+        for(User user:model.getCurrentGroupInUseByUser().getMemberUsers()){
+            members.add(user.getName()+" , " +user.getEmail());
+        }
+        ((TextView) findViewById(R.id.textViewGroupName)).setText(model.getCurrentGroupInUseByUser().getGroupDescription());
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,R.layout.members,members);
         ListView memberListView = (ListView) findViewById(R.id.membersList);
         memberListView.setAdapter(adapter);
         memberListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -67,6 +94,7 @@ public class GroupManagementActivity extends AppCompatActivity {
             }
         });
     }
+
     private void backToMapsButton(){
         Button  addbackToMapsButton= (Button)findViewById(R.id.backToMapBtn);
         addbackToMapsButton.setOnClickListener(new View.OnClickListener() {

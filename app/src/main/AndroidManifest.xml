@@ -55,7 +55,8 @@
             android:value="@integer/google_play_services_version" />
 
         <activity android:name=".UI.GroupManagementActivity" />
-        <activity android:name=".UI.CreateNewGroupActivity"></activity>
+        <activity android:name=".UI.CreateNewGroupActivity" />
+        <activity android:name=".UI.ChangeGroupActivity"></activity>
     </application>
 
 </manifest>
