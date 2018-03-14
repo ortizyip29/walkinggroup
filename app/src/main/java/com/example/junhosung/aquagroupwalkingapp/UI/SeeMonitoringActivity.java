@@ -52,7 +52,6 @@ public class SeeMonitoringActivity extends AppCompatActivity {
         public boolean clicked = false;
     }
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,7 +60,9 @@ public class SeeMonitoringActivity extends AppCompatActivity {
         model.getMonitorsById(model.getCurrentUser().getId(),this::responseWithUserMonitors);
         setUpAddButton();
         setUpDeleteButton();
+
     }
+
     private void setUpAddButton() {
         btnAddMonitoring = (Button) findViewById(R.id.btnAddMonitoree);
         btnAddMonitoring.setOnClickListener(new View.OnClickListener() {
@@ -72,6 +73,7 @@ public class SeeMonitoringActivity extends AppCompatActivity {
             }
         });
     }
+
     private void setUpDeleteButton() {
         btnDeleteMonitoring = (Button) findViewById(R.id.btnDeleteMonitoree);
         btnDeleteMonitoring.setOnClickListener(new View.OnClickListener() {
@@ -84,14 +86,26 @@ public class SeeMonitoringActivity extends AppCompatActivity {
                     }
                     counter++;
                 }
-                populateListView();
+
             }
 
             private void voidCallback(Void aVoid) {
+                model.getMonitorsById(model.getCurrentUser().getId(),this::responseWithUserMonitorsDeleteButton);
             }
+
+            private void responseWithUserMonitorsDeleteButton(List<User> users) {
+                monitorsList = users;
+                nameAndEmail = new String[monitorsList.size()];
+                for (int i = 0; i < monitorsList.size();i++) {
+                    nameAndEmail[i] = "      " + monitorsList.get(i).getName() + "  :  " + monitorsList.get(i).getEmail();
+                }
+
+                populateListView();
+
+            }
+
         });
     }
-
 
     private void responseWithUserMonitors(List<User> users) {
         monitorsList = users;
@@ -101,6 +115,7 @@ public class SeeMonitoringActivity extends AppCompatActivity {
             nameAndEmail[i] ="        " + monitorsList.get(i).getName() + "  :  " + monitorsList.get(i).getEmail();
             isItemClicked.add(new Clicked());
         }
+
         populateListView();
 
     }
@@ -130,21 +145,32 @@ public class SeeMonitoringActivity extends AppCompatActivity {
         });
 
     }
+
     @Override
     protected void onActivityResult(int requestCode,int resultCode,Intent intent) {
         switch (requestCode) {
             case 1:
                 if (resultCode == Activity.RESULT_OK) {
-                    //Toast.makeText(SeeMonitoringActivity.this,"number of monitoring: "+String.valueOf(mUser2.countMonitoring()),Toast.LENGTH_SHORT).show();
-                    //populateListView();
+                    model.getMonitorsById(model.getCurrentUser().getId(), this::responseWithUserMonitorsOnActivityResult);
+
                 }
+
         }
+
     }
-    //
 
-    // takes you to the addMonitoringActivity
+    private void responseWithUserMonitorsOnActivityResult(List<User> users) {
+        monitorsList = users;
+        nameAndEmail = new String[monitorsList.size()];
+        for (int i = 0; i < monitorsList.size();i++) {
+            nameAndEmail[i] = "      " + monitorsList.get(i).getName() + "  :  " + monitorsList.get(i).getEmail();
+        }
 
+        Toast.makeText(SeeMonitoringActivity.this,"success!",Toast.LENGTH_LONG).show();
 
+        populateListView();
+
+    }
 
 
 }

@@ -15,6 +15,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.junhosung.aquagroupwalkingapp.R;
@@ -32,7 +34,6 @@ public class LoginActivity extends AppCompatActivity {
     String loginEmail;                //holds the string version of the loginEmail inputted email
     String password;            //holds the string version of the loginEmail inputted password
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,11 +41,13 @@ public class LoginActivity extends AppCompatActivity {
         usertemp = (EditText) findViewById(R.id.textEmail);
         passwordtemp = (EditText) findViewById(R.id.textPassword);
         password = passwordtemp.getText().toString();
+        doNotShowProgress();
 
             setupRegisterBtn();
             setupLoginbtn();
 
         if (SharedPreferenceLoginState.getEmail(LoginActivity.this).length() != 0) {
+            showProgress();
             loginEmail = SharedPreferenceLoginState.getEmail(LoginActivity.this);
             password = SharedPreferenceLoginState.getPassword(LoginActivity.this);
             model.logIn(loginEmail, password, returnNothing -> responseForLogin(returnNothing));
@@ -64,6 +67,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                doNotShowProgress();
             }
 
             @Override
@@ -100,6 +104,15 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    private void doNotShowProgress() {
+        ProgressBar loginProgressBar =(ProgressBar) findViewById(R.id.progressBarForLoginActivity);
+        loginProgressBar.setVisibility(View.GONE);
+    }
+    private void showProgress(){
+        ProgressBar loginProgressBar =(ProgressBar) findViewById(R.id.progressBarForLoginActivity);
+        loginProgressBar.setVisibility(View.VISIBLE);
+    }
+
     //Checking if user input is an email
     boolean isEmailValid(CharSequence email) {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
@@ -107,6 +120,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void responseForLogin(Void returnNothing) {
+        doNotShowProgress();
         Toast.makeText(LoginActivity.this, "Server Login successful", Toast.LENGTH_SHORT).show();
         SharedPreferenceLoginState.setEmail(LoginActivity.this, loginEmail, password);
         Intent intent = new Intent(LoginActivity.this,MapsActivity.class);
@@ -119,6 +133,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Toast.makeText(LoginActivity.this, loginEmail, Toast.LENGTH_LONG);
+                showProgress();
                 Log.i("A", loginEmail);
                 Log.i("A", password);
 

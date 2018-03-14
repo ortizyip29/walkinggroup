@@ -78,7 +78,6 @@ public class SeeMonitoredByActivity extends AppCompatActivity {
         Button button = (Button) findViewById(R.id.btnEndMonitoredBy);
         button.setOnClickListener(new View.OnClickListener() {
 
-            private void voidCallback(Void aVoid) {}
             @Override
             public void onClick(View view) {
                 int counter = 0;
@@ -88,8 +87,25 @@ public class SeeMonitoredByActivity extends AppCompatActivity {
                     }
                     counter++;
                 }
-                populateListView();
+
             }
+
+            private void voidCallback(Void aVoid) {
+                model.getMonitoredById(model.getCurrentUser().getId(),this::responseWithUserMonitoredByDeleteButton);
+            }
+
+            private void responseWithUserMonitoredByDeleteButton(List<User> users) {
+                monitoredByList = users;
+                nameAndEmail = new String [monitoredByList.size()];
+                for (int i = 0; i < monitoredByList.size();i++) {
+                    nameAndEmail[i] ="        " + monitoredByList.get(i).getName() + "  :  " + monitoredByList.get(i).getEmail();
+                    isItemClicked.add(new Clicked());
+                }
+                populateListView();
+
+            }
+
+
         });
     }
 
