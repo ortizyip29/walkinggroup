@@ -204,7 +204,7 @@ public class Model extends AppCompatActivity {
             server.stopMonitoring(userId,targetId,this.tokenForLogin,this::responseStopMonitoring);
         }
     }
-    public void createNewUser(Group group, SimpleCallback<Group> callback){
+    public void createNewGroup(Group group, SimpleCallback<Group> callback){
         this.callbackForCreateNewGroup = callback;
         Server server = new Server();
         if(isUserLoggedin){

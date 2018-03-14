@@ -75,6 +75,5 @@ public class GroupManagementActivity extends AppCompatActivity {
                 finish();
             }
         });
-
     }
 }

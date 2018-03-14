@@ -51,7 +51,7 @@ public class CreateNewGroupActivity extends AppCompatActivity {
                     group.setLeader(model.getCurrentUser());
                     group.setId(-1);
                     Log.i(TAG,group.toString());
-                    model.createNewUser(group,this::responseForCreateNewUser);
+                    model.createNewGroup(group,this::responseForCreateNewUser);
                 }
             }
 
