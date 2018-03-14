@@ -33,7 +33,7 @@ curl -k -s -i -H "Content-Type: application/json" \
 
 
 //will get updated token on login
-TOKEN=eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0MUBnbWFpbC5jb20iLCJleHAiOjE1MjE3OTMyMzd9.BV98AYYCaJYdX7GXWQGYhDyba0hf3L-tCaiAWaQrLtjFw8qNXXyvwy9m2Y6jPzOUdQ_69DflVS8agSDD0jk0RA
+TOKEN=eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0MUBnbWFpbC5jb20iLCJleHAiOjE1MjE4ODIxMDJ9.k-REU--_EGA8oFuGV50dQkC8wWvJV2I7Ro9pcG67iazo4TbXqN5nX7-nb2fuJT-SVax-roIM8vIjLbe4CRZGyQ
 
 
 //LIST USERS
@@ -63,3 +63,10 @@ curl -k -s -i -H "Content-Type: application/json" \
     '{
         "id": 290
     }' ${ADDR_276_SERVER}/users/53/monitoredByUsers
+
+
+//List Groups
+    curl -k -s -i -H "Content-Type: application/json" \
+       -H "apiKey: ${API_KEY}" \
+       -H "Authorization: Bearer ${TOKEN}" \
+       -X GET ${ADDR_276_SERVER}/groups

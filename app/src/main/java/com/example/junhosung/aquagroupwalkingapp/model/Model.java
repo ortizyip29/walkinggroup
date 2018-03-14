@@ -24,8 +24,9 @@ public class Model extends AppCompatActivity {
     private User currentUser;
     private boolean isUserLoggedin;
     private String tokenForLogin;
-    private List<User> currentGroupInUseByUser; //for david -modify btn activity
-
+    private List<User> currentListOfUsersForGroupInUseByUser; //for david -modify btn activity
+    private Group currentGroupInUseByUser;
+    private List<Group> usersGroups;
 
 
     //callback variables
@@ -38,6 +39,8 @@ public class Model extends AppCompatActivity {
     private SimpleCallback callbackForAddNewMonitors;
     private SimpleCallback callbackForAddNewMonitoredBy;
     private SimpleCallback callbackForStopMonitoring;
+    private SimpleCallback callbackForCreateNewGroup;
+    private SimpleCallback serverCallbackForGetGroups;
 
 
     //for internal model class
@@ -66,8 +69,14 @@ public class Model extends AppCompatActivity {
     public User getCurrentUser() {
         return currentUser;
     }
-
-
+    public Group getCurrentGroupInUseByUser(){
+        return currentGroupInUseByUser;
+    }
+    public void setCurrentGroupInUseByUser(Group group){
+        currentGroupInUseByUser = group;
+    }
+    public void getGroupsOfUserNoCallToServer(){
+    }
 
 
 
@@ -116,7 +125,20 @@ public class Model extends AppCompatActivity {
     private void responseStopMonitoring(Void returnedNothing) {
         callbackForStopMonitoring.callback(returnedNothing);
     }
-
+    private void responseForCreateNewGroup(Group group) {
+        callbackForCreateNewGroup.callback(group);
+    }
+    private void responseForGetGroups(List<Group> groups) {
+        usersGroups = groups;
+        if(!groups.isEmpty()){
+            if(currentGroupInUseByUser==null){
+                currentGroupInUseByUser=groups.get(0);
+            }
+        }
+        if(serverCallbackForGetGroups!=null){
+            serverCallbackForGetGroups.callback(groups);
+        }
+    }
 
 
 
@@ -200,7 +222,24 @@ public class Model extends AppCompatActivity {
         if(isUserLoggedin) {
             server.stopMonitoring(userId,targetId,this.tokenForLogin,this::responseStopMonitoring);
         }
+    }
+    public void createNewGroup(Group group, SimpleCallback<Group> callback){
+        this.callbackForCreateNewGroup = callback;
+        Server server = new Server();
+        if(isUserLoggedin){
+            server.createNewGroup(group,this.tokenForLogin,this::responseForCreateNewGroup);
+        }
+    }
+    public void getGroups(SimpleCallback<List<Group>> callback){
+        this.serverCallbackForGetGroups = callback;
+        Server server = new Server();
+        if(isUserLoggedin){
+            server.getGroups(this.tokenForLogin,this::responseForGetGroups);
+        }
 
     }
+
+
+
 
 }

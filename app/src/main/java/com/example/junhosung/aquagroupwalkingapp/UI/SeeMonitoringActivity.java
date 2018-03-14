@@ -86,7 +86,6 @@ public class SeeMonitoringActivity extends AppCompatActivity {
                 }
                 populateListView();
             }
-
             private void voidCallback(Void aVoid) {
             }
         });

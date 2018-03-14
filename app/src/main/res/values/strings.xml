@@ -49,5 +49,8 @@
     <string name="choose_email_to_add_monitored_by">Type the email address of the person you would like to be
     monitored by.</string>
     <string name="title_activity_maps">Map</string>
+    <string name="group_name">Group Name</string>
+    <string name="meeting_place">Meeting Place</string>
+    <string name="destination">Destination</string>
 
 </resources>
