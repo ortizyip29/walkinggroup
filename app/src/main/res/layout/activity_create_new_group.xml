@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.junhosung.aquagroupwalkingapp.UI.CreateNewGroupActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".5"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/createNewGroupName"
+                android:layout_width="match_parent"
+                android:layout_weight=".33"
+                android:layout_height="30dp"
+                android:hint="@string/group_name"/>
+
+            <EditText
+                android:id="@+id/createNewGroupMeetingPlace"
+                android:layout_width="match_parent"
+                android:layout_weight=".33"
+                android:layout_height="30dp"
+                android:hint="@string/meeting_place" />
+
+            <EditText
+                android:id="@+id/createNewGroupDestination"
+                android:layout_width="match_parent"
+                android:layout_weight=".33"
+                android:layout_height="30dp"
+                android:hint="@string/destination" />
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".60"
+            android:orientation="vertical">
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".45"
+            android:orientation="horizontal">
+
+
+            <Button
+                android:id="@+id/btnBackFromCreateGroup"
+                android:layout_weight=".5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Back" />
+
+
+
+            <Button
+                android:id="@+id/btnAddGroup"
+                android:layout_weight=".5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>
