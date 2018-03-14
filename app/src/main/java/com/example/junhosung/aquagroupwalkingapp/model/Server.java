@@ -46,6 +46,7 @@ public class Server extends AppCompatActivity {
     private SimpleCallback serverCallbackForAddNewMonitors;
     private SimpleCallback serverCallbackForAddNewMonitoredBy;
     private SimpleCallback serverCallbackForStopMonitoring;
+    private SimpleCallback serverCallbackForCreateNewGroup;
 
 
 
@@ -95,6 +96,13 @@ public class Server extends AppCompatActivity {
     private void responseStopMonitoring(Void returnedNothing) {
         serverCallbackForStopMonitoring.callback(returnedNothing);
     }
+    private void responseCreateNewGroup(Group group) {
+        serverCallbackForCreateNewGroup.callback(group);
+    }
+
+
+
+
 
 
     //call function
@@ -164,6 +172,14 @@ public class Server extends AppCompatActivity {
         Call<Void> caller = proxy.stopMonitors(userId,targetId);
         ProxyBuilder.callProxy(Server.this,caller,this::responseStopMonitoring);
     }
+    public void createNewGroup(Group group,String token,SimpleCallback<Group> callback){
+        onReceiveToken(token);
+        serverCallbackForCreateNewGroup = callback;
+        Call<Group> caller = proxy.createGroup(group);
+        ProxyBuilder.callProxy(Server.this,caller,this::responseCreateNewGroup);
+
+    }
+
 
 
 }

@@ -38,6 +38,7 @@ public class Model extends AppCompatActivity {
     private SimpleCallback callbackForAddNewMonitors;
     private SimpleCallback callbackForAddNewMonitoredBy;
     private SimpleCallback callbackForStopMonitoring;
+    private SimpleCallback callbackForCreateNewGroup;
 
 
     //for internal model class
@@ -116,7 +117,9 @@ public class Model extends AppCompatActivity {
     private void responseStopMonitoring(Void returnedNothing) {
         callbackForStopMonitoring.callback(returnedNothing);
     }
-
+    private void responseForCreateNewGroup(Group group) {
+        callbackForCreateNewGroup.callback(group);
+    }
 
 
 
@@ -201,7 +204,15 @@ public class Model extends AppCompatActivity {
         if(isUserLoggedin) {
             server.stopMonitoring(userId,targetId,this.tokenForLogin,this::responseStopMonitoring);
         }
-
     }
+    public void createNewUser(Group group, SimpleCallback<Group> callback){
+        this.callbackForCreateNewGroup = callback;
+        Server server = new Server();
+        if(isUserLoggedin){
+            server.createNewGroup(group,this.tokenForLogin,this::responseForCreateNewGroup);
+        }
+    }
+
+
 
 }
