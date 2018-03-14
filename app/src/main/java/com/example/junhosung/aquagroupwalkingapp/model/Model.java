@@ -125,6 +125,7 @@ public class Model extends AppCompatActivity {
     private void responseStopMonitoring(Void returnedNothing) {
         callbackForStopMonitoring.callback(returnedNothing);
     }
+
     private void responseForCreateNewGroup(Group group) {
         callbackForCreateNewGroup.callback(group);
     }

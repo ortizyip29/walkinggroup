@@ -51,13 +51,42 @@ public class SeeMonitoringActivity extends AppCompatActivity {
     public class Clicked{
         public boolean clicked = false;
     }
+    private void updateListOfMonitoring(){
+        model.getMonitorsById(model.getCurrentUser().getId(), this::responseWithUserMonitorsOnActivityResult);
+    }
+
+    private void responseWithUserMonitorsOnActivityResult(List<User> users) {
+        if(users==null){
+            Log.i(TAG,"Users is null----------------------------------------------------");
+        } else{
+            Log.i(TAG,"Users is not null----------------------------------------------");
+        }
+        for(User user:users){
+            Log.i(TAG,user.toString());
+        }
+        Toast.makeText(SeeMonitoringActivity.this,"this is runing!",Toast.LENGTH_LONG).show();
+
+        updateDisplayListAndDeleteList(users);
+        populateListView();
+    }
+
+    private void updateDisplayListAndDeleteList(List<User> users){
+        monitorsList = users;
+        isItemClicked = new ArrayList<>();
+        nameAndEmail = new String[monitorsList.size()];
+        for (int i = 0; i < monitorsList.size();i++) {
+            nameAndEmail[i] = "      " + monitorsList.get(i).getName() + "  :  " + monitorsList.get(i).getEmail();
+            isItemClicked.add(new Clicked());
+        }
+        Toast.makeText(SeeMonitoringActivity.this,"success!",Toast.LENGTH_LONG).show();
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_see_monitoring);
-
-        model.getMonitorsById(model.getCurrentUser().getId(),this::responseWithUserMonitors);
+        updateListOfMonitoring();
         setUpAddButton();
         setUpDeleteButton();
 
@@ -86,40 +115,12 @@ public class SeeMonitoringActivity extends AppCompatActivity {
                     }
                     counter++;
                 }
-
             }
-
             private void voidCallback(Void aVoid) {
-                model.getMonitorsById(model.getCurrentUser().getId(),this::responseWithUserMonitorsDeleteButton);
+                updateListOfMonitoring();
             }
-
-            private void responseWithUserMonitorsDeleteButton(List<User> users) {
-                monitorsList = users;
-                nameAndEmail = new String[monitorsList.size()];
-                for (int i = 0; i < monitorsList.size();i++) {
-                    nameAndEmail[i] = "      " + monitorsList.get(i).getName() + "  :  " + monitorsList.get(i).getEmail();
-                }
-
-                populateListView();
-
-            }
-
         });
     }
-
-    private void responseWithUserMonitors(List<User> users) {
-        monitorsList = users;
-        nameAndEmail = new String [monitorsList.size()];
-
-        for (int i = 0; i < monitorsList.size();i++) {
-            nameAndEmail[i] ="        " + monitorsList.get(i).getName() + "  :  " + monitorsList.get(i).getEmail();
-            isItemClicked.add(new Clicked());
-        }
-
-        populateListView();
-
-    }
-
     private void populateListView() {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,R.layout.see_monitoring,
                 nameAndEmail);
@@ -151,26 +152,18 @@ public class SeeMonitoringActivity extends AppCompatActivity {
         switch (requestCode) {
             case 1:
                 if (resultCode == Activity.RESULT_OK) {
-                    model.getMonitorsById(model.getCurrentUser().getId(), this::responseWithUserMonitorsOnActivityResult);
+                    CountDownTimer timer = new CountDownTimer(3000, 1) {
+
+                        public void onTick(long millisUntilFinished) {
+                        }
+
+                        public void onFinish() {
+                            updateListOfMonitoring();
+                        }
+                    };
+                    timer.start();
+
                 }
-
         }
-
     }
-
-    private void responseWithUserMonitorsOnActivityResult(List<User> users) {
-        monitorsList = users;
-        nameAndEmail = new String[monitorsList.size()];
-        for (int i = 0; i < monitorsList.size();i++) {
-            nameAndEmail[i] = "      " + monitorsList.get(i).getName() + "  :  " + monitorsList.get(i).getEmail();
-            isItemClicked.add(new Clicked());
-        }
-
-        Toast.makeText(SeeMonitoringActivity.this,"success!",Toast.LENGTH_LONG).show();
-
-        populateListView();
-
-    }
-
-
 }
