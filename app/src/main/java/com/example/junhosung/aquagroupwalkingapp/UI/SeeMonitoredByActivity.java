@@ -61,8 +61,8 @@ public class SeeMonitoredByActivity extends AppCompatActivity {
         model.getMonitoredById(currrentUser.getId(),this::responseWithUserMonitoredBy);
         setUpAddButton();
         setupDeleteBtn();
-
     }
+
     private void setUpAddButton() {
         btnAddMonitoredBy = (Button) findViewById(R.id.btnAddMonitoredBy);
         btnAddMonitoredBy.setOnClickListener(new View.OnClickListener() {
@@ -93,8 +93,6 @@ public class SeeMonitoredByActivity extends AppCompatActivity {
         });
     }
 
-
-
     private void responseWithUserMonitoredBy(List<User> users) {
         monitoredByList = users;
         nameAndEmail = new String [monitoredByList.size()];
@@ -114,17 +112,17 @@ public class SeeMonitoredByActivity extends AppCompatActivity {
         list.setAdapter(adapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int itemCLicked, long l) {
-                if(!isItemClicked.get(itemCLicked).clicked){
+            public void onItemClick(AdapterView<?> adapterView, View view, int itemNumber, long l) {
+                if(!isItemClicked.get(itemNumber).clicked){
                     view.setBackgroundColor(Color.GRAY);//mark for deletion
                     Clicked click = new Clicked();
                     click.clicked = true;
-                    isItemClicked.set(itemCLicked,click); //mark for deletion
+                    isItemClicked.set(itemNumber,click); //mark for deletion
                 } else{
                     view.setBackgroundColor(Color.WHITE); //change back to normal view
                     Clicked click = new Clicked();
                     click.clicked = false;
-                    isItemClicked.set(itemCLicked,click);//unmark for deletion
+                    isItemClicked.set(itemNumber,click);//unmark for deletion
                 }
             }
         });

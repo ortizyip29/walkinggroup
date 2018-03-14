@@ -14,6 +14,7 @@ package com.example.junhosung.aquagroupwalkingapp.UI;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.nfc.Tag;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -30,6 +31,7 @@ import com.example.junhosung.aquagroupwalkingapp.model.SharedPreferenceLoginStat
 import com.example.junhosung.aquagroupwalkingapp.model.User;
 import com.example.junhosung.aquagroupwalkingapp.model.UserCollectionServer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -45,6 +47,10 @@ public class SeeMonitoringActivity extends AppCompatActivity {
     List<User> monitorsList;
     String[] nameAndEmail;
 
+    private List<Clicked> isItemClicked = new ArrayList<>();
+    public class Clicked{
+        public boolean clicked = false;
+    }
 
 
     @Override
@@ -52,18 +58,40 @@ public class SeeMonitoringActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_see_monitoring);
 
-        //model.getUserById(Long.valueOf(53),this::responseWithUserId);
-
-        model.getUserByEmail(currentUserEmail,this::responseWithUserEmail);
-
+        model.getMonitorsById(model.getCurrentUser().getId(),this::responseWithUserMonitors);
         setUpAddButton();
+        setUpDeleteButton();
+    }
+    private void setUpAddButton() {
+        btnAddMonitoring = (Button) findViewById(R.id.btnAddMonitoree);
+        btnAddMonitoring.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(SeeMonitoringActivity.this,AddMonitoringActivity.class);
+                startActivityForResult(i,1);
+            }
+        });
+    }
+    private void setUpDeleteButton() {
+        btnDeleteMonitoring = (Button) findViewById(R.id.btnDeleteMonitoree);
+        btnDeleteMonitoring.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int counter = 0;
+                for(Clicked thisItem: isItemClicked){
+                    if(thisItem.clicked){
+                        model.stopMonitoring(model.getCurrentUser().getId(),monitorsList.get(counter).getId(),this::voidCallback);
+                    }
+                    counter++;
+                }
+                populateListView();
+            }
+
+            private void voidCallback(Void aVoid) {
+            }
+        });
     }
 
-
-    private void responseWithUserEmail(User user) {
-        receivedUser = user;
-        model.getMonitorsById(receivedUser.getId(),this::responseWithUserMonitors);
-    }
 
     private void responseWithUserMonitors(List<User> users) {
         monitorsList = users;
@@ -71,24 +99,11 @@ public class SeeMonitoringActivity extends AppCompatActivity {
 
         for (int i = 0; i < monitorsList.size();i++) {
             nameAndEmail[i] ="        " + monitorsList.get(i).getName() + "  :  " + monitorsList.get(i).getEmail();
+            isItemClicked.add(new Clicked());
         }
-
         populateListView();
 
     }
-
-    @Override
-    protected void onActivityResult(int requestCode,int resultCode,Intent intent) {
-        switch (requestCode) {
-            case 1:
-                if (resultCode == Activity.RESULT_OK) {
-                    //Toast.makeText(SeeMonitoringActivity.this,"number of monitoring: "+String.valueOf(mUser2.countMonitoring()),Toast.LENGTH_SHORT).show();
-                    //populateListView();
-                }
-        }
-    }
-
-
 
     private void populateListView() {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,R.layout.see_monitoring,
@@ -99,38 +114,37 @@ public class SeeMonitoringActivity extends AppCompatActivity {
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                // do something here
+            public void onItemClick(AdapterView<?> adapterView, View view, int itemNumber, long l) {
+                if(!isItemClicked.get(itemNumber).clicked){
+                    view.setBackgroundColor(Color.GRAY);//mark for deletion
+                    Clicked click = new Clicked();
+                    click.clicked = true;
+                    isItemClicked.set(itemNumber,click); //mark for deletion
+                } else{
+                    view.setBackgroundColor(Color.WHITE); //change back to normal view
+                    Clicked click = new Clicked();
+                    click.clicked = false;
+                    isItemClicked.set(itemNumber,click);//unmark for deletion
+                }
             }
         });
 
     }
-
+    @Override
+    protected void onActivityResult(int requestCode,int resultCode,Intent intent) {
+        switch (requestCode) {
+            case 1:
+                if (resultCode == Activity.RESULT_OK) {
+                    //Toast.makeText(SeeMonitoringActivity.this,"number of monitoring: "+String.valueOf(mUser2.countMonitoring()),Toast.LENGTH_SHORT).show();
+                    //populateListView();
+                }
+        }
+    }
     //
 
     // takes you to the addMonitoringActivity
 
-    private void setUpAddButton() {
-        btnAddMonitoring = (Button) findViewById(R.id.btnAddMonitoree);
-        btnAddMonitoring.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(SeeMonitoringActivity.this,AddMonitoringActivity.class);
-                startActivityForResult(i,1);
-            }
-        });
 
-    }
-
-    private void setUpDeleteButton() {
-        btnDeleteMonitoring = (Button) findViewById(R.id.btnDeleteMonitoree);
-        btnDeleteMonitoring.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // do smth here
-            }
-        });
-    }
 
 
 }
