@@ -41,6 +41,8 @@ public class GroupManagementActivity extends AppCompatActivity {
         modifyGroupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = GroupModifyActivity.makeIntent(GroupManagementActivity.this);
+                startActivity(intent);
             }
         });
     }
