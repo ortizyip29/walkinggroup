@@ -78,6 +78,10 @@ public class Model extends AppCompatActivity {
         this.tokenForLogin = token;
         //get the collection of user right away
         listUsers();
+        getUserByEmail(currentUser.getEmail(),this::callbackTogGetCurrentUser);
+    }
+    private void callbackTogGetCurrentUser(User user) {
+        currentUser = user;
     }
     private void responseUserList(List<User> userList){
         for(User user: userList){

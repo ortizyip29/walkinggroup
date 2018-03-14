@@ -63,7 +63,6 @@ public class SeeMonitoringActivity extends AppCompatActivity {
     private void responseWithUserEmail(User user) {
         receivedUser = user;
         model.getMonitorsById(receivedUser.getId(),this::responseWithUserMonitors);
-
     }
 
     private void responseWithUserMonitors(List<User> users) {

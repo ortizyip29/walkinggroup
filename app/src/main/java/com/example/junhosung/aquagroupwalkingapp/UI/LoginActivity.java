@@ -40,12 +40,14 @@ public class LoginActivity extends AppCompatActivity {
         usertemp = (EditText) findViewById(R.id.textEmail);
         passwordtemp = (EditText) findViewById(R.id.textPassword);
         password = passwordtemp.getText().toString();
-        setupRegisterBtn();
-        setupLoginbtn();
-        if (SharedPreferenceLoginState.getEmail(LoginActivity.this).length() != 0){
-            loginEmail  = SharedPreferenceLoginState.getEmail(LoginActivity.this);
+
+            setupRegisterBtn();
+            setupLoginbtn();
+
+        if (SharedPreferenceLoginState.getEmail(LoginActivity.this).length() != 0) {
+            loginEmail = SharedPreferenceLoginState.getEmail(LoginActivity.this);
             password = SharedPreferenceLoginState.getPassword(LoginActivity.this);
-            model.logIn(loginEmail, password, returnNothing-> responseForLogin(returnNothing));
+            model.logIn(loginEmail, password, returnNothing -> responseForLogin(returnNothing));
         }
 
 
