@@ -142,7 +142,6 @@ public class GroupModifyActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int item, long l) {
                 isItemClickedForAdd = true;
-
                 itemClickedToAdd = item;
             }
         });
