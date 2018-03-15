@@ -13,6 +13,7 @@ package com.example.junhosung.aquagroupwalkingapp.UI;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,19 +33,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SeeMonitoredByActivity extends AppCompatActivity {
-    //String currentUserEmail = model.getCurrentUser().getEmail();
-    /*    private void responseWithUserEmail(User user) {
-        receivedUser = user;
-        Toast.makeText(SeeMonitoredByActivity.this,""+receivedUser.getId(),Toast.LENGTH_LONG).show();
-        model.getMonitoredById(receivedUser.getId(),this::responseWithUserMonitoredBy);
-    }*/
-    //        model.getUserByEmail(currentUserEmail,this::responseWithUserEmail);
-   // User receivedUser;
     private final String TAG = "SeeMonitoredByActivity";
     private Model model = Model.getInstance();
     Button btnAddMonitoredBy;
 
-    User currrentUser =  model.getCurrentUser();
     List<User> monitoredByList;
     String[] nameAndEmail;
 
@@ -58,9 +50,9 @@ public class SeeMonitoredByActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_see_monitored_by);
         List<Boolean> isItemClicked = new ArrayList<>();
-        model.getMonitoredById(currrentUser.getId(),this::responseWithUserMonitoredBy);
         setUpAddButton();
         setupDeleteBtn();
+        updateListOfMonitoring();
 
     }
 
@@ -88,39 +80,29 @@ public class SeeMonitoredByActivity extends AppCompatActivity {
                     }
                     counter++;
                 }
-
             }
-
             private void voidCallback(Void aVoid) {
-                model.getMonitoredById(model.getCurrentUser().getId(),this::responseWithUserMonitoredByDeleteButton);
+                updateListOfMonitoring();
             }
-
-            private void responseWithUserMonitoredByDeleteButton(List<User> users) {
-                monitoredByList = users;
-                nameAndEmail = new String [monitoredByList.size()];
-                for (int i = 0; i < monitoredByList.size();i++) {
-                    nameAndEmail[i] ="        " + monitoredByList.get(i).getName() + "  :  " + monitoredByList.get(i).getEmail();
-                    isItemClicked.add(new Clicked());
-                }
-                populateListView();
-
-            }
-
-
         });
     }
 
-    private void responseWithUserMonitoredBy(List<User> users) {
+    public void updateListOfMonitoring(){
+        model.getMonitoredById(model.getCurrentUser().getId(), this::responseupdateListOfMonitoring);
+    }
+    private void responseupdateListOfMonitoring(List<User> users) {
+        updateDisplayListAndDeleteList(users);
+        populateListView();
+    }
+    public void updateDisplayListAndDeleteList(List<User> users){
         monitoredByList = users;
+        isItemClicked = new ArrayList<>();
         nameAndEmail = new String [monitoredByList.size()];
         for (int i = 0; i < monitoredByList.size();i++) {
             nameAndEmail[i] ="        " + monitoredByList.get(i).getName() + "  :  " + monitoredByList.get(i).getEmail();
             isItemClicked.add(new Clicked());
         }
-        populateListView();
     }
-
-
     private void populateListView() {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.see_monitored_by,
                 nameAndEmail);
@@ -152,7 +134,21 @@ public class SeeMonitoredByActivity extends AppCompatActivity {
         switch (requestCode) {
             case 2:
                 if (resultCode == Activity.RESULT_OK) {
-                    populateListView();
+                    CountDownTimer timer = new CountDownTimer(3000, 1) {
+
+                        public void onTick(long millisUntilFinished) {
+                        }
+
+                        public void onFinish() {
+                            updateListOfMonitoring();
+                        }
+                    };
+                    timer.start();
+
+
+
+
+                    updateListOfMonitoring();
                 }
         }
     }

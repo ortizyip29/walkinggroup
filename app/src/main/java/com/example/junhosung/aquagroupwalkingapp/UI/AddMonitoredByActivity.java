@@ -45,14 +45,12 @@ public class AddMonitoredByActivity extends AppCompatActivity {
                 EditText newUser = (EditText) findViewById(R.id.typeEmail2);
                 String email = newUser.getText().toString();
 
-                // if the username (=email)is in the UserServer
 
                 for (int i = 0; i< usersServer.size(); i++) {
                     if (usersServer.get(i).getEmail().equals(email)) {
                         userMatch = usersServer.get(i);
-                        model.getUserByEmail(currentUserEmail,this::responseWithUserEmail);
+                        model.addNewMonitoredBy(model.getCurrentUser().getId(),userMatch,this::responseWithAddNewMonitoredBy);
                     }
-
                 }
 
                 Intent intent = new Intent();
@@ -62,16 +60,8 @@ public class AddMonitoredByActivity extends AppCompatActivity {
 
             }
 
-            private void responseWithUserEmail(User user) {
-                receivedUser = user;
-                model.addNewMonitoredBy(receivedUser.getId(),userMatch,this::responseWithAddNewMonitoredBy);
-
-            }
-
             private void responseWithAddNewMonitoredBy(List<User> users) {
-                //tempList = users;
-                // well this is a @POST so it doesn't return anything we need to use.
-
+                tempList = users;
             }
 
 
