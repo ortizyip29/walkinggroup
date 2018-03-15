@@ -44,6 +44,7 @@ public class Model extends AppCompatActivity {
     private SimpleCallback callbackForGetGroupDetailsById;
     private SimpleCallback callbackForUpdateGroupDetails;
     private SimpleCallback callbackForStopMonitoredBy;
+    private SimpleCallback callbackForAddNewUserToGroup;
 
 
     //for internal model class
@@ -166,7 +167,9 @@ public class Model extends AppCompatActivity {
     private void responseForUpdateGroupDetails(Group group) {
         callbackForUpdateGroupDetails.callback(group);
     }
-
+    private void responseForAddNewUserToGroup(List<User> users) {
+        this.callbackForAddNewUserToGroup.callback(users);
+    }
 
     //calls to server methods
     // Adding in currentUser
@@ -294,6 +297,15 @@ public class Model extends AppCompatActivity {
             server.updateGroupDetails(groupId,updatedGroup,this.tokenForLogin,this::responseForUpdateGroupDetails);
         }
     }
+    public void addUserToGroup(Long groupId,User addUser,SimpleCallback<List<User>> callback){
+        this.callbackForAddNewUserToGroup = callback;
+        Server server = new Server();
+        if (isUserLoggedin){
+            server.addNewUser(groupId, addUser, this.tokenForLogin, this::responseForAddNewUserToGroup);
+        }
+    }
+
+
 
 
 }
