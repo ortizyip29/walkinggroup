@@ -3,8 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pullFromMaster.iml" filepath="$PROJECT_DIR$/pullFromMaster.iml" />
       <module fileurl="file://C:\Users\David-Yoga\AndroidStudioProjects\walkinggroupapp\pullFromMaster.iml" filepath="C:\Users\David-Yoga\AndroidStudioProjects\walkinggroupapp\pullFromMaster.iml" />
-      <module fileurl="file://$PROJECT_DIR$/walkinggroupapp.iml" filepath="$PROJECT_DIR$/walkinggroupapp.iml" />
+      <module fileurl="file://C:\Users\Junho Sung\Desktop\appFolder\pullFromMaster\walkinggroupapp.iml" filepath="C:\Users\Junho Sung\Desktop\appFolder\pullFromMaster\walkinggroupapp.iml" />
     </modules>
   </component>
 </project>

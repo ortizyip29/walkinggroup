@@ -52,6 +52,7 @@ public class Server extends AppCompatActivity {
     private SimpleCallback serverCallbackForUpdateGroupDetails;
     private SimpleCallback serverCallbackForStopMonitoredBy;
     private SimpleCallback serverCallbackForAddNewUserToGroup;
+    private SimpleCallback serverCallbackForDeleteMemberOfGroup;
 
 
 
@@ -122,6 +123,10 @@ public class Server extends AppCompatActivity {
     }
     private void responseForAddNewUserToGroup(List<User> users) {
         serverCallbackForAddNewUserToGroup.callback(users);
+    }
+
+    private void responseForDeleteMemberOfGroup(Void returnedNothing) {
+        serverCallbackForDeleteMemberOfGroup.callback(returnedNothing);
     }
 
 
@@ -236,6 +241,14 @@ public class Server extends AppCompatActivity {
         serverCallbackForAddNewUserToGroup = callback;
         Call<List<User>> caller = proxy.addNewMemberToGroup(groupId,user);
         ProxyBuilder.callProxy(Server.this, caller, this::responseForAddNewUserToGroup);
+
+    }
+
+    public void deleteMemberOfGroup(Long groupId, Long userId, String token, SimpleCallback<Void> callback) {
+        onReceiveToken(token);
+        serverCallbackForDeleteMemberOfGroup = callback;
+        Call<Void> caller = proxy.deleteMemberOfGroup(groupId, userId);
+        ProxyBuilder.callProxy(Server.this,caller,this::responseForDeleteMemberOfGroup);
 
     }
 
