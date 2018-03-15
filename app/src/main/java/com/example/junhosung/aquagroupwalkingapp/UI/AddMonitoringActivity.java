@@ -41,28 +41,17 @@ public class AddMonitoringActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-
-                //Extract data from UI
-
                 EditText newUser = (EditText) findViewById(R.id.typeEmail);
                 String email = newUser.getText().toString();
-
                 for (int i  = 0; i < usersServer.size();i++ ){
                     if (usersServer.get(i).getEmail().equals(email)) {
                         userMatch = usersServer.get(i);
                         model.getUserByEmail(currentUserEmail,this::responseWithUserEmail);
                     }
                 }
-                //Toast.makeText(AddMonitoringActivity.this,email,Toast.LENGTH_SHORT);
-
-                // Going back to SeeMonitoringActivity
-
-
                 Intent intent = new Intent();
                 setResult(Activity.RESULT_OK,intent);
-
                 finish();
-
             }
 
             private void responseWithUserEmail(User user) {
@@ -72,15 +61,7 @@ public class AddMonitoringActivity extends AppCompatActivity {
 
             private void responseAddNewMonitors(List<User> users) {
 
-                // well this doesn't really return anything ... so what's below will probably removed ...
-                //tempList = users;
-                //Toast.makeText(AddMonitoringActivity.this,tempList.get(0).getId()+"",Toast.LENGTH_LONG).show();
             }
-
         });
-
-
     }
-
-
 }

@@ -60,14 +60,14 @@ public class SeeMonitoringActivity extends AppCompatActivity {
 
     private void responseWithUserMonitorsOnActivityResult(List<User> users) {
         if(users==null){
-            Log.i(TAG,"Users is null----------------------------------------------------");
+            Log.v(TAG,"Users is null----------------------------------------------------");
         } else{
-            Log.i(TAG,"Users is not null----------------------------------------------");
+            Log.v(TAG,"Users is not null----------------------------------------------");
         }
         for(User user:users){
             Log.i(TAG,user.toString());
         }
-        Toast.makeText(SeeMonitoringActivity.this,"this is runing!",Toast.LENGTH_LONG).show();
+       // Toast.makeText(SeeMonitoringActivity.this,"this is runing!",Toast.LENGTH_LONG).show();
 
         updateDisplayListAndDeleteList(users);
         populateListView();
@@ -81,7 +81,6 @@ public class SeeMonitoringActivity extends AppCompatActivity {
             nameAndEmail[i] = "      " + monitorsList.get(i).getName() + "  :  " + monitorsList.get(i).getEmail();
             isItemClicked.add(new Clicked());
         }
-        Toast.makeText(SeeMonitoringActivity.this,"success!",Toast.LENGTH_LONG).show();
     }
 
 
@@ -165,7 +164,6 @@ public class SeeMonitoringActivity extends AppCompatActivity {
                         }
                     };
                     timer.start();
-
                 }
         }
     }
