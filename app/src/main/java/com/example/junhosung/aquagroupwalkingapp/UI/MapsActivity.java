@@ -41,12 +41,16 @@ import java.util.Locale;
 import static com.example.junhosung.aquagroupwalkingapp.model.Model.getInstance;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
+    Model model = Model.getInstance();
     private GoogleMap mapDisplay;
     Circle myRadius;
     MarkerOptions marker;
     MarkerOptions groupMarker;
     private LocationManager locationManager;
-    List<Group> groupList;
+    List<String> groupList;
+    List<List<Double>> LatList;
+    List<List<Double>> LngList;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +104,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 .radius(100)
                                 .strokeColor(Color.BLUE)
                                 .fillColor(Color.TRANSPARENT));
-                        //markGroupsOnMap();
 
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -146,7 +149,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 .radius(1000)
                                 .strokeColor(Color.BLUE)
                                 .fillColor(Color.TRANSPARENT));
-                        //markGroupsOnMap();
 
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -219,21 +221,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         int i;
         Double[] latitudeList = {49.2826, 49.2825, 49.2818,49.2819};
         Double[] longitudeList = {-123.1206, -123.1209, -123.1219,-123.1221};
-        String[] groupList = {"group1", "group2", "Big Daddy's group","yipper"};
+        String[] groupList = {"Yipper Group", "group2", "Big Daddy's group","yipper"};
         for (i = 0; i < latitudeList.length; i++) {
                     LatLng markLocation = new LatLng(latitudeList[i], longitudeList[i]);
                     mapDisplay.addMarker(groupMarker = new MarkerOptions().position(markLocation).title(groupList[i]).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
-                    mapDisplay.setOnMarkerClickListener(marker -> {
-                        Toast.makeText(MapsActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
-                        return false;
-                    }
-                    );
+
         }
     }
-    //private void getGroup(){
-      //  new Group listOfGroups = Model.getInstance().get
-    //}
-
-
-    //check whether the group will be in 500 meter radius
 }
