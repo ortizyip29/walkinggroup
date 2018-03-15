@@ -50,6 +50,7 @@ public class Server extends AppCompatActivity {
     private SimpleCallback serverCallbackForGetGroups;
     private SimpleCallback serverCallbackForGetGroupDetailsById;
     private SimpleCallback serverCallbackForUpdateGroupDetails;
+    private SimpleCallback serverCallbackForStopMonitoredBy;
 
 
 
@@ -113,6 +114,10 @@ public class Server extends AppCompatActivity {
 
     private void responseForUpdateGroupDetails(Group group) {
         serverCallbackForUpdateGroupDetails.callback(group);
+    }
+
+    private void responseForStopMonitoredBy(Void returnedNothing) {
+        serverCallbackForStopMonitoredBy.callback(returnedNothing);
     }
 
 
@@ -187,6 +192,14 @@ public class Server extends AppCompatActivity {
         Call<Void> caller = proxy.stopMonitors(userId,targetId);
         ProxyBuilder.callProxy(Server.this,caller,this::responseStopMonitoring);
     }
+
+    public void stopMonitoredBy(Long userId, Long targetId, String token, SimpleCallback<Void> callback) {
+        onReceiveToken(token);
+        serverCallbackForStopMonitoredBy = callback;
+        Call<Void> caller = proxy.stopMonitors(userId,targetId);
+        ProxyBuilder.callProxy(Server.this,caller,this::responseForStopMonitoredBy);
+    }
+
     public void createNewGroup(Group group,String token,SimpleCallback<Group> callback){
         onReceiveToken(token);
         serverCallbackForCreateNewGroup = callback;
@@ -210,10 +223,9 @@ public class Server extends AppCompatActivity {
 
     public void updateGroupDetails(Long groupId, Group updatedGroup, String token, SimpleCallback<Group> callback) {
         onReceiveToken(token);
-        serverCallbackForGetGroupDetailsById = callback;
+        serverCallbackForUpdateGroupDetails = callback;
         Call<Group> caller = proxy.updateGroupDetails(groupId,updatedGroup);
         ProxyBuilder.callProxy(Server.this, caller, this::responseForUpdateGroupDetails);
-
 
     }
 

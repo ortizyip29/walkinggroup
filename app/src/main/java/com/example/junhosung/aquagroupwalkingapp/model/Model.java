@@ -43,6 +43,7 @@ public class Model extends AppCompatActivity {
     private SimpleCallback serverCallbackForGetGroups;
     private SimpleCallback callbackForGetGroupDetailsById;
     private SimpleCallback callbackForUpdateGroupDetails;
+    private SimpleCallback callbackForStopMonitoredBy;
 
 
     //for internal model class
@@ -136,6 +137,10 @@ public class Model extends AppCompatActivity {
 
     private void responseStopMonitoring(Void returnedNothing) {
         callbackForStopMonitoring.callback(returnedNothing);
+    }
+
+    private void responseForStopMonitoredBy(Void returnedNothing) {
+        callbackForStopMonitoredBy.callback(returnedNothing);
     }
 
     private void responseForCreateNewGroup(Group group) {
@@ -248,6 +253,14 @@ public class Model extends AppCompatActivity {
         }
     }
 
+    public void stopMonitoredBy(Long userId, Long targetId, SimpleCallback<Void> callback) {
+        this.callbackForStopMonitoredBy = callback;
+        Server server = new Server();
+        if (isUserLoggedin) {
+            server.stopMonitoredBy(userId,targetId,this.tokenForLogin,this::responseForStopMonitoredBy);
+        }
+    }
+
     public void createNewGroup(Group group, SimpleCallback<Group> callback) {
         this.callbackForCreateNewGroup = callback;
         Server server = new Server();
@@ -281,5 +294,6 @@ public class Model extends AppCompatActivity {
             server.updateGroupDetails(groupId,updatedGroup,this.tokenForLogin,this::responseForUpdateGroupDetails);
         }
     }
+
 
 }

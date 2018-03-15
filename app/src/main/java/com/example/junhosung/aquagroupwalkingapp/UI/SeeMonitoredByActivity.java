@@ -61,6 +61,7 @@ public class SeeMonitoredByActivity extends AppCompatActivity {
         model.getMonitoredById(currrentUser.getId(),this::responseWithUserMonitoredBy);
         setUpAddButton();
         setupDeleteBtn();
+
     }
 
     private void setUpAddButton() {

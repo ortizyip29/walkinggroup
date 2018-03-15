@@ -69,7 +69,7 @@ public class AddMonitoredByActivity extends AppCompatActivity {
             }
 
             private void responseWithAddNewMonitoredBy(List<User> users) {
-                tempList = users;
+                //tempList = users;
                 // well this is a @POST so it doesn't return anything we need to use.
 
             }
