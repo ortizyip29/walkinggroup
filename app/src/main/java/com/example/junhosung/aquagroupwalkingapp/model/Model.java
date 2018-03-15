@@ -168,9 +168,7 @@ public class Model extends AppCompatActivity {
     private void responseForUpdateGroupDetails(Group group) {
         callbackForUpdateGroupDetails.callback(group);
     }
-    private void responseForAddNewUserToGroup(List<User> users) {
-        this.callbackForAddNewUserToGroup.callback(users);
-    }
+
 
     private void responseForDeleteMemberOfGroup(Void returnedNothing) {
         this.callbackForDeleteMemberOfGroup.callback(returnedNothing);
