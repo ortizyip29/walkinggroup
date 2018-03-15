@@ -52,7 +52,6 @@ public class Group {
     public String getGroupDescription() {
         return groupDescription;
     }
-
     public List<Double> getRouteLatArray() {
         return routeLatArray;
     }

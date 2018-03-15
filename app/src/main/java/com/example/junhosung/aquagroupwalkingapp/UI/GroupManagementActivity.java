@@ -1,6 +1,8 @@
 package com.example.junhosung.aquagroupwalkingapp.UI;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -20,6 +22,8 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.junhosung.aquagroupwalkingapp.UI.RegisterActivity.makeIntent;
 
 public class GroupManagementActivity extends AppCompatActivity {
     Model model = Model.getInstance();
@@ -44,7 +48,7 @@ public class GroupManagementActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(GroupManagementActivity.this,ChangeGroupActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent,1);
 
             }
         });
@@ -60,6 +64,7 @@ public class GroupManagementActivity extends AppCompatActivity {
             }
         });
     }
+
     private void setupAddGroupButton(){
         Button addGroupButton = (Button)findViewById(R.id.createGroupBtn);
         addGroupButton.setOnClickListener(new View.OnClickListener() {
@@ -79,6 +84,7 @@ public class GroupManagementActivity extends AppCompatActivity {
 
     private void responseForGetGroups(List<Group> groups) {
         refreshPage();
+
     }
 
     private void refreshPage() {
@@ -106,4 +112,15 @@ public class GroupManagementActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    protected void onActivityResult(int requestCode,int resultCode,Intent intent) {
+        switch (requestCode) {
+            case 1:
+                if (resultCode == Activity.RESULT_OK) {
+                    refreshPage();
+                }
+        }
+    }
+
 }
