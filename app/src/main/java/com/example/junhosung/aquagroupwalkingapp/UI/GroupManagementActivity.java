@@ -58,10 +58,9 @@ public class GroupManagementActivity extends AppCompatActivity {
         modifyGroupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Intent intent = GroupModifyAcivity.makeIntent(GroupManagementActivity.this);
-                //startActivity(intent);
-                // swap out refresh page later
-                refreshPage();
+               // refreshPage();
+                Intent intent = GroupModifyActivity.makeIntent(GroupManagementActivity.this);
+                startActivity(intent);
             }
         });
     }
