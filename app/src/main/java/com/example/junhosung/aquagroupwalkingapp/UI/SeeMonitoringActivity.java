@@ -35,12 +35,11 @@ import com.example.junhosung.aquagroupwalkingapp.model.UserCollectionServer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
 
 
 public class SeeMonitoringActivity extends AppCompatActivity {
 
-    private final String TAG = "SeeMonitoringActivity";
+
     private Model model = Model.getInstance();
     private UserCollectionServer users = model.users;
     Button btnAddMonitoring;
@@ -49,6 +48,7 @@ public class SeeMonitoringActivity extends AppCompatActivity {
     User receivedUser;
     List<User> monitorsList;
     String[] nameAndEmail;
+    String TAG;
 
     private List<Clicked> isItemClicked = new ArrayList<>();
     public class Clicked{

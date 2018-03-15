@@ -48,6 +48,9 @@ public class Server extends AppCompatActivity {
     private SimpleCallback serverCallbackForStopMonitoring;
     private SimpleCallback serverCallbackForCreateNewGroup;
     private SimpleCallback serverCallbackForGetGroups;
+    private SimpleCallback serverCallbackForGetGroupDetailsById;
+    private SimpleCallback serverCallbackForUpdateGroupDetails;
+    private SimpleCallback serverCallbackForStopMonitoredBy;
 
 
 
@@ -99,6 +102,22 @@ public class Server extends AppCompatActivity {
     }
     private void responseCreateNewGroup(Group group) {
         serverCallbackForCreateNewGroup.callback(group);
+    }
+
+    private void responseForGetGroups(List<Group> groups) {
+        serverCallbackForGetGroups.callback(groups);
+    }
+
+    private void responseForGetGroupDetailsById(Group group) {
+        serverCallbackForGetGroupDetailsById.callback(group);
+    }
+
+    private void responseForUpdateGroupDetails(Group group) {
+        serverCallbackForUpdateGroupDetails.callback(group);
+    }
+
+    private void responseForStopMonitoredBy(Void returnedNothing) {
+        serverCallbackForStopMonitoredBy.callback(returnedNothing);
     }
 
 
@@ -173,6 +192,14 @@ public class Server extends AppCompatActivity {
         Call<Void> caller = proxy.stopMonitors(userId,targetId);
         ProxyBuilder.callProxy(Server.this,caller,this::responseStopMonitoring);
     }
+
+    public void stopMonitoredBy(Long userId, Long targetId, String token, SimpleCallback<Void> callback) {
+        onReceiveToken(token);
+        serverCallbackForStopMonitoredBy = callback;
+        Call<Void> caller = proxy.stopMonitors(userId,targetId);
+        ProxyBuilder.callProxy(Server.this,caller,this::responseForStopMonitoredBy);
+    }
+
     public void createNewGroup(Group group,String token,SimpleCallback<Group> callback){
         onReceiveToken(token);
         serverCallbackForCreateNewGroup = callback;
@@ -187,9 +214,22 @@ public class Server extends AppCompatActivity {
         ProxyBuilder.callProxy(Server.this,caller,this::responseForGetGroups);
     }
 
-    private void responseForGetGroups(List<Group> groups) {
-        serverCallbackForGetGroups.callback(groups);
+    public void getGroupDetailsById(Long groupId,String token, SimpleCallback<Group> callback) {
+        onReceiveToken(token);
+        serverCallbackForGetGroupDetailsById = callback;
+        Call<Group> caller = proxy.getGroupDetails(groupId);
+        ProxyBuilder.callProxy(Server.this,caller,this::responseForGetGroupDetailsById);
     }
+
+    public void updateGroupDetails(Long groupId, Group updatedGroup, String token, SimpleCallback<Group> callback) {
+        onReceiveToken(token);
+        serverCallbackForUpdateGroupDetails = callback;
+        Call<Group> caller = proxy.updateGroupDetails(groupId,updatedGroup);
+        ProxyBuilder.callProxy(Server.this, caller, this::responseForUpdateGroupDetails);
+
+    }
+
+
 
 
 }
