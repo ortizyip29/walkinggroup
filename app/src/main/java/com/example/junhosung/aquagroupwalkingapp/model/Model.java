@@ -13,7 +13,7 @@ import java.util.List;
 
 public class Model extends AppCompatActivity {
     //internal class variables
-    final private String TAG ="Model Class";
+    final private String TAG = "Model Class";
     private static Model modelInstance;
 
     //groups or collections
@@ -41,6 +41,8 @@ public class Model extends AppCompatActivity {
     private SimpleCallback callbackForStopMonitoring;
     private SimpleCallback callbackForCreateNewGroup;
     private SimpleCallback serverCallbackForGetGroups;
+    private SimpleCallback callbackForGetGroupDetailsById;
+    private SimpleCallback callbackForUpdateGroupDetails;
 
 
     //for internal model class
@@ -48,6 +50,7 @@ public class Model extends AppCompatActivity {
         usersOld = UserCollection.getInstance();
         users = UserCollectionServer.getInstance();
     }
+
     public static Model getInstance() {
         if (modelInstance == null) {
             modelInstance = new Model();
@@ -66,18 +69,21 @@ public class Model extends AppCompatActivity {
         }
         return returnValue;
     }
+
     public User getCurrentUser() {
         return currentUser;
     }
-    public Group getCurrentGroupInUseByUser(){
+
+    public Group getCurrentGroupInUseByUser() {
         return currentGroupInUseByUser;
     }
-    public void setCurrentGroupInUseByUser(Group group){
+
+    public void setCurrentGroupInUseByUser(Group group) {
         currentGroupInUseByUser = group;
     }
-    public void getGroupsOfUserNoCallToServer(){
-    }
 
+    public void getGroupsOfUserNoCallToServer() {
+    }
 
 
     //response methods from server
@@ -87,29 +93,35 @@ public class Model extends AppCompatActivity {
         this.tokenForLogin = token;
         //get the collection of user right away
         listUsers();
-        getUserByEmail(currentUser.getEmail(),this::callbackTogGetCurrentUser);
+        getUserByEmail(currentUser.getEmail(), this::callbackTogGetCurrentUser);
     }
+
     private void callbackTogGetCurrentUser(User user) {
         currentUser = user;
     }
-    private void responseUserList(List<User> userList){
-        for(User user: userList){
+
+    private void responseUserList(List<User> userList) {
+        for (User user : userList) {
             UserCollectionServer.getInstance().addUser(user);
         }
     }
+
     private void responseGetMonitorsById(List<User> userList) {
         callbackForGetMonitorsById.callback(userList);
     }
+
     private void createNewUserResponse(User user) {
         //this is user we just added, do want to anything with user
     }
+
     private void responseGetUserById(User returnedUser) {
         callbackForUserId.callback(returnedUser);
     }
 
-    private void responseGetUserByEmail(User user){
+    private void responseGetUserByEmail(User user) {
         callbackForGetUserByEmail.callback(user);
     }
+
     private void responseGetMonitoredById(List<User> userList) {
         callbackForGetMonitoredById.callback(userList);
     }
@@ -125,22 +137,30 @@ public class Model extends AppCompatActivity {
     private void responseStopMonitoring(Void returnedNothing) {
         callbackForStopMonitoring.callback(returnedNothing);
     }
+
     private void responseForCreateNewGroup(Group group) {
         callbackForCreateNewGroup.callback(group);
     }
+
     private void responseForGetGroups(List<Group> groups) {
         usersGroups = groups;
-        if(!groups.isEmpty()){
-            if(currentGroupInUseByUser==null){
-                currentGroupInUseByUser=groups.get(0);
+        if (!groups.isEmpty()) {
+            if (currentGroupInUseByUser == null) {
+                currentGroupInUseByUser = groups.get(0);
             }
         }
-        if(serverCallbackForGetGroups!=null){
+        if (serverCallbackForGetGroups != null) {
             serverCallbackForGetGroups.callback(groups);
         }
     }
 
+    private void responseForGetGroupDetailsById(Group group) {
+        callbackForGetGroupDetailsById.callback(group);
+    }
 
+    private void responseForUpdateGroupDetails(Group group) {
+        callbackForUpdateGroupDetails.callback(group);
+    }
 
 
     //calls to server methods
@@ -153,93 +173,113 @@ public class Model extends AppCompatActivity {
         currentUser = new User();
         currentUser.setEmail(loginEmail);
         currentUser.setPassword(password);
-        server.loginUser(currentUser,this::responseLogin);
+        server.loginUser(currentUser, this::responseLogin);
     }
 
     public void listUsers() {
         Server server = new Server();
-        if(isUserLoggedin){
-            server.getListOfUsers(this.tokenForLogin,this::responseUserList);
+        if (isUserLoggedin) {
+            server.getListOfUsers(this.tokenForLogin, this::responseUserList);
         }
     }
+
     public void createUser(String nameNew, String emailNew, String passwordNew) {
         User user = new User();
         user.setName(nameNew);
         user.setEmail(emailNew);
         user.setPassword(passwordNew);
         Server server = new Server();
-        server.createNewUser(user,  this::createNewUserResponse);
+        server.createNewUser(user, this::createNewUserResponse);
     }
-    public void getUserById(Long userId ,SimpleCallback<User> callback) {
+
+    public void getUserById(Long userId, SimpleCallback<User> callback) {
         Server server = new Server();
         callbackForUserId = callback;
-        if(isUserLoggedin) {
-            server.getUserById(userId,this.tokenForLogin,this::responseGetUserById);
+        if (isUserLoggedin) {
+            server.getUserById(userId, this.tokenForLogin, this::responseGetUserById);
         }
     }
+
     public void getUserByEmail(String email, SimpleCallback<User> responseWithUserEmail) {
         Server server = new Server();
         callbackForGetUserByEmail = responseWithUserEmail;
-        if(isUserLoggedin){
-            server.getUserByEmail(email,this.tokenForLogin,this::responseGetUserByEmail);
+        if (isUserLoggedin) {
+            server.getUserByEmail(email, this.tokenForLogin, this::responseGetUserByEmail);
         }
     }
 
-     public void getMonitorsById(Long userId,SimpleCallback<List<User>> callback) {
+    public void getMonitorsById(Long userId, SimpleCallback<List<User>> callback) {
         this.callbackForGetMonitorsById = callback;
         Server server = new Server();
-        if(isUserLoggedin) {
+        if (isUserLoggedin) {
             server.getMonitorsUsers(userId, this.tokenForLogin, this::responseGetMonitorsById);
         }
     }
-    public void getMonitoredById(Long userId,SimpleCallback<List<User>> callback) {
+
+    public void getMonitoredById(Long userId, SimpleCallback<List<User>> callback) {
         this.callbackForGetMonitoredById = callback;
         Server server = new Server();
-        if(isUserLoggedin) {
-            server.getMonitoredByUsers(userId,this.tokenForLogin,this::responseGetMonitoredById);
+        if (isUserLoggedin) {
+            server.getMonitoredByUsers(userId, this.tokenForLogin, this::responseGetMonitoredById);
         }
     }
 
-    public void addNewMonitors(Long userId,User targetUser,SimpleCallback<List<User>> callback) {
+    public void addNewMonitors(Long userId, User targetUser, SimpleCallback<List<User>> callback) {
         this.callbackForAddNewMonitors = callback;
         Server server = new Server();
-        if(isUserLoggedin) {
-            server.addNewMonitors(userId,targetUser,this.tokenForLogin,this::responseAddNewMonitors);
+        if (isUserLoggedin) {
+            server.addNewMonitors(userId, targetUser, this.tokenForLogin, this::responseAddNewMonitors);
         }
     }
 
-    public void addNewMonitoredBy(Long userId, User targetUser,SimpleCallback<List<User>> callback) {
+    public void addNewMonitoredBy(Long userId, User targetUser, SimpleCallback<List<User>> callback) {
         this.callbackForAddNewMonitoredBy = callback;
         Server server = new Server();
-        if(isUserLoggedin) {
-            server.addNewMonitoredBy(userId,targetUser,this.tokenForLogin,this::responseAddNewMonitoredBy);
+        if (isUserLoggedin) {
+            server.addNewMonitoredBy(userId, targetUser, this.tokenForLogin, this::responseAddNewMonitoredBy);
         }
     }
 
     public void stopMonitoring(Long userId, Long targetId, SimpleCallback<Void> callback) {
         this.callbackForStopMonitoring = callback;
         Server server = new Server();
-        if(isUserLoggedin) {
-            server.stopMonitoring(userId,targetId,this.tokenForLogin,this::responseStopMonitoring);
+        if (isUserLoggedin) {
+            server.stopMonitoring(userId, targetId, this.tokenForLogin, this::responseStopMonitoring);
         }
     }
-    public void createNewGroup(Group group, SimpleCallback<Group> callback){
+
+    public void createNewGroup(Group group, SimpleCallback<Group> callback) {
         this.callbackForCreateNewGroup = callback;
         Server server = new Server();
-        if(isUserLoggedin){
-            server.createNewGroup(group,this.tokenForLogin,this::responseForCreateNewGroup);
+        if (isUserLoggedin) {
+            server.createNewGroup(group, this.tokenForLogin, this::responseForCreateNewGroup);
         }
     }
-    public void getGroups(SimpleCallback<List<Group>> callback){
+
+    public void getGroups(SimpleCallback<List<Group>> callback) {
         this.serverCallbackForGetGroups = callback;
         Server server = new Server();
-        if(isUserLoggedin){
-            server.getGroups(this.tokenForLogin,this::responseForGetGroups);
+        if (isUserLoggedin) {
+            server.getGroups(this.tokenForLogin, this::responseForGetGroups);
         }
 
     }
 
+    public void getGroupDetailsById(Long groupId,SimpleCallback<Group> callback) {
+        this.callbackForGetGroupDetailsById = callback;
+        Server server = new Server();
+        if (isUserLoggedin) {
+            server.getGroupDetailsById(groupId,this.tokenForLogin,this::responseForGetGroupDetailsById);
 
+        }
+    }
 
+    public void updateGroupDetails(Long groupId, Group updatedGroup,SimpleCallback<Group> callback) {
+        this.callbackForUpdateGroupDetails = callback;
+        Server server = new Server();
+        if (isUserLoggedin) {
+            server.updateGroupDetails(groupId,updatedGroup,this.tokenForLogin,this::responseForUpdateGroupDetails);
+        }
+    }
 
 }

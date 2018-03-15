@@ -71,7 +71,7 @@ public interface WGServerProxy {
     // Stop Being Monitored By a User: A stops being monitored by B
 
     @DELETE("/users/{idA}/monitoredByUsers/{idB}")
-    Call<List<User>> stopMonitoredBy(@Path("idA") Long userId, @Field("idB") Long targetId);
+    Call<List<User>> stopMonitoredBy(@Path("idA") Long userId, @Path("idB") Long targetId);
 
     @GET("/groups")
     Call<List<Group>> getGroups();
@@ -82,8 +82,21 @@ public interface WGServerProxy {
     @GET("/groups/{id}")
     Call<Group> getGroupDetails(@Path("id") Long groupId);
 
+    // delete Group
+
     @DELETE("/groups/{id}")
     Call<List<Group>> deleteGroup(@Path("id") Long groupId);
+
+    // Update group details - pass a group object with updated details
+
+    @POST("/groups/{id}")
+    Call<Group> updateGroupDetails(@Path("id") Long groupId, @Body Group group);
+
+    @POST("/groups/{id}/membersUsers")
+    Call<List<User>> addNewMemberToGroup(@Path("id") Long groupId, @Body User user);
+
+    @DELETE("/group/{groupId}/membersUsers/{userId}")
+    Call<Void> deleteMemberOfGroup(@Path("groupId") Long groupId, @Path("userId") Long userId);
 
 
     /**
