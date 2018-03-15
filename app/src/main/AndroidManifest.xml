@@ -46,6 +46,7 @@
         <activity android:name=".UI.MapOptionsActivity" />
         <activity android:name=".UI.AddMonitoringActivity" />
         <activity android:name=".UI.AddMonitoredByActivity" />
+        <activity android:name=".UI.GroupModifyActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

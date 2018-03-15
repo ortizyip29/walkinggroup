@@ -44,8 +44,8 @@ public class Model extends AppCompatActivity {
     private SimpleCallback callbackForGetGroupDetailsById;
     private SimpleCallback callbackForUpdateGroupDetails;
     private SimpleCallback callbackForStopMonitoredBy;
-    private SimpleCallback callbackForAddNewUserToGroup;
     private SimpleCallback callbackForDeleteMemberOfGroup;
+    private SimpleCallback callbackForAddNewUserToGroup;
 
 
     //for internal model class
@@ -168,7 +168,9 @@ public class Model extends AppCompatActivity {
     private void responseForUpdateGroupDetails(Group group) {
         callbackForUpdateGroupDetails.callback(group);
     }
-
+    private void responseForAddNewUserToGroup(List<User> users) {
+        this.callbackForAddNewUserToGroup.callback(users);
+    }
 
     private void responseForDeleteMemberOfGroup(Void returnedNothing) {
         this.callbackForDeleteMemberOfGroup.callback(returnedNothing);
