@@ -2,7 +2,6 @@ package com.example.junhosung.aquagroupwalkingapp.UI;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -123,9 +122,16 @@ public class GroupModifyActivity extends AppCompatActivity {
     }
 
     public void refreshPage(){
+        model.getGroupDetailsById(model.getCurrentGroupInUseByUser().getId(),this::callbackForGetCurrentGroup);
         model.getMonitoredById(current.getId(),this::responseWithUserMonitors);
-        model.getGroupDetailsById(model.getCurrentGroupInUseByUser().getId(),this::callbackForGetCurerentGroupDetails);
+
     }
+
+    private void callbackForGetCurrentGroup(Group group) {
+        currentGroup = group;
+        model.getMembersOfGroup(model.getCurrentGroupInUseByUser().getId(),this::callbackForGetCurrentGroupDetails);
+    }
+
     private void responseWithUserMonitors(List<User> users) {
         monitorsList = users;
         nameAndEmail = new String [monitorsList.size()];
@@ -138,7 +144,6 @@ public class GroupModifyActivity extends AppCompatActivity {
         ListView list = (ListView) findViewById(R.id.listViewMM);
         list.setAdapter(adapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int item, long l) {
                 isItemClickedForAdd = true;
@@ -147,12 +152,17 @@ public class GroupModifyActivity extends AppCompatActivity {
         });
     }
 
-    private void callbackForGetCurerentGroupDetails(Group group) {
-        currentGroup = group;
-        List<User> currentGroupUserList = group.getMemberUsers();
+//    private void callbackForGetCurrentGroupDetails(Group group) {
+    private void callbackForGetCurrentGroupDetails(List<User> group) {
+
+        //currentGroup = group;
+
+        //Log.v(TAG,"----------------------------Id:    "+group.getId());
+       // List<User> currentGroupUserList = group.getMemberUsers();
         List<String> groupUsersDisplayList = new ArrayList<>();
-        for(User thisUser: currentGroupUserList){
+        for(User thisUser: group){
             groupUsersDisplayList.add(thisUser.getName() +" , "+ thisUser.getEmail());
+            Log.v(TAG,"something is here----------------------------------");
         }
 
         ArrayAdapter<String> adapter;

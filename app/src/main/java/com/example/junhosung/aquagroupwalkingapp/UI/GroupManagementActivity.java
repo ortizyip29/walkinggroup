@@ -41,7 +41,6 @@ public class GroupManagementActivity extends AppCompatActivity {
     }
 
 
-
     private void setupChangeGroupButton(){
         Button changeGroupButton = (Button)findViewById(R.id.changeGroups);
         changeGroupButton.setOnClickListener(new View.OnClickListener() {
@@ -53,6 +52,7 @@ public class GroupManagementActivity extends AppCompatActivity {
             }
         });
     }
+
     private void setupModifyGroupButton(){
         Button modifyGroupButton = (Button)findViewById(R.id.modGroups);
         modifyGroupButton.setOnClickListener(new View.OnClickListener() {

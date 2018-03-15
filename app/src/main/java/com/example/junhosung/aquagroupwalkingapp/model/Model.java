@@ -46,6 +46,7 @@ public class Model extends AppCompatActivity {
     private SimpleCallback callbackForStopMonitoredBy;
     private SimpleCallback callbackForDeleteMemberOfGroup;
     private SimpleCallback callbackForAddNewUserToGroup;
+    private SimpleCallback callbackForGetMembersOfGroup;
 
 
     //for internal model class
@@ -174,6 +175,10 @@ public class Model extends AppCompatActivity {
 
     private void responseForDeleteMemberOfGroup(Void returnedNothing) {
         this.callbackForDeleteMemberOfGroup.callback(returnedNothing);
+    }
+
+    private void responseForGetMembersOfGroups(List<User> users) {
+        this.callbackForGetMembersOfGroup.callback(users);
     }
 
 
@@ -316,6 +321,14 @@ public class Model extends AppCompatActivity {
         Server server = new Server();
         if(isUserLoggedin) {
             server.deleteMemberOfGroup(groupId,userId,this.tokenForLogin,this::responseForDeleteMemberOfGroup);
+        }
+    }
+
+    public void getMembersOfGroup(Long groupId, SimpleCallback<List<User>> callback) {
+        this.callbackForGetMembersOfGroup = callback;
+        Server server = new Server();
+        if(isUserLoggedin) {
+            server.getMembersOfGroup(groupId, this.tokenForLogin, this::responseForGetMembersOfGroups);
         }
     }
 
