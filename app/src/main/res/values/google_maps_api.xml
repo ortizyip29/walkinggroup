@@ -21,7 +21,7 @@
     string in this file.
     -->
     <!--Good one: -->
-    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyD_GoJqiRXE0jB_NVg6wI4rRUgP-PDN-Cw</string>
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyDl8KbGAvoRWCqGRB8mzJo8EZZ7S2-q6lE</string>
 
     <!--Bad one!-->
     <!--<string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyD_GoJqiRXE0jB_NVgxyzroUgP-PDN-Cw</string>-->
