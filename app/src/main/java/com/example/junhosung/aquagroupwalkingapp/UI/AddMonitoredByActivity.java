@@ -11,14 +11,20 @@ import android.widget.EditText;
 import com.example.junhosung.aquagroupwalkingapp.R;
 import com.example.junhosung.aquagroupwalkingapp.model.Model;
 import com.example.junhosung.aquagroupwalkingapp.model.User;
+import com.example.junhosung.aquagroupwalkingapp.model.User2;
 import com.example.junhosung.aquagroupwalkingapp.model.UserCollection;
+
+import java.util.List;
 
 public class AddMonitoredByActivity extends AppCompatActivity {
 
     private Button btnAddMonitoring;
     private Model model = Model.getInstance();
-    UserCollection users = model.users;
-    User user = model.users.getEmail(0);
+    List<User> usersServer = model.users.returnUsers();
+    User receivedUser;
+    String currentUserEmail = model.getCurrentUser().getEmail();
+    User userMatch;
+    List<User> tempList;
 
 
 
@@ -27,39 +33,24 @@ public class AddMonitoredByActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_monitored_by);
 
-        //test cases ...
-
-        User randUser3 = new User("harro7@gmail.com","2");
-        User randUser4 = new User("harro8@gmail.com","2");
-
-        // adding users to the UserCollection of the model so that we can check that they exist there
-
-        users.addUser(randUser3);
-        users.addUser(randUser4);
-
-        // this is here since the for loop inside the onClickListenr gives me trouble about
-        // calling users.countUsers() from an inner class ...
-
-        final int counter = users.countUsers();
+        // this is here since the for loop inside the onClickListener gives me trouble about
+        // calling usersOld.countUsers() from an inner class ...
 
         Button btnAddMonitoredBy = (Button) findViewById(R.id.btnAddNewMonitredBy);
         btnAddMonitoredBy.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
 
                 EditText newUser = (EditText) findViewById(R.id.typeEmail2);
                 String email = newUser.getText().toString();
 
-                for (int i = 0; i< counter; i++) {
 
-                    // if the username (= email) is in the User Collection (later to be replace by model)
-
-                    if (users.getEmail(i).getUsername().equals(email)) {
-                        user.addNewMonitoredByUsers(users.getEmail(i));
-
+                for (int i = 0; i< usersServer.size(); i++) {
+                    if (usersServer.get(i).getEmail().equals(email)) {
+                        userMatch = usersServer.get(i);
+                        model.addNewMonitoredBy(model.getCurrentUser().getId(),userMatch,this::responseWithAddNewMonitoredBy);
                     }
-
-
                 }
 
                 Intent intent = new Intent();
@@ -68,6 +59,12 @@ public class AddMonitoredByActivity extends AppCompatActivity {
                 finish();
 
             }
+
+            private void responseWithAddNewMonitoredBy(List<User> users) {
+                tempList = users;
+            }
+
+
         });
 
 

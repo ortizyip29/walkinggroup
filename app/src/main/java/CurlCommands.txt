@@ -1,0 +1,72 @@
+Get Moba terminal:
+https://mobaxterm.mobatek.net/download-home-edition.html
+
+
+//dont need to type this commmand as it gets you the key but we already have the key
+curl -k -s -i -H "Content-Type: application/json" \
+   -X GET "${ADDR_276_SERVER}/getApiKey?groupName=aqua&sfuUserId=kartikj"
+
+
+Enter commands:
+ADDR_276_SERVER=https://cmpt276-1177-bf.cmpt.sfu.ca:8443
+
+API_KEY=D43B2DCD-D2A8-49EF-AFCC-6B1E309D1B58
+
+
+//CREATE USER
+curl -k -s -i -H "Content-Type: application/json" \
+   -H "apiKey: ${API_KEY}" \
+   -X POST -d '{
+    "name": "Alice daCoder1",
+    "email": "test1@gmail.com",
+    "password": "myPassword"
+}' ${ADDR_276_SERVER}/users/signup
+
+
+//lOGIN
+curl -k -s -i -H "Content-Type: application/json" \
+   -H "apiKey: ${API_KEY}" \
+   -X POST -d '{
+    "email": "test1@gmail.com",
+    "password": "myPassword"
+}' ${ADDR_276_SERVER}/login
+
+
+//will get updated token on login
+TOKEN=eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0MUBnbWFpbC5jb20iLCJleHAiOjE1MjE4ODIxMDJ9.k-REU--_EGA8oFuGV50dQkC8wWvJV2I7Ro9pcG67iazo4TbXqN5nX7-nb2fuJT-SVax-roIM8vIjLbe4CRZGyQ
+
+
+//LIST USERS
+curl -k -s -i -H "Content-Type: application/json" \
+   -H "apiKey: ${API_KEY}" \
+   -H "Authorization: Bearer ${TOKEN}" \
+   -X GET ${ADDR_276_SERVER}/users
+
+// make userId 53 monitor userId 107 - big daddy will monitor big daddy 2
+
+curl -k -s -i -H "Content-Type: application/json" \
+    -H "Authorization: Bearer ${TOKEN}" \
+    -H "apiKey: ${API_KEY}" \
+    -X POST -d \
+    '{
+        "id": 243
+    }' ${ADDR_276_SERVER}/users/53/monitorsUsers
+
+
+// make userId 290 monitor userId 53 = jack monitors big daddy and big daddy is monitored by jack
+
+
+curl -k -s -i -H "Content-Type: application/json" \
+    -H "Authorization: Bearer ${TOKEN}" \
+    -H "apiKey: ${API_KEY}" \
+    -X POST -d \
+    '{
+        "id": 290
+    }' ${ADDR_276_SERVER}/users/53/monitoredByUsers
+
+
+//List Groups
+    curl -k -s -i -H "Content-Type: application/json" \
+       -H "apiKey: ${API_KEY}" \
+       -H "Authorization: Bearer ${TOKEN}" \
+       -X GET ${ADDR_276_SERVER}/groups

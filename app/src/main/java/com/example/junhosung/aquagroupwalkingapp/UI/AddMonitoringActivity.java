@@ -13,85 +13,55 @@ import android.widget.Toast;
 import com.example.junhosung.aquagroupwalkingapp.R;
 import com.example.junhosung.aquagroupwalkingapp.model.Model;
 import com.example.junhosung.aquagroupwalkingapp.model.User;
+import com.example.junhosung.aquagroupwalkingapp.model.User2;
 import com.example.junhosung.aquagroupwalkingapp.model.UserCollection;
+
+import java.util.List;
 
 public class AddMonitoringActivity extends AppCompatActivity {
 
     private Button btnAddMonitoring;
     private Model model = Model.getInstance();
-    UserCollection users = model.users;
-    User user = model.users.getEmail(0);
+    List<User> usersServer = model.users.returnUsers();
+    String[] newList;
+    List<User> tempList;
+    User receivedUser;
+    String currentUserEmail = model.getCurrentUser().getEmail();
+    User userMatch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_monitoree);
 
-
-        //test cases ...
-
-        User randUser1 = new User("harro5@gmail.com","2");
-        User randUser2 = new User("harro6@gmail.com","2");
-
-        // adding users to the UserCollection of the model so that we can check that they exist
-
-        users.addUser(randUser1);
-        users.addUser(randUser2);
-
-        // this is here since the for loop inside the onClickListenr gives me trouble about
-        // calling users.countUsers() from an inner class ...
-
-        final int counter = users.countUsers();
-
+        //model.addNewMonitors(Long.valueOf(107),Long.valueOf(196),this::responseAddNewMonitors);
 
         btnAddMonitoring = (Button) findViewById(R.id.btnAddMonitoring);
         btnAddMonitoring.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-
-                //Extract data from UI
-
                 EditText newUser = (EditText) findViewById(R.id.typeEmail);
                 String email = newUser.getText().toString();
-                //Toast.makeText(AddMonitoringActivity.this,email,Toast.LENGTH_SHORT);
-
-                for (int i = 0; i< counter; i++) {
-
-                    // if the username (= email) is in the User Collection (later to be replace by model)
-
-                    if (users.getEmail(i).getUsername().equals(email)) {
-                        user.addNewMonitorsUsers(users.getEmail(i));
-
+                for (int i  = 0; i < usersServer.size();i++ ){
+                    if (usersServer.get(i).getEmail().equals(email)) {
+                        userMatch = usersServer.get(i);
+                        model.getUserByEmail(currentUserEmail,this::responseWithUserEmail);
                     }
-
-                    //else {
-                        //Toast.makeText(AddMonitoringActivity.this,"user not found!",Toast.LENGTH_LONG).show();
-
-                    //}
-
                 }
-
-                // Going back to SeeMonitoringActivity
-
-
-                Log.i("email",email);
-                Log.i("0",users.getEmail(0).getUsername());
-                Log.i("1",users.getEmail(1).getUsername());
-                Log.i("2",users.getEmail(2).getUsername());
-
-
                 Intent intent = new Intent();
                 setResult(Activity.RESULT_OK,intent);
-
                 finish();
+            }
+
+            private void responseWithUserEmail(User user) {
+                receivedUser = user;
+                model.addNewMonitors(receivedUser.getId(),userMatch,this::responseAddNewMonitors);
+            }
+
+            private void responseAddNewMonitors(List<User> users) {
 
             }
         });
-
-
     }
-
-
-
 }
