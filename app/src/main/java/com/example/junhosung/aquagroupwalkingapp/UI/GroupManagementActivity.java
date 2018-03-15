@@ -23,6 +23,8 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.junhosung.aquagroupwalkingapp.UI.RegisterActivity.makeIntent;
+
 public class GroupManagementActivity extends AppCompatActivity {
     Model model = Model.getInstance();
     @Override
@@ -56,6 +58,9 @@ public class GroupManagementActivity extends AppCompatActivity {
         modifyGroupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //Intent intent = GroupModifyAcivity.makeIntent(GroupManagementActivity.this);
+                //startActivity(intent);
+                // swap out refresh page later
                 refreshPage();
             }
         });
@@ -80,6 +85,7 @@ public class GroupManagementActivity extends AppCompatActivity {
 
     private void responseForGetGroups(List<Group> groups) {
         refreshPage();
+
     }
 
     private void refreshPage() {
