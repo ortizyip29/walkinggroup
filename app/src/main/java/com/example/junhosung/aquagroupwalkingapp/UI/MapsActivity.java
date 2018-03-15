@@ -221,7 +221,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         int i;
         Double[] latitudeList = {49.2826, 49.2825, 49.2818,49.2819};
         Double[] longitudeList = {-123.1206, -123.1209, -123.1219,-123.1221};
-        String[] groupList = {"group1", "group2", "Big Daddy's group","yipper"};
+        String[] groupList = {"Yipper Group", "group2", "Big Daddy's group","yipper"};
         for (i = 0; i < latitudeList.length; i++) {
                     LatLng markLocation = new LatLng(latitudeList[i], longitudeList[i]);
                     mapDisplay.addMarker(groupMarker = new MarkerOptions().position(markLocation).title(groupList[i]).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
