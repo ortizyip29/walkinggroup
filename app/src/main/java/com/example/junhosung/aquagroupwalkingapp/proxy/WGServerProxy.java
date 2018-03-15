@@ -89,7 +89,7 @@ public interface WGServerProxy {
 
     // Update group details - pass a group object with updated details
 
-    @POST("/groups{id}")
+    @POST("/groups/{id}")
     Call<Group> updateGroupDetails(@Path("id") Long groupId, @Body Group group);
 
     @POST("/groups/{id}/membersUsers")
