@@ -86,8 +86,14 @@ public class GroupManagementActivity extends AppCompatActivity {
     }
 
     private void refreshPage() {
+        model.getMembersOfGroup(model.getCurrentGroupInUseByUser().getId(),this::responseForUsersInGroup);
+
+    }
+
+    private void responseForUsersInGroup(List<User> users) {
         List<String> members = new ArrayList<>();
-        for(User user:model.getCurrentGroupInUseByUser().getMemberUsers()){
+
+        for(User user:users){
             members.add(user.getName()+" , " +user.getEmail());
         }
         ((TextView) findViewById(R.id.textViewGroupName)).setText(model.getCurrentGroupInUseByUser().getGroupDescription());
