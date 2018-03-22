@@ -15,13 +15,18 @@ import android.os.Bundle;
 import com.example.junhosung.aquagroupwalkingapp.model.Group;
 import com.example.junhosung.aquagroupwalkingapp.model.Model;
 import com.example.junhosung.aquagroupwalkingapp.model.SharedPreferenceLoginState;
+import com.example.junhosung.aquagroupwalkingapp.model.User;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.junhosung.aquagroupwalkingapp.R;
@@ -35,6 +40,8 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -43,6 +50,7 @@ import static com.example.junhosung.aquagroupwalkingapp.model.Model.getInstance;
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
     Model model = Model.getInstance();
     private GoogleMap mapDisplay;
+    Group currentGroup;
     Circle myRadius;
     MarkerOptions marker;
     MarkerOptions groupMarker;
@@ -50,6 +58,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     List<String> groupList;
     List<List<Double>> LatList;
     List<List<Double>> LngList;
+    List<Double> setLatList;
+    List<Double> setLngList;
 
 
     @Override
@@ -221,11 +231,27 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         int i;
         Double[] latitudeList = {49.2826, 49.2825, 49.2818,49.2819};
         Double[] longitudeList = {-123.1206, -123.1209, -123.1219,-123.1221};
+        setLatList = Arrays.asList(latitudeList);
+        setLngList = Arrays.asList(longitudeList);
         String[] groupList = {"Yipper Group", "group2", "Big Daddy's group","yipper"};
         for (i = 0; i < latitudeList.length; i++) {
                     LatLng markLocation = new LatLng(latitudeList[i], longitudeList[i]);
                     mapDisplay.addMarker(groupMarker = new MarkerOptions().position(markLocation).title(groupList[i]).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
 
         }
+    }
+    private void callbackGroupDetails(List<User> group){
+        List<String> groupUsersDisplayList = new ArrayList<>();
+        for(User thisUser: group){
+            groupUsersDisplayList.add(thisUser.getName()); //+" , "+ thisUser.getEmail());
+            Log.v("","something is here----------------------------------");
+        }
+
+    }
+    private void getCurrentGroup(Group group){
+        currentGroup = group;
+        model.getMembersOfGroup(model.getCurrentGroupInUseByUser().getId(),this::callbackGroupDetails);
+    }
+    private void callbackSetGpsCoordinates(Group group){
     }
 }
