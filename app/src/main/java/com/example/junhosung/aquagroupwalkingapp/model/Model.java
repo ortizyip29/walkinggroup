@@ -211,6 +211,26 @@ public class Model extends AppCompatActivity {
         server.createNewUser(user, this::createNewUserResponse);
     }
 
+    public void editUser(User user, String name, int birthY, int birthM, String address, String homeP, String mobile, String email, String grade, String teacherN){
+        /**
+         * need to implement if statements for conditions when function arguments are supposed to be ignored
+         */
+        user.setName(name);
+        user.setBirthMonth(birthM);
+        user.setBirthYear(birthY);
+        user.setAddress(address);
+        user.setHomePhone(homeP);
+        user.setCellPhone(mobile);
+        user.setEmail(email);
+        user.setGrade(grade);
+        user.setTeacherName(teacherN);
+
+
+    }
+
+    public void editEmergency(String name, String email, String phone){
+
+    }
     public void getUserById(Long userId, SimpleCallback<User> callback) {
         Server server = new Server();
         callbackForUserId = callback;
