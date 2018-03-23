@@ -16,6 +16,15 @@ public class Group {
     private List<User> memberUsers = new ArrayList<>();
   //  private List<User> leadsGroups = new ArrayList<>();
     private String href;
+    private List<Message> messages = new ArrayList<>();
+
+    public List<Message> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(List<Message> messages) {
+        this.messages = messages;
+    }
 
     public void setId(long id) {
         this.id = id;

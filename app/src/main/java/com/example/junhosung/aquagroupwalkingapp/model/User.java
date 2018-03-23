@@ -18,6 +18,26 @@ public class User {
     private List<Group> memberofGroups = new ArrayList<>();
     private List<Group> leadsGroups = new ArrayList<>();
 
+    private String birthYear;
+    private String birthMonth;
+    private String address;
+    private String cellPhone;
+    private String homePhone;
+    private String grade;
+    private String teacherName;
+    private String emergencyContactInfo;
+    private GpsLocation lastGpsLocation;
+    private List<String> unreadMessages;
+    private List<String> readMessages;
+
+    public List<String> getReadMessages() {
+        return readMessages;
+    }
+
+    public void setReadMessages(List<String> readMessages) {
+        this.readMessages = readMessages;
+    }
+
     private String href;
 
     public Long getId() {
@@ -28,8 +48,93 @@ public class User {
         this.id = id;
     }
 
+    public List<Group> getMemberofGroups() {
+        return memberofGroups;
+    }
+
+    public String getBirthYear() {
+        return birthYear;
+    }
+
+    public void setBirthYear(String birthYear) {
+        this.birthYear = birthYear;
+    }
+
+    public String getBirthMonth() {
+        return birthMonth;
+    }
+
+    public void setBirthMonth(String birthMonth) {
+        this.birthMonth = birthMonth;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getCellPhone() {
+        return cellPhone;
+    }
+
+    public void setCellPhone(String cellPhone) {
+        this.cellPhone = cellPhone;
+    }
+
+    public String getHomePhone() {
+        return homePhone;
+    }
+
+    public void setHomePhone(String homePhone) {
+        this.homePhone = homePhone;
+    }
+
+    public String getGrade() {
+        return grade;
+    }
+
+    public void setGrade(String grade) {
+        this.grade = grade;
+    }
+
+    public String getTeacherName() {
+        return teacherName;
+    }
+
+    public void setTeacherName(String teacherName) {
+        this.teacherName = teacherName;
+    }
+
+    public String getEmergencyContactInfo() {
+        return emergencyContactInfo;
+    }
+
+    public void setEmergencyContactInfo(String emergencyContactInfo) {
+        this.emergencyContactInfo = emergencyContactInfo;
+    }
+
+    public GpsLocation getLastGpsLocation() {
+        return lastGpsLocation;
+    }
+
+    public void setLastGpsLocation(GpsLocation lastGpsLocation) {
+        this.lastGpsLocation = lastGpsLocation;
+    }
+
+    public List<String> getUnreadMessages() {
+        return unreadMessages;
+    }
+
+    public void setUnreadMessages(List<String> unreadMessages) {
+        this.unreadMessages = unreadMessages;
+    }
+
     public String getName() {
         return name;
+
     }
 
     public void setName(String name) {
