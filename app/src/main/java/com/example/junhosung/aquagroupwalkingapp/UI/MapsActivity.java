@@ -63,14 +63,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     MarkerOptions groupMarker;
     private LocationManager locationManager;
     List<String> groupList;
-    List<List<Double>> LatList;
-    List<List<Double>> LngList;
+    //List<List<Double>> LatList;
+    //List<List<Double>> LngList;
     List<Double> setLatList;
     List<Double> setLngList;
     long elapsedTime;
     Chronometer Timer = null;
     int minElapsed = 0;
-    int secondElapsed = 0;
+    long secondElapsed = 0;
+    boolean atSchool = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,8 +79,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         setContentView(R.layout.activity_maps);
         TextView updateDisplay = (TextView) findViewById(R.id.textViewUpdate);
         TextView updateTime = (TextView) findViewById(R.id.textViewTimeUpdate);
-        ((TextView) findViewById(R.id.curGroupInMaps)).setText(currentGroup.getGroupDescription());//("Yipper group");
-        updateTime.setText(Integer.toString(minElapsed) + " Minutes: " + Integer.toString(secondElapsed) + " Seconds");
+        //updateTime.setText(Integer.toString(minElapsed) + " Minutes: " + Integer.toString(secondElapsed) + " Seconds");
         setUpUpdateBtn();
         setUpLogoutBtn();
         setUpViewGroupBtn();
@@ -95,7 +95,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         MapFragment mapFrag = ((MapFragment) getFragmentManager().findFragmentById(R.id.mapFrag));
         mapFrag.getMapAsync(this);
         locationUpdate();
-     //   locationTimer();
+        locationTimer();
+
     }
 
     // circle now set 500 meter radius from myself
@@ -239,7 +240,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         updateButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                displayTimeSinceLastUpdate();
+                //displayTimeSinceLastUpdate();
                 locationUpdate();
             }
         });
@@ -251,20 +252,20 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         Double[] longitudeList = {-123.1206, -123.1209, -123.1219, -123.1221};
         setLatList = Arrays.asList(latitudeList);
         setLngList = Arrays.asList(longitudeList);
-        String[] groupList = {"Yipper Group", "group2", "Big Daddy's group","yipper"};
+        //String[] groupList = {"Yipper Group", "group2", "Big Daddy's group","yipper"};
         for (i = 0; i < latitudeList.length; i++) {
             LatLng markLocation = new LatLng(latitudeList[i], longitudeList[i]);
-            mapDisplay.addMarker(groupMarker = new MarkerOptions().position(markLocation).title(groupList[i]).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
+           // mapDisplay.addMarker(groupMarker = new MarkerOptions().position(markLocation).title(groupList[i]).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
 
         }
     }
 
-    private void displayTimeSinceLastUpdate() {
+    /*private void displayTimeSinceLastUpdate() {
         long minutes = ((SystemClock.elapsedRealtime() - Timer.getBase()) / 1000) / 60;
         long seconds = ((SystemClock.elapsedRealtime() - Timer.getBase()) / 1000) % 60;
         elapsedTime = SystemClock.elapsedRealtime();
         Log.d("Check Time", "Since last location update: " + minutes + " : " + seconds);
-    }
+    }*/
 
    private void sendGroupCurrentLocation(Group group) {
         currentGroup = group;
@@ -299,12 +300,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void locationTimer() {
-        CountDownTimer timer = new CountDownTimer(30000, 1) {
-            public void onTick(long millisUntilFinished) {
-            }
-            public void onFinish() {
-                locationUpdate();
-            }
-        }.start();
+        TextView updateTime = (TextView) findViewById(R.id.textViewTimeUpdate);
+        CountDownTimer timer = new CountDownTimer(30000, 1000) {
+                public void onTick(long millisUntilFinished) {
+                    secondElapsed = 30 - millisUntilFinished / 1000;
+                    updateTime.setText(Integer.toString(minElapsed) + " Minutes: " + Long.toString(secondElapsed) + " Seconds");
+                }
+                public void onFinish() {
+                    locationUpdate();
+                    secondElapsed = 0;
+                    updateTime.setText(Integer.toString(minElapsed) + " Minutes: " + Long.toString(secondElapsed) + " Seconds");
+                }
+            }.start();
     }
 }
