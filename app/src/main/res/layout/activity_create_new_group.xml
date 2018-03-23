@@ -38,6 +38,12 @@
                 android:layout_weight=".33"
                 android:layout_height="30dp"
                 android:hint="@string/destination" />
+            <EditText
+                android:id="@+id/nothing"
+                android:layout_width="match_parent"
+                android:layout_weight=".33"
+                android:layout_height="30dp"
+                android:hint="skip" />
         </LinearLayout>
 
 
