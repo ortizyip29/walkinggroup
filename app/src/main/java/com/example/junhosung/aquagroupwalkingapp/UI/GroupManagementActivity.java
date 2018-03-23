@@ -86,12 +86,9 @@ public class GroupManagementActivity extends AppCompatActivity {
     }
 
     private void refreshPage() {
-
-        if(model.getCurrentGroupInUseByUser()==null) {
+        if(model.getCurrentGroupInUseByUser()==null){
             responseForUsersInGroup(null);
-        }
-
-        else {
+        } else {
             model.getMembersOfGroup(model.getCurrentGroupInUseByUser().getId(),this::responseForUsersInGroup);
         }
 
@@ -99,24 +96,21 @@ public class GroupManagementActivity extends AppCompatActivity {
 
     private void responseForUsersInGroup(List<User> users) {
         List<String> members = new ArrayList<>();
-
         if(!(users==null)) {
 
-            for (User user : users) {
-                members.add(user.getName() + " , " + user.getEmail());
+            for(User user:users){
+                members.add(user.getName()+" , " +user.getEmail());
             }
-
             ((TextView) findViewById(R.id.textViewGroupName)).setText(model.getCurrentGroupInUseByUser().getGroupDescription());
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.members, members);
-            ListView memberListView = (ListView) findViewById(R.id.membersList);
-            memberListView.setAdapter(adapter);
-            memberListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                }
-            });
-
         }
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,R.layout.members,members);
+        ListView memberListView = (ListView) findViewById(R.id.membersList);
+        memberListView.setAdapter(adapter);
+        memberListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            }
+        });
     }
 
     private void backToMapsButton(){

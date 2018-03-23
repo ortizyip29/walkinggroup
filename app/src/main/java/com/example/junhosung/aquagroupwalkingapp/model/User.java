@@ -12,8 +12,8 @@ public class User {
     private String name;
     private String email;
     private String password;
-    private int birthYear;
-    private int birthMonth;
+    private String birthYear;
+    private String birthMonth;
     private String address;
     private String cellPhone;
     private String homePhone;
@@ -21,14 +21,42 @@ public class User {
     private String teacherName;
     private String emergencyContactInfo;
     private GpsLocation lastGpsLocation;
+    private List<String> unreadMessages;
+    private List<String> readMessages;
     private String href;
 
     private List<User> monitoredByUsers = new ArrayList<>();
     private List<User> monitorsUsers = new ArrayList<>();
     private List<Group> memberOfGroups = new ArrayList<>();
     private List<Group> leadsGroups = new ArrayList<>();
-    private List<Message> unreadMessages = new ArrayList<>();
-    private List<Message> readMessages = new ArrayList<>();
+
+
+    public User(){
+    }
+
+    public String getBirthYear() {
+        return birthYear;
+    }
+
+    public String getBirthMonth() {
+        return birthMonth;
+    }
+
+    public List<String> getUnreadMessages() {
+        return unreadMessages;
+    }
+
+    public void setUnreadMessages(List<String> unreadMessages) {
+        this.unreadMessages = unreadMessages;
+    }
+
+    public List<String> getReadMessages() {
+        return readMessages;
+    }
+
+    public void setReadMessages(List<String> readMessages) {
+        this.readMessages = readMessages;
+    }
 
     public Long getId() {
         return id;
@@ -38,8 +66,19 @@ public class User {
         this.id = id;
     }
 
+
+
+    public void setBirthYear(String birthYear) {
+        this.birthYear = birthYear;
+    }
+
+    public void setBirthMonth(String birthMonth) {
+        this.birthMonth = birthMonth;
+    }
+
     public String getName() {
         return name;
+
     }
 
     public void setName(String name) {
@@ -102,23 +141,6 @@ public class User {
         this.href = href;
     }
 
-
-    public int getBirthYear() {
-        return birthYear;
-    }
-
-    public void setBirthYear(int birthYear) {
-        this.birthYear = birthYear;
-    }
-
-    public int getBirthMonth() {
-        return birthMonth;
-    }
-
-    public void setBirthMonth(int birthMonth) {
-        this.birthMonth = birthMonth;
-    }
-
     public String getAddress() {
         return address;
     }
@@ -173,22 +195,6 @@ public class User {
 
     public void setLastGpsLocation(GpsLocation lastGpsLocation) {
         this.lastGpsLocation = lastGpsLocation;
-    }
-
-    public List<Message> getUnreadMessages() {
-        return unreadMessages;
-    }
-
-    public void setUnreadMessages(List<Message> unreadMessages) {
-        this.unreadMessages = unreadMessages;
-    }
-
-    public List<Message> getReadMessages() {
-        return readMessages;
-    }
-
-    public void setReadMessages(List<Message> readMessages) {
-        this.readMessages = readMessages;
     }
 
 

@@ -1,9 +1,10 @@
 package com.example.junhosung.aquagroupwalkingapp.model;
 
 /**
- * Created by Junho Sung on 3/21/2018.
+ * Created by karti on 2018-03-21.
  */
-public class GpsLocation {
+
+class GpsLocation {
     private double lat;
     private double lng;
     private double timestamp;
