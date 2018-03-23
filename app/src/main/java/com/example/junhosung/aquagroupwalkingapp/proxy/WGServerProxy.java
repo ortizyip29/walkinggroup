@@ -135,18 +135,18 @@ public interface WGServerProxy {
     // Messages - @POST
 
     @POST("/messages/togroup/{groupId}")
-    Call<Message> newMessageToGroup(@Path("groupId") Long groupId, @Body Message newMessage);
+    Call<Message> newMsgToGroup(@Path("groupId") Long groupId, @Body Message newMessage);
 
-    @POST("/messages/toparentsof/{userId}")
-    Call<Message> sendMessageToParents(@Path("userId") Long userId, @Body Message newMessage);
+    @POST("/messages/toparentsof/{userId}") // to Monitoring
+    Call<Message> sendMsgeToParents(@Path("userId") Long userId, @Body Message newMessage);
 
     @POST("/messages/{messageId}/readby/{userId}")
-    Call<User> changeMessageStatusForUser(@Path("messageId") Long messageId, @Path("userId") Long userId, boolean trueOrFalse);
+    Call<User> changeMsgStatusForUser(@Path("messageId") Long messageId, @Path("userId") Long userId, boolean trueOrFalse);
 
     // Messages - @Delete
 
     @DELETE("/messages/{id}")
-    Call<Void> deleteMessage(@Path("id") Long messageId);
+    Call<Void> deleteMsg(@Path("id") Long messageId);
 
 
 }

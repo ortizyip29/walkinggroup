@@ -86,25 +86,37 @@ public class GroupManagementActivity extends AppCompatActivity {
     }
 
     private void refreshPage() {
-        model.getMembersOfGroup(model.getCurrentGroupInUseByUser().getId(),this::responseForUsersInGroup);
+
+        if(model.getCurrentGroupInUseByUser()==null) {
+            responseForUsersInGroup(null);
+        }
+
+        else {
+            model.getMembersOfGroup(model.getCurrentGroupInUseByUser().getId(),this::responseForUsersInGroup);
+        }
 
     }
 
     private void responseForUsersInGroup(List<User> users) {
         List<String> members = new ArrayList<>();
 
-        for(User user:users){
-            members.add(user.getName()+" , " +user.getEmail());
-        }
-        ((TextView) findViewById(R.id.textViewGroupName)).setText(model.getCurrentGroupInUseByUser().getGroupDescription());
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,R.layout.members,members);
-        ListView memberListView = (ListView) findViewById(R.id.membersList);
-        memberListView.setAdapter(adapter);
-        memberListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        if(!(users==null)) {
+
+            for (User user : users) {
+                members.add(user.getName() + " , " + user.getEmail());
             }
-        });
+
+            ((TextView) findViewById(R.id.textViewGroupName)).setText(model.getCurrentGroupInUseByUser().getGroupDescription());
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.members, members);
+            ListView memberListView = (ListView) findViewById(R.id.membersList);
+            memberListView.setAdapter(adapter);
+            memberListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                }
+            });
+
+        }
     }
 
     private void backToMapsButton(){

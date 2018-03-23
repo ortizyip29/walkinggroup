@@ -122,8 +122,12 @@ public class GroupModifyActivity extends AppCompatActivity {
     }
 
     public void refreshPage(){
-        model.getGroupDetailsById(model.getCurrentGroupInUseByUser().getId(),this::callbackForGetCurrentGroup);
-        model.getMonitoredById(current.getId(),this::responseWithUserMonitors);
+
+        if (model.getCurrentGroupInUseByUser() != null) {
+            model.getGroupDetailsById(model.getCurrentGroupInUseByUser().getId(),this::callbackForGetCurrentGroup);
+            model.getMonitoredById(current.getId(),this::responseWithUserMonitors);
+
+        }
 
     }
 
