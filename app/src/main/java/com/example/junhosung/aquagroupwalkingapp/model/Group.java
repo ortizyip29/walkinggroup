@@ -8,9 +8,6 @@ import java.util.List;
  */
 
 public class Group {
-
-
-    private List<Message> messages = new ArrayList<>();
     private long id;
     private String groupDescription;
     private List<Double> routeLatArray =  new ArrayList<>();
@@ -84,13 +81,6 @@ public class Group {
         return href;
     }
 
-    public List<Message> getMessages() {
-        return messages;
-    }
-
-    public void setMessages(List<Message> messages) {
-        this.messages = messages;
-    }
 
 
     @Override
