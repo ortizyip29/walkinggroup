@@ -62,6 +62,9 @@ public class Model extends AppCompatActivity {
         return modelInstance;
     }
 
+    public void setCurrentUser(User user){
+        this.currentUser = user;
+    }
 
     //methods for request from activities NOT related to the server
     public List<User> getUsers() {
@@ -88,6 +91,17 @@ public class Model extends AppCompatActivity {
 
     public void getGroupsOfUserNoCallToServer() {
     }
+
+
+
+
+
+
+
+
+
+
+
 
 
     //response methods from server

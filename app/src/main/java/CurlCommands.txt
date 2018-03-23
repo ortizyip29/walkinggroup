@@ -27,13 +27,13 @@ curl -k -s -i -H "Content-Type: application/json" \
 curl -k -s -i -H "Content-Type: application/json" \
    -H "apiKey: ${API_KEY}" \
    -X POST -d '{
-    "email": "test1@gmail.com",
-    "password": "myPassword"
+    "email": "1@1.ca",
+    "password": "1"
 }' ${ADDR_276_SERVER}/login
 
 
 //will get updated token on login
-TOKEN=eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0MUBnbWFpbC5jb20iLCJleHAiOjE1MjE4ODIxMDJ9.k-REU--_EGA8oFuGV50dQkC8wWvJV2I7Ro9pcG67iazo4TbXqN5nX7-nb2fuJT-SVax-roIM8vIjLbe4CRZGyQ
+TOKEN=eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxQDEuY2EiLCJleHAiOjE1MjI2NTQwMzd9.27NpIZBMaYOLYoBznv4GvhhiAyaqPTGPBN5PrFLYVJdewEBp_YXp0pY5wyaNRsaLO-TsOlathOB3esuXeRlDxw
 
 
 //LIST USERS

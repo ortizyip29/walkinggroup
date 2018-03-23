@@ -38,6 +38,18 @@ public class GroupManagementActivity extends AppCompatActivity {
         setupAddGroupButton();
         populateListView();
         backToMapsButton();
+        setupTempLaunchCheckGroupDetailActivityBtn();
+    }
+
+    private void setupTempLaunchCheckGroupDetailActivityBtn() {
+        Button button = (Button) findViewById(R.id.launchCheckGroupDetailActivity);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(GroupManagementActivity.this, CheckGroupsDetails.class);
+                startActivity(intent);
+            }
+        });
     }
 
 

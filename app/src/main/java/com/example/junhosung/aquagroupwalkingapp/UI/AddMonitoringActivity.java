@@ -28,6 +28,7 @@ public class AddMonitoringActivity extends AppCompatActivity {
     User receivedUser;
     String currentUserEmail = model.getCurrentUser().getEmail();
     User userMatch;
+    private final String TAG = "AddMonitoringActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,24 +44,37 @@ public class AddMonitoringActivity extends AppCompatActivity {
             public void onClick(View view) {
                 EditText newUser = (EditText) findViewById(R.id.typeEmail);
                 String email = newUser.getText().toString();
-                for (int i  = 0; i < usersServer.size();i++ ){
-                    if (usersServer.get(i).getEmail().equals(email)) {
-                        userMatch = usersServer.get(i);
-                        model.getUserByEmail(currentUserEmail,this::responseWithUserEmail);
-                    }
-                }
-                Intent intent = new Intent();
-                setResult(Activity.RESULT_OK,intent);
-                finish();
+                Log.v(TAG,"usersServer.size() " + usersServer.size());
+                //for (int i  = 0; i < usersServer.size();i++ ){
+               //     Log.i(TAG,"usersServer.getEmail().equal(email) " + usersServer.get(i).getEmail().equals(email));
+                  //  if (usersServer.get(i).getEmail().equals(email)) {
+                   //     userMatch = usersServer.get(i);
+                Log.v(TAG,"called get user by email" + email);
+
+                model.getUserByEmail(email,this::responseWithUserEmail);
+                   // }
+               // }
+
             }
 
             private void responseWithUserEmail(User user) {
-                receivedUser = user;
-                model.addNewMonitors(receivedUser.getId(),userMatch,this::responseAddNewMonitors);
+                Log.v(TAG,"callback came back with User");
+              if(user!=null){
+
+                  Log.v(TAG,"callback came back with User" +
+                          user.getId());
+                  //receivedUser = user;
+                  model.addNewMonitors(model.getCurrentUser().getId(),user,this::responseAddNewMonitors);
+              }
             }
 
             private void responseAddNewMonitors(List<User> users) {
 
+                Log.v(TAG,"response from server");
+                Toast.makeText(AddMonitoringActivity.this,"Succes",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent();
+                setResult(Activity.RESULT_OK,intent);
+                finish();
             }
         });
     }
