@@ -21,8 +21,8 @@ public class User {
     private String teacherName;
     private String emergencyContactInfo;
     private GpsLocation lastGpsLocation;
-    private List<String> unreadMessages;
-    private List<String> readMessages;
+    private List<Message> unreadMessages;
+    private List<Message> readMessages;
     private String href;
 
     private List<User> monitoredByUsers = new ArrayList<>();
@@ -42,19 +42,19 @@ public class User {
         return birthMonth;
     }
 
-    public List<String> getUnreadMessages() {
+    public List<Message> getUnreadMessages() {
         return unreadMessages;
     }
 
-    public void setUnreadMessages(List<String> unreadMessages) {
+    public void setUnreadMessages(List<Message> unreadMessages) {
         this.unreadMessages = unreadMessages;
     }
 
-    public List<String> getReadMessages() {
+    public List<Message> getReadMessages() {
         return readMessages;
     }
 
-    public void setReadMessages(List<String> readMessages) {
+    public void setReadMessages(List<Message> readMessages) {
         this.readMessages = readMessages;
     }
 

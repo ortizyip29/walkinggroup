@@ -30,7 +30,9 @@ public class SendMsgToParentsActivity extends AppCompatActivity {
                 EditText text = (EditText) findViewById(R.id.txtSendMsgParent);
                 String msgBody = text.getText().toString();
 
-                Message msg = new Message(msgBody,false);
+                Message msg = new Message();
+                msg.setText(msgBody);
+                msg.setEmergency(false);
 
                 model.newMsgToParents(urmomGroupId,msg,this::responseNewMsgToParents);
 

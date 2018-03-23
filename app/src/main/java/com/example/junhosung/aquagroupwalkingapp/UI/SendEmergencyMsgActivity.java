@@ -21,7 +21,9 @@ public class SendEmergencyMsgActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send_emergency_msg);
 
-        Message msgEmergency = new Message(emergencyMessage,true);
+        Message msgEmergency = new Message();
+        msgEmergency.setText(emergencyMessage);
+        msgEmergency.setEmergency(true);
 
         model.newMsgToParents(model.getCurrentUser().getId(),msgEmergency,this::responseToNewMsgToParents);
 
@@ -32,7 +34,9 @@ public class SendEmergencyMsgActivity extends AppCompatActivity {
         EditText tempText = (EditText) findViewById(R.id.txtMsgEmergency);
         String optionalText = tempText.getText().toString();
 
-        Message msgEmergencyOptional = new Message(optionalText,true);
+        Message msgEmergencyOptional = new Message();
+        msgEmergencyOptional.setText(optionalText);
+        msgEmergencyOptional.setEmergency(true);
 
         model.newMsgToParents(model.getCurrentUser().getId(),msgEmergencyOptional,this::responseToOptionalMsg);
 
