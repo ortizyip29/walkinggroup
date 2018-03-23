@@ -58,6 +58,7 @@
         <activity android:name=".UI.GroupManagementActivity" />
         <activity android:name=".UI.CreateNewGroupActivity" />
         <activity android:name=".UI.ChangeGroupActivity"></activity>
+        <activity android:name=".UI.MessagePanelActivity"></activity>
     </application>
 
 </manifest>

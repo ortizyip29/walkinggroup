@@ -5,6 +5,7 @@ package com.example.junhosung.aquagroupwalkingapp.proxy;
  */
 
 import com.example.junhosung.aquagroupwalkingapp.model.Group;
+import com.example.junhosung.aquagroupwalkingapp.model.Message;
 import com.example.junhosung.aquagroupwalkingapp.model.User;
 
 import java.util.List;
@@ -101,10 +102,51 @@ public interface WGServerProxy {
     @GET("/groups/{id}/memberUsers")
     Call<List<User>> getGroupMembers(@Path("id") Long groupId);
 
+    // Messages - @GET
 
-    /**
-     * MORE GOES HERE:
-     * - Monitoring
-     * - Group
-     */
+    @GET("/messages")
+    Call<List<Message>> getMessages();
+
+    @GET("/messages")
+    Call<List<Message>> getEmergencyMessages(@Query("is-emergency") boolean is_emergency);
+
+    @GET("/messages")
+    Call<List<Message>> getGroupMessages(@Query("togroup") Long groupId);
+
+    @GET("/messages")
+    Call<List<Message>> getGroupEmergencyMessages(@Query("togroup") Long groupId, @Query("is-emergency") boolean is_emergency);
+
+    @GET("/messages")
+    Call<List<Message>> getUserMessages(@Query("foruser") Long userId);
+
+    @GET("/messages")
+    Call<List<Message>> getUserUnreadMessages(@Query("foruser") Long userId, @Query("status") String readUnread);
+
+    @GET("/messages")
+    Call<List<Message>> getUserReadMessages(@Query("foruser") Long userId, @Query("status") String read);
+
+    @GET("/messages")
+    Call<List<Message>> getUserUnreadEmergencyMessages(@Query("foruser") Long userId, @Query("status") String unread, @Query("is-emergency")
+                                                       boolean is_emergency);
+
+    @GET("/messages/{id}")
+    Call<Message> getMessageById(@Path("id") Long userId);
+
+    // Messages - @POST
+
+    @POST("/messages/togroup/{groupId}")
+    Call<Message> newMessageToGroup(@Path("groupId") Long groupId, @Body Message newMessage);
+
+    @POST("/messages/toparentsof/{userId}")
+    Call<Message> sendMessageToParents(@Path("userId") Long userId, @Body Message newMessage);
+
+    @POST("/messages/{messageId}/readby/{userId}")
+    Call<User> changeMessageStatusForUser(@Path("messageId") Long messageId, @Path("userId") Long userId, boolean trueOrFalse);
+
+    // Messages - @Delete
+
+    @DELETE("/messages/{id}")
+    Call<Void> deleteMessage(@Path("id") Long messageId);
+
+
 }

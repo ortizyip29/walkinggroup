@@ -47,6 +47,7 @@ public class Model extends AppCompatActivity {
     private SimpleCallback callbackForDeleteMemberOfGroup;
     private SimpleCallback callbackForAddNewUserToGroup;
     private SimpleCallback callbackForGetMembersOfGroup;
+    private SimpleCallback callbackForGetUserUnreadMessages;
 
 
     //for internal model class
@@ -179,6 +180,10 @@ public class Model extends AppCompatActivity {
 
     private void responseForGetMembersOfGroups(List<User> users) {
         this.callbackForGetMembersOfGroup.callback(users);
+    }
+
+    private void responseForGetUserUnreadMessages(List<Message> messages) {
+        this.callbackForGetUserUnreadMessages.callback(messages);
     }
 
 
@@ -329,6 +334,18 @@ public class Model extends AppCompatActivity {
         Server server = new Server();
         if(isUserLoggedin) {
             server.getMembersOfGroup(groupId, this.tokenForLogin, this::responseForGetMembersOfGroups);
+        }
+    }
+
+
+    // Model methods regarding messages ...
+
+    public void getUserUnreadMessages(Long userId, String readUnread, SimpleCallback<List<Message>> callback) {
+        this.callbackForGetUserUnreadMessages = callback;
+        readUnread = "unread";
+        Server server = new Server();
+        if(isUserLoggedin) {
+            server.getUserUnreadMessages(userId,readUnread, this.tokenForLogin, this::responseForGetUserUnreadMessages);
         }
     }
 

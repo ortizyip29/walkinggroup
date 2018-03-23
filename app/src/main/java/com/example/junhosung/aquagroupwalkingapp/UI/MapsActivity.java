@@ -59,6 +59,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         setUpUpdateBtn();
         setUpLogoutBtn();
         setUpViewGroupBtn();
+
+        setupTempBtn();
+
         Button btn = (Button) findViewById(R.id.monitorbtn);
         btn.setOnClickListener(new OnClickListener() {
             @Override
@@ -228,4 +231,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         }
     }
+
+    // a little something while we settle the UI on fri ...
+
+    private void setupTempBtn() {
+        Button tempButton = (Button) findViewById(R.id.btnParentBoard);
+        tempButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MapsActivity.this, MessagePanelActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
 }
