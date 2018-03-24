@@ -43,8 +43,10 @@ public class SeeMonitoringActivity extends AppCompatActivity {
 
     private Model model = Model.getInstance();
     private UserCollectionServer users = model.users;
+    User currentUser;
     Button btnAddMonitoring;
     Button btnDeleteMonitoring;
+    Button btnEdit;
     String currentUserEmail = model.getCurrentUser().getEmail();
     User receivedUser;
     List<User> monitorsList;
@@ -82,6 +84,7 @@ public class SeeMonitoringActivity extends AppCompatActivity {
             isItemClicked.add(new Clicked());
         }
     }
+
 
 
     @Override
@@ -123,6 +126,29 @@ public class SeeMonitoringActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void setUpEditButton() {
+        btnEdit = (Button) findViewById(R.id.btnEdit);
+        btnEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int counter = 0;
+                for(Clicked thisItem: isItemClicked){
+                    if(thisItem.clicked){
+                        Long userId = monitorsList.get(counter).getId();
+                        Intent intent = EditChildActivity.makeIntent(SeeMonitoringActivity.this, userId);
+                        startActivity(intent);
+                    }
+                    counter++;
+                }
+            }
+
+
+
+        });
+
+    }
+
     private void populateListView() {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,R.layout.see_monitoring,
                 nameAndEmail);
