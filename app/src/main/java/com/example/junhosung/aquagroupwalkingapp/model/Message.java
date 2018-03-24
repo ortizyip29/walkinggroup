@@ -7,6 +7,15 @@ package com.example.junhosung.aquagroupwalkingapp.model;
 
 public class Message {
 
+
+    public Message() {
+    }
+
+    public Message(String text, boolean emergency) {
+        this.text = text;
+        this.emergency = emergency;
+    }
+
     private Long id;
     private Long timestamp;
     private String text;
@@ -15,9 +24,7 @@ public class Message {
     private boolean emergency;
     private String href;
 
-    public Message(){
 
-    }
     public Long getId() {
         return id;
     }

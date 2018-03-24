@@ -33,6 +33,8 @@ public class ParentDashboard extends AppCompatActivity implements OnMapReadyCall
         viewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent i = new Intent(ParentDashboard.this,MessagePanelActivity.class);
+                startActivity(i);
             }
         });
     }
@@ -42,6 +44,9 @@ public class ParentDashboard extends AppCompatActivity implements OnMapReadyCall
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent i = new Intent(ParentDashboard.this,SendMessageActivity.class);
+                startActivity(i);
+
             }
         });
     }

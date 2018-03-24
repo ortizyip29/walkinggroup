@@ -104,7 +104,7 @@ public class SeeMonitoredByActivity extends AppCompatActivity {
         }
     }
     private void populateListView() {
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.see_monitored_by,
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.see_monitoring,
                 nameAndEmail);
 
         ListView list = (ListView) findViewById(R.id.monitoredByList);
