@@ -9,11 +9,12 @@ import android.widget.EditText;
 import com.example.junhosung.aquagroupwalkingapp.R;
 import com.example.junhosung.aquagroupwalkingapp.model.Message;
 import com.example.junhosung.aquagroupwalkingapp.model.Model;
+import com.example.junhosung.aquagroupwalkingapp.model.User;
 
 public class SendMsgToGroupActivity extends AppCompatActivity {
 
     private Model model = Model.getInstance();
-    private Long urmomGroupId = Long.valueOf(11);
+    private Long urmomGroupId = Long.valueOf(10);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +23,7 @@ public class SendMsgToGroupActivity extends AppCompatActivity {
 
         Button btnSendMsgGroup = (Button) findViewById(R.id.btnSendMsgGroup);
         btnSendMsgGroup.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
                 EditText text = (EditText) findViewById(R.id.txtSendMsgGroup);
