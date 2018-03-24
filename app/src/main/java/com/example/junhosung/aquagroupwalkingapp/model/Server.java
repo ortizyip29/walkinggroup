@@ -60,7 +60,6 @@ public class Server extends AppCompatActivity {
     private SimpleCallback serverCallbackForNewMsgtoGroup;
     private SimpleCallback serverCallbackForNewMsgToParents;
 
-
     // response functions
     private void loginResponse(Void returnedNothing) {
         Log.w(TAG, "Server replied for user login: " );
@@ -283,6 +282,19 @@ public class Server extends AppCompatActivity {
         ProxyBuilder.callProxy(Server.this,caller,this::responseForGetMembersOfGroup);
     }
 
+    private void responseForUpdateUser(User user){
+        serverCallbackForUpdateUser.callback(user);
+    }
+
+    private SimpleCallback serverCallbackForUpdateUser;
+
+    public void updateUser(User user,String token,SimpleCallback<User> callback) {
+        onReceiveToken(token);
+        serverCallbackForUpdateUser = callback;
+        Call<User> caller = proxy.updateUser(user.getId(),user);
+        ProxyBuilder.callProxy(Server.this,caller,this::responseForUpdateUser);
+    }
+
     public void getUserUnreadMessages(Long userId, String readUnread,String token, SimpleCallback<List<Message>> callback) {
         onReceiveToken(token);
         readUnread = "unread";
@@ -315,7 +327,7 @@ public class Server extends AppCompatActivity {
         ProxyBuilder.callProxy(Server.this, caller, this::responseForNewMsgToParents);
     }
 
-    
+
 
 
 }

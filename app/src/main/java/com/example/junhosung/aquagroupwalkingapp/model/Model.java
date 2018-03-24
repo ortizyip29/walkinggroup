@@ -25,7 +25,7 @@ public class Model extends AppCompatActivity {
     private boolean isUserLoggedin;
     private String tokenForLogin;
     private List<User> currentListOfUsersForGroupInUseByUser; //for david -modify btn activity
-    private Group currentGroupInUseByUser;
+    private Group currentGroupInUseByUser = new Group();
     private List<Group> usersGroups;
 
 
@@ -66,6 +66,9 @@ public class Model extends AppCompatActivity {
         return modelInstance;
     }
 
+    public void setCurrentUser(User user){
+        this.currentUser = user;
+    }
 
     //methods for request from activities NOT related to the server
     public List<User> getUsers() {
@@ -92,6 +95,17 @@ public class Model extends AppCompatActivity {
 
     public void getGroupsOfUserNoCallToServer() {
     }
+
+
+
+
+
+
+
+
+
+
+
 
 
     //response methods from server
@@ -378,7 +392,13 @@ public class Model extends AppCompatActivity {
         }
     }
 
+    private void responseForUpdateUser(User user){
+        if(serverCallbackForUpdateUser!=null){
+            serverCallbackForUpdateUser.callback(user);
+        }
+    }
 
+    private SimpleCallback serverCallbackForUpdateUser;
     // Model methods regarding messages ...
 
     public void getUserUnreadMessages(Long userId, String readUnread, SimpleCallback<List<Message>> callback) {
@@ -417,4 +437,9 @@ public class Model extends AppCompatActivity {
 
 
 
+    public void updateUser(User user,SimpleCallback<User> callback) {
+        serverCallbackForUpdateUser = callback;
+        Server server = new Server();
+        server.updateUser(user,tokenForLogin,serverCallbackForUpdateUser);
+    }
 }
