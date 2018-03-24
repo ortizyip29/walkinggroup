@@ -23,7 +23,7 @@ public class GroupModifyActivity extends AppCompatActivity {
     private Model model = Model.getInstance();
 
 
-    long currentUserID;// = model.getCurrentGroupInUseByUser().getId();
+    long currentUserID; //= model.getCurrentGroupInUseByUser().getId();
     private List<User> listOfUsersDeleteable;
     private List<User> monitorsList;
     private String[] nameAndEmail;
@@ -38,7 +38,7 @@ public class GroupModifyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_modify);
         if(model.getCurrentGroupInUseByUser()!=null){
-             model.getCurrentGroupInUseByUser().getId();
+            currentUserID= model.getCurrentGroupInUseByUser().getId();
         }
 
         refreshPage();
