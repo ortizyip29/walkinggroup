@@ -25,7 +25,7 @@ public class Model extends AppCompatActivity {
     private boolean isUserLoggedin;
     private String tokenForLogin;
     private List<User> currentListOfUsersForGroupInUseByUser; //for david -modify btn activity
-    private Group currentGroupInUseByUser;
+    private Group currentGroupInUseByUser = new Group();
     private List<Group> usersGroups;
 
 
@@ -372,6 +372,17 @@ public class Model extends AppCompatActivity {
         }
     }
 
+    private void responseForUpdateUser(User user){
+        if(serverCallbackForUpdateUser!=null){
+            serverCallbackForUpdateUser.callback(user);
+        }
+    }
 
+    private SimpleCallback serverCallbackForUpdateUser;
 
+    public void updateUser(User user,SimpleCallback<User> callback) {
+        serverCallbackForUpdateUser = callback;
+        Server server = new Server();
+        server.updateUser(user,tokenForLogin,serverCallbackForUpdateUser);
+    }
 }

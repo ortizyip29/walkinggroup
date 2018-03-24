@@ -57,7 +57,6 @@ public class Server extends AppCompatActivity {
 
 
 
-
     // response functions
     private void loginResponse(Void returnedNothing) {
         Log.w(TAG, "Server replied for user login: " );
@@ -261,6 +260,19 @@ public class Server extends AppCompatActivity {
         serverCallbackForGetMembersOfGroup = callback;
         Call<List<User>> caller = proxy.getGroupMembers(groupId);
         ProxyBuilder.callProxy(Server.this,caller,this::responseForGetMembersOfGroup);
+    }
+
+    private void responseForUpdateUser(User user){
+        serverCallbackForUpdateUser.callback(user);
+    }
+
+    private SimpleCallback serverCallbackForUpdateUser;
+
+    public void updateUser(User user,String token,SimpleCallback<User> callback) {
+        onReceiveToken(token);
+        serverCallbackForUpdateUser = callback;
+        Call<User> caller = proxy.updateUser(user.getId(),user);
+        ProxyBuilder.callProxy(Server.this,caller,this::responseForUpdateUser);
     }
 
 

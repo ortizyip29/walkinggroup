@@ -203,16 +203,15 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", monitoredByUsers=" + monitoredByUsers +
-                ", monitorsUsers=" + monitorsUsers +
-                ", memberOfGroups=" + memberOfGroups +
-                ", leadsGroups=" + leadsGroups +
-                '}';
+        return "Name: " + name +
+                "\nEmail: " + email +
+                "\nAddress: " + address +
+                "\nCellPhone: "+ cellPhone +
+                "\nHomePhone: " + homePhone +
+                "\nGrade: " + grade +
+                "\nTeacher: " + teacherName +
+                "\nEmergency Contact: " + emergencyContactInfo;
+
     }
 
 }

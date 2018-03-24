@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 
@@ -122,28 +123,62 @@ public class GroupsLeaderOfActivity extends AppCompatActivity {
     }
 
     private void setupListViewOfUsers() {
-        ListView groupSelectedLeaderOf = (ListView) findViewById(R.id.groupSelectedLeaderOf);
+        Spinner groupSelectedLeaderOf = (Spinner) findViewById(R.id.selectUser);
         List<String> userDetail = new ArrayList<>();
         for(User user : listOfUsersForSelectedGroup){
             userDetail.add(user.getName());
         }
         ArrayAdapter<String>  adapter = new ArrayAdapter<String>(this, R.layout.user_leader_groups_users, userDetail);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         groupSelectedLeaderOf.setAdapter(adapter);
-        groupSelectedLeaderOf.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+        groupSelectedLeaderOf.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                EditText text = (EditText) findViewById(R.id.UserSelectedLeaderOf) ;
+                User currentUserSelected = listOfUsersForSelectedGroup.get(i);
+                String displayString = "";
+                if(currentUserSelected.getName()!=null){
+                    displayString = displayString +"Name: " + currentUserSelected.getName();
+                }
+                if(currentUserSelected.getEmail()!=null){
+                    displayString = displayString +"\nEmail: " + currentUserSelected.getEmail();
+                }
+                if(currentUserSelected.getCellPhone()!=null){
+                    displayString = displayString +"\nCellPhone: " + currentUserSelected.getCellPhone();
+                }
+                if(currentUserSelected.getHomePhone()!=null){
+                    displayString = displayString +"\nHomePhone: " + currentUserSelected.getHomePhone();
+                }
+                if(currentUserSelected.getGrade()!=null){
+                    displayString = displayString +"\nGrade: " + currentUserSelected.getGrade();
+                }
+                if(currentUserSelected.getTeacherName()!=null){
+                    displayString = displayString +"\nTeacherName: " + currentUserSelected.getTeacherName();
+                }
+                if(currentUserSelected.getEmergencyContactInfo()!=null){
+                    displayString = displayString +"\nEmergency Contact: " + currentUserSelected.getEmergencyContactInfo();
+                }
+                text.setText(displayString);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
             }
         });
 
+
     }
     private void SetupBackBtn() {
-        Button btn =  (Button) findViewById(R.id.btnBackFromGroupsLeaderOf);
+/*        Button btn =  (Button) findViewById(R.id.btnBackFromGroupsLeaderOf);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
-        });
+        });*/
     }
 
 

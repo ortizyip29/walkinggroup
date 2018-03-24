@@ -13,8 +13,6 @@ import android.widget.Toast;
 import com.example.junhosung.aquagroupwalkingapp.R;
 import com.example.junhosung.aquagroupwalkingapp.model.Model;
 import com.example.junhosung.aquagroupwalkingapp.model.User;
-import com.example.junhosung.aquagroupwalkingapp.model.User2;
-import com.example.junhosung.aquagroupwalkingapp.model.UserCollection;
 
 import java.util.List;
 
