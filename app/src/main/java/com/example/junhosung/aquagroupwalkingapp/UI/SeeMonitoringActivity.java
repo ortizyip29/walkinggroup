@@ -35,6 +35,7 @@ import com.example.junhosung.aquagroupwalkingapp.model.UserCollectionServer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
 
 
 public class SeeMonitoringActivity extends AppCompatActivity {
@@ -49,7 +50,6 @@ public class SeeMonitoringActivity extends AppCompatActivity {
     List<User> monitorsList;
     String[] nameAndEmail;
     String TAG;
-
     private List<Clicked> isItemClicked = new ArrayList<>();
     public class Clicked{
         public boolean clicked = false;

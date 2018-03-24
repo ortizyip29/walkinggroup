@@ -6,6 +6,7 @@ import com.example.junhosung.aquagroupwalkingapp.proxy.WGServerProxy;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import java.nio.file.Path;
 import java.util.List;
 
 import retrofit2.Call;
@@ -54,8 +55,10 @@ public class Server extends AppCompatActivity {
     private SimpleCallback serverCallbackForDeleteMemberOfGroup;
     private SimpleCallback serverCallbackForAddNewUserToGroup;
     private SimpleCallback serverCallbackForGetMembersOfGroup;
-
-
+    private SimpleCallback serverCallbackForGetUserUnreadMessages;
+    private SimpleCallback serverCallbackForGetUserReadMessages;
+    private SimpleCallback serverCallbackForNewMsgtoGroup;
+    private SimpleCallback serverCallbackForNewMsgToParents;
 
     // response functions
     private void loginResponse(Void returnedNothing) {
@@ -132,6 +135,23 @@ public class Server extends AppCompatActivity {
     private void responseForGetMembersOfGroup(List<User> users) {
         serverCallbackForGetMembersOfGroup.callback(users);
     }
+
+    private void responseForGetUserUnreadMessages(List<Message> messages) {
+        serverCallbackForGetUserUnreadMessages.callback(messages);
+    }
+
+    private void responseForGetUserReadMessages(List<Message> messages) {
+        serverCallbackForGetUserReadMessages.callback(messages);
+    }
+
+    private void responseForNewMsgToGroup(Message msg) {
+        serverCallbackForNewMsgtoGroup.callback(msg);
+    }
+
+    private void responseForNewMsgToParents(Message msg) {
+        serverCallbackForNewMsgtoGroup.callback(msg);
+    }
+
 
 
 
@@ -273,6 +293,38 @@ public class Server extends AppCompatActivity {
         serverCallbackForUpdateUser = callback;
         Call<User> caller = proxy.updateUser(user.getId(),user);
         ProxyBuilder.callProxy(Server.this,caller,this::responseForUpdateUser);
+    }
+
+    public void getUserUnreadMessages(Long userId, String readUnread,String token, SimpleCallback<List<Message>> callback) {
+        onReceiveToken(token);
+        readUnread = "unread";
+        serverCallbackForGetUserUnreadMessages = callback;
+        Call<List<Message>> caller = proxy.getUserUnreadMessages(userId,readUnread);
+        ProxyBuilder.callProxy(Server.this,caller,this::responseForGetUserUnreadMessages);
+    }
+
+    public void getUserReadMessages(Long userId, String readUnread, String token, SimpleCallback<List<Message>> callback) {
+        onReceiveToken(token);
+        readUnread = "read";
+        serverCallbackForGetUserReadMessages = callback;
+        Call<List<Message>> caller = proxy.getUserReadMessages(userId,readUnread);
+        ProxyBuilder.callProxy(Server.this,caller,this::responseForGetUserReadMessages);
+    }
+
+    public void newMsgToGroup(Long groupId, Message msg, String token, SimpleCallback<Message> callback) {
+        onReceiveToken(token);
+        serverCallbackForNewMsgtoGroup = callback;
+        Call<Message> caller = proxy.newMsgToGroup(groupId,msg);
+        ProxyBuilder.callProxy(Server.this, caller, this::responseForNewMsgToGroup);
+    }
+
+    // sends msg to 'parents' of the User with the input userId
+
+    public void newMsgToParents(Long userId, Message msg, String token, SimpleCallback<Message> callback) {
+        onReceiveToken(token);
+        serverCallbackForNewMsgtoGroup = callback;
+        Call<Message> caller = proxy.sendMsgeToParents(userId,msg);
+        ProxyBuilder.callProxy(Server.this, caller, this::responseForNewMsgToParents);
     }
 
 

@@ -12,12 +12,6 @@ public class User {
     private String name;
     private String email;
     private String password;
-
-    private List<User> monitoredByUsers = new ArrayList<>();
-    private List<User> monitorsUsers = new ArrayList<>();
-    private List<Group> memberOfGroups = new ArrayList<>();
-    private List<Group> leadsGroups = new ArrayList<>();
-
     private String birthYear;
     private String birthMonth;
     private String address;
@@ -31,9 +25,39 @@ public class User {
     private List<Message> readMessages;
     private String href;
 
-    public User(){
+    private List<User> monitoredByUsers = new ArrayList<>();
+    private List<User> monitorsUsers = new ArrayList<>();
+    private List<Group> memberOfGroups = new ArrayList<>();
+    private List<Group> leadsGroups = new ArrayList<>();
 
+
+    public User(){
     }
+
+    public String getBirthYear() {
+        return birthYear;
+    }
+
+    public String getBirthMonth() {
+        return birthMonth;
+    }
+
+    public List<Message> getUnreadMessages() {
+        return unreadMessages;
+    }
+
+    public void setUnreadMessages(List<Message> unreadMessages) {
+        this.unreadMessages = unreadMessages;
+    }
+
+    public List<Message> getReadMessages() {
+        return readMessages;
+    }
+
+    public void setReadMessages(List<Message> readMessages) {
+        this.readMessages = readMessages;
+    }
+
     public Long getId() {
         return id;
     }
@@ -43,15 +67,14 @@ public class User {
     }
 
 
+
     public void setBirthYear(String birthYear) {
         this.birthYear = birthYear;
     }
 
-
     public void setBirthMonth(String birthMonth) {
         this.birthMonth = birthMonth;
     }
-
 
     public String getName() {
         return name;
@@ -118,8 +141,6 @@ public class User {
         this.href = href;
     }
 
-
-
     public String getAddress() {
         return address;
     }
@@ -177,41 +198,18 @@ public class User {
     }
 
 
-    public String getBirthYear() {
-        return birthYear;
-    }
-
-    public String getBirthMonth() {
-        return birthMonth;
-    }
-
-    public List<Message> getUnreadMessages() {
-        return unreadMessages;
-    }
-
-    public void setUnreadMessages(List<Message> unreadMessages) {
-        this.unreadMessages = unreadMessages;
-    }
-
-    public List<Message> getReadMessages() {
-        return readMessages;
-    }
-
-    public void setReadMessages(List<Message> readMessages) {
-        this.readMessages = readMessages;
-    }
-
     @Override
     public String toString() {
-        return "Name: " + name +
-                "\nEmail: " + email +
-                "\nAddress: " + address +
-                "\nCellPhone: "+ cellPhone +
-                "\nHomePhone: " + homePhone +
-                "\nGrade: " + grade +
-                "\nTeacher: " + teacherName +
-                "\nEmergency Contact: " + emergencyContactInfo;
-
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", monitoredByUsers=" + monitoredByUsers +
+                ", monitorsUsers=" + monitorsUsers +
+                ", memberOfGroups=" + memberOfGroups +
+                ", leadsGroups=" + leadsGroups +
+                '}';
     }
 
 }

@@ -47,6 +47,10 @@ public class Model extends AppCompatActivity {
     private SimpleCallback callbackForDeleteMemberOfGroup;
     private SimpleCallback callbackForAddNewUserToGroup;
     private SimpleCallback callbackForGetMembersOfGroup;
+    private SimpleCallback callbackForGetUserUnreadMessages;
+    private SimpleCallback callbackForGetUserReadMessages;
+    private SimpleCallback callbackForNewMsgToGroup;
+    private SimpleCallback callbackForNewMsgToParents;
 
 
     //for internal model class
@@ -193,6 +197,22 @@ public class Model extends AppCompatActivity {
 
     private void responseForGetMembersOfGroups(List<User> users) {
         this.callbackForGetMembersOfGroup.callback(users);
+    }
+
+    private void responseForGetUserUnreadMessages(List<Message> messages) {
+        this.callbackForGetUserUnreadMessages.callback(messages);
+    }
+
+    private void responseForGetUserReadMessages(List<Message> messages) {
+        this.callbackForGetUserReadMessages.callback(messages);
+    }
+
+    private void responseForNewMsgToGroup(Message msg) {
+        this.callbackForNewMsgToGroup.callback(msg);
+    }
+
+    private void responseForNewMsgToParents(Message msg) {
+        this.callbackForNewMsgToParents.callback(msg);
     }
 
 
@@ -379,6 +399,43 @@ public class Model extends AppCompatActivity {
     }
 
     private SimpleCallback serverCallbackForUpdateUser;
+    // Model methods regarding messages ...
+
+    public void getUserUnreadMessages(Long userId, String readUnread, SimpleCallback<List<Message>> callback) {
+        this.callbackForGetUserUnreadMessages = callback;
+        readUnread = "unread";
+        Server server = new Server();
+        if(isUserLoggedin) {
+            server.getUserUnreadMessages(userId,readUnread, this.tokenForLogin, this::responseForGetUserUnreadMessages);
+        }
+    }
+
+    public void getUserReadMessages(Long userId, String readUnread, SimpleCallback<List<Message>> callback) {
+        this.callbackForGetUserReadMessages = callback;
+        readUnread = "read";
+        Server server = new Server();
+        if(isUserLoggedin) {
+            server.getUserReadMessages(userId,readUnread, this.tokenForLogin, this::responseForGetUserReadMessages);
+        }
+    }
+
+    public void newMsgToGroup(Long groupId, Message msg, SimpleCallback<Message> callback) {
+        this.callbackForNewMsgToGroup = callback;
+        Server server = new Server();
+        if(isUserLoggedin) {
+            server.newMsgToGroup(groupId,msg,this.tokenForLogin,this::responseForNewMsgToGroup);
+        }
+    }
+
+    public void newMsgToParents(Long userId, Message msg, SimpleCallback<Message> callback) {
+        this.callbackForNewMsgToParents = callback;
+        Server server = new Server();
+        if(isUserLoggedin) {
+            server.newMsgToGroup(userId,msg,this.tokenForLogin,this::responseForNewMsgToParents);
+        }
+    }
+
+
 
     public void updateUser(User user,SimpleCallback<User> callback) {
         serverCallbackForUpdateUser = callback;
