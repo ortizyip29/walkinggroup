@@ -8,17 +8,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.TextView.BufferType;
 
 import com.example.junhosung.aquagroupwalkingapp.R;
 import com.example.junhosung.aquagroupwalkingapp.model.Model;
 import com.example.junhosung.aquagroupwalkingapp.model.User;
 
-import java.util.List;
-
-public class EditAccountActivity extends AppCompatActivity {
+public class EditChildActivity extends AppCompatActivity {
     Model model = Model.getInstance();
-
+    private static final String USER_ID = "1234";
+    private Long CHILD_ID;
     EditText nameEdit;
     EditText birthMEdit;
     EditText birthYEdit;
@@ -30,11 +28,12 @@ public class EditAccountActivity extends AppCompatActivity {
     EditText teacherNEdit;
     EditText emergencyEdit;
 
-    User current = model.getCurrentUser()
+    User child;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        extractDataFromIntent();
         setContentView(R.layout.activity_edit_account);
         nameEdit = (EditText) findViewById(R.id.editName);
         birthMEdit = (EditText) findViewById(R.id.editBirthM);
@@ -46,17 +45,26 @@ public class EditAccountActivity extends AppCompatActivity {
         gradeEdit = (EditText) findViewById(R.id.editGrade);
         teacherNEdit = (EditText) findViewById(R.id.editTeacherName);
         emergencyEdit = (EditText) findViewById(R.id.editEmergency);
-        updateUI(current);
+        updateUI(child);
         setUpCancelbtn();
         setUpDonebtn();
     }
+
+
+
+
     boolean isEmailValid(CharSequence email) {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
+    private void getUserCallBack(User user){
+        updateUI(user);
+        child = user;
+    }
 
 
     private void updateUI(User user) {
+
         Long email = user.getId();
         String address = user.getAddress();
         String name = user.getName();
@@ -68,16 +76,18 @@ public class EditAccountActivity extends AppCompatActivity {
         String teacherN = user.getTeacherName();
         String emergencyContact = user.getEmergencyContactInfo();
 
-        nameEdit.setText(name, BufferType.EDITABLE);
-        birthMEdit.setText(String.valueOf(birthM), BufferType.EDITABLE);
-        birthYEdit.setText(String.valueOf(birthY), BufferType.EDITABLE);
-        addressEdit.setText(address, BufferType.EDITABLE);
-        homePEdit.setText(phone, BufferType.EDITABLE);
-        mobileEdit.setText(mobile, BufferType.EDITABLE);
-        emailEdit.setText(String.valueOf(email), BufferType.EDITABLE);
-        gradeEdit.setText(grade, BufferType.EDITABLE);
-        teacherNEdit.setText(teacherN, BufferType.EDITABLE);
-        emergencyEdit.setText(emergencyContact, BufferType.EDITABLE);
+        nameEdit.setText(name, TextView.BufferType.EDITABLE);
+        birthMEdit.setText(String.valueOf(birthM), TextView.BufferType.EDITABLE);
+        birthYEdit.setText(String.valueOf(birthY), TextView.BufferType.EDITABLE);
+        addressEdit.setText(address, TextView.BufferType.EDITABLE);
+        homePEdit.setText(phone, TextView.BufferType.EDITABLE);
+        mobileEdit.setText(mobile, TextView.BufferType.EDITABLE);
+        emailEdit.setText(String.valueOf(email), TextView.BufferType.EDITABLE);
+        gradeEdit.setText(grade, TextView.BufferType.EDITABLE);
+        teacherNEdit.setText(teacherN, TextView.BufferType.EDITABLE);
+        emergencyEdit.setText(emergencyContact, TextView.BufferType.EDITABLE);
+
+        child = user;
     }
 
     private void setUpDonebtn() {
@@ -88,13 +98,17 @@ public class EditAccountActivity extends AppCompatActivity {
 
 
                 String name = nameEdit.getText().toString();
-                int birthM = Integer.parseInt(birthMEdit.getText().toString());
+                int birthM;
                 if(birthMEdit.getText().toString().matches("")){
                     birthM = 0;
+                }else{
+                    birthM = Integer.parseInt(birthMEdit.getText().toString());
                 }
-                int birthY = Integer.parseInt(birthYEdit.getText().toString());
+                int birthY;
                 if(birthYEdit.getText().toString().matches("")){
                     birthY = 0;
+                }else{
+                    birthY = Integer.parseInt(birthYEdit.getText().toString());
                 }
 
                 String address = addressEdit.getText().toString();
@@ -107,22 +121,21 @@ public class EditAccountActivity extends AppCompatActivity {
 
 
 
-                model.editUser(name, birthY, birthM, address, homeP, mobile, email, grade, teacherN, emergency);
 
+                child.setName(name);
+                child.setBirthMonth(birthM);
+                child.setBirthYear(birthY);
+                child.setAddress(address);
+                child.setHomePhone(homeP);
+                child.setCellPhone(mobile);
+                child.setEmail(email);
+                child.setGrade(grade);
+                child.setTeacherName(teacherN);
+                child.setEmergencyContactInfo(emergency);
 
-                current.setName(name);
-                current.setAddress(address);
-                current.setHomePhone(homeP);
-                current.setCellPhone(mobile);
-                current.setEmail(email);
-                current.setGrade(grade);
-                current.setTeacherName(teacherN);
-                current.setEmergencyContactInfo(emergency);
-
-                model.updateUser(current, this::getUserUpdateCallBack);
-
+                model.updateUser(child, this::getUpdatedUserBack);
             }
-            private void getUserUpdateCallBack(User user){}
+            private void getUpdatedUserBack(User user){}
         });
     }
 
@@ -137,7 +150,22 @@ public class EditAccountActivity extends AppCompatActivity {
 
     }
 
-    public static Intent makeIntent(Context context) {
-        return new Intent(context, EditAccountActivity.class);
+    public static Intent makeIntent(Context context, Long userId) {
+       Intent intent = new Intent(context, EditChildActivity.class);
+       intent.putExtra(USER_ID, userId);
+       return intent;
+
+    }
+
+    private void extractDataFromIntent() {
+
+        Intent intent = getIntent();
+        if(intent != null) {
+            CHILD_ID = intent.getLongExtra(USER_ID, 1);
+            model.getUserById(this.CHILD_ID, this::getUserCallBack);
+
+        }
     }
 }
+
+

@@ -58,7 +58,8 @@
         <activity android:name=".UI.GroupManagementActivity" />
         <activity android:name=".UI.CreateNewGroupActivity" />
         <activity android:name=".UI.ChangeGroupActivity" />
-        <activity android:name=".UI.EditAccountActivity"></activity>
+        <activity android:name=".UI.EditAccountActivity" />
+        <activity android:name=".UI.EditChildActivity"></activity>
     </application>
 
 </manifest>

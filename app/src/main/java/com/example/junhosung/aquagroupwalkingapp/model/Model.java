@@ -47,6 +47,7 @@ public class Model extends AppCompatActivity {
     private SimpleCallback callbackForDeleteMemberOfGroup;
     private SimpleCallback callbackForAddNewUserToGroup;
     private SimpleCallback callbackForGetMembersOfGroup;
+    private SimpleCallback serverCallbackForUpdateUser;
 
 
     //for internal model class
@@ -181,6 +182,10 @@ public class Model extends AppCompatActivity {
         this.callbackForGetMembersOfGroup.callback(users);
     }
 
+    private void responseForUpdateUser(User user){
+        serverCallbackForUpdateUser.callback(user);
+    }
+
 
     //calls to server methods
     // Adding in currentUser
@@ -211,10 +216,11 @@ public class Model extends AppCompatActivity {
         server.createNewUser(user, this::createNewUserResponse);
     }
 
-    public void editUser(User user, String name, int birthY, int birthM, String address, String homeP, String mobile, String email, String grade, String teacherN){
+    public void editUser(String name, int birthY, int birthM, String address, String homeP, String mobile, String email, String grade, String teacherN, String emergency){
         /**
-         * need to implement if statements for conditions when function arguments are supposed to be ignored
+         * May not need this function
          */
+        User user = getCurrentUser();
         user.setName(name);
         user.setBirthMonth(birthM);
         user.setBirthYear(birthY);
@@ -224,10 +230,14 @@ public class Model extends AppCompatActivity {
         user.setEmail(email);
         user.setGrade(grade);
         user.setTeacherName(teacherN);
+        user.setEmergencyContactInfo(emergency);
+        // return this user to server, have not implemented yet
+    }
+
+    public void editChild(User child, String name, int birthY, int birthM, String address, String homeP, String mobile, String email, String grade, String teacherN, String emergency){
 
 
     }
-
     public void editEmergency(String name, String email, String phone){
 
     }
@@ -350,6 +360,12 @@ public class Model extends AppCompatActivity {
         if(isUserLoggedin) {
             server.getMembersOfGroup(groupId, this.tokenForLogin, this::responseForGetMembersOfGroups);
         }
+    }
+
+    public void updateUser(User user,SimpleCallback<User> callback) {
+        serverCallbackForUpdateUser = callback;
+        Server server = new Server();
+        server.updateUser(user,tokenForLogin,serverCallbackForUpdateUser);
     }
 
 

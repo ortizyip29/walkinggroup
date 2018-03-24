@@ -101,6 +101,8 @@ public interface WGServerProxy {
     @GET("/groups/{id}/memberUsers")
     Call<List<User>> getGroupMembers(@Path("id") Long groupId);
 
+    @POST("/users/{id}")
+    Call<User> updateUser(@Path("id") Long userId, @Body User user);
 
     /**
      * MORE GOES HERE:

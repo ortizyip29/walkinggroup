@@ -134,9 +134,11 @@ public class Server extends AppCompatActivity {
         serverCallbackForGetMembersOfGroup.callback(users);
     }
 
+    private void responseForUpdateUser(User user){
+        serverCallbackForUpdateUser.callback(user);
+    }
 
-
-
+    private SimpleCallback serverCallbackForUpdateUser;
 
 
     //call function
@@ -263,7 +265,12 @@ public class Server extends AppCompatActivity {
         ProxyBuilder.callProxy(Server.this,caller,this::responseForGetMembersOfGroup);
     }
 
-
+    public void updateUser(User user,String token,SimpleCallback<User> callback) {
+        onReceiveToken(token);
+        serverCallbackForUpdateUser = callback;
+        Call<User> caller = proxy.updateUser(user.getId(),user);
+        ProxyBuilder.callProxy(Server.this,caller,this::responseForUpdateUser);
+    }
 
 
 }

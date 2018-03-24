@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.junhosung.aquagroupwalkingapp.UI.EditAccountActivity"
-    tools:layout_editor_absoluteY="81dp">
+    tools:context="com.example.junhosung.aquagroupwalkingapp.UI.EditChildActivity">
 
     <ScrollView
         android:id="@+id/scrollEdit"
@@ -28,7 +27,7 @@
                 android:id="@+id/txtEdit"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:text="Edit Your Information"
+                android:text="Edit Child Information"
                 android:textColor="@color/common_google_signin_btn_text_dark_focused"
                 android:textSize="18sp" />
 

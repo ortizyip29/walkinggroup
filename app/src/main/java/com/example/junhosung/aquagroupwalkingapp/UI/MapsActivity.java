@@ -59,6 +59,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         setUpUpdateBtn();
         setUpLogoutBtn();
         setUpViewGroupBtn();
+        setupEditProfilebtn();
         Button btn = (Button) findViewById(R.id.monitorbtn);
         btn.setOnClickListener(new OnClickListener() {
             @Override
@@ -71,6 +72,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         MapFragment mapFrag = ((MapFragment) getFragmentManager().findFragmentById(R.id.mapFrag));
         mapFrag.getMapAsync(this);
         locationUpdate();
+    }
+
+    private void setupEditProfilebtn() {
+        Button btn = (Button) findViewById(R.id.btnEditProfile);
+        btn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = EditAccountActivity.makeIntent(MapsActivity.this);
+                startActivity(intent);
+            }
+        });
     }
 
     // circle now set 500 meter radius from myself
