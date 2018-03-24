@@ -29,7 +29,6 @@ public class MessagePanelActivity extends AppCompatActivity {
 
         setupBtnNewMsg();
         setupBtnOldMsg();
-        setupBtnSendMsg();
 
     }
 
@@ -59,17 +58,6 @@ public class MessagePanelActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MessagePanelActivity.this,ViewOldMessagesActivity.class);
-                startActivity(intent);
-            }
-        });
-    }
-
-    private void setupBtnSendMsg() {
-        Button btnSendMsg = (Button) findViewById(R.id.btnSendMsg);
-        btnSendMsg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MessagePanelActivity.this,SendMessageActivity.class);
                 startActivity(intent);
             }
         });
