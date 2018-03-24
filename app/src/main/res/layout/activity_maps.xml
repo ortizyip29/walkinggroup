@@ -17,7 +17,7 @@
         app:layout_constraintEnd_toStartOf="@+id/viewGroupBtn"
         app:layout_constraintHorizontal_bias="0.3"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/updateBtn" />
+        app:layout_constraintTop_toBottomOf="@+id/parentDashboardBtn" />
 
     <Button
         android:id="@+id/btnLogout"
@@ -35,9 +35,9 @@
         android:id="@+id/mapFrag"
         android:name="com.google.android.gms.maps.MapFragment"
         android:layout_width="379dp"
-        android:layout_height="312dp"
-        android:layout_marginTop="60dp"
+        android:layout_height="332dp"
 
+        android:layout_marginTop="52dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -56,11 +56,11 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/updateBtn"
+        android:id="@+id/parentDashboardBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="55dp"
-        android:text="update info"
+        android:text="Parent Dashboard"
 
         app:layout_constraintStart_toStartOf="@+id/mapFrag"
         app:layout_constraintTop_toTopOf="parent" />

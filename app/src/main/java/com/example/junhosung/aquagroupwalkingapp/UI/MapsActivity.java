@@ -9,7 +9,6 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.CountDownTimer;
-import android.os.SystemClock;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,35 +22,25 @@ import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Chronometer;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.junhosung.aquagroupwalkingapp.R;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
-import java.util.Timer;
-
-import static com.example.junhosung.aquagroupwalkingapp.model.Model.getInstance;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
     Model model = Model.getInstance();
@@ -83,6 +72,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         setUpUpdateBtn();
         setUpLogoutBtn();
         setUpViewGroupBtn();
+        setUpParentDashboard();
         Button btn = (Button) findViewById(R.id.monitorbtn);
         btn.setOnClickListener(new OnClickListener() {
             @Override
@@ -236,7 +226,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void setUpUpdateBtn() {
-        Button updateButton = (Button) findViewById(R.id.updateBtn);
+        Button updateButton = (Button) findViewById(R.id.parentDashboardBtn);
         updateButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -258,6 +248,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
            // mapDisplay.addMarker(groupMarker = new MarkerOptions().position(markLocation).title(groupList[i]).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
 
         }
+    }
+    private void setUpParentDashboard(){
+        Button parentDashButton = (Button) findViewById(R.id.parentDashboardBtn);
+        parentDashButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MapsActivity.this,ParentDashboard.class);
+                startActivity(intent);
+            }
+        });
     }
 
     /*private void displayTimeSinceLastUpdate() {
