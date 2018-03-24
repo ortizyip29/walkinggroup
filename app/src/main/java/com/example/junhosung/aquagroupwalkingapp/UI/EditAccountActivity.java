@@ -105,7 +105,7 @@ public class EditAccountActivity extends AppCompatActivity {
 
 
 
-                model.editUser(name, birthY, birthM, address, homeP, mobile, email, grade, teacherN, emergency);
+                //model.editUser(name, birthY, birthM, address, homeP, mobile, email, grade, teacherN, emergency);
 
 
                 current.setName(name);
