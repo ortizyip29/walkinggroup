@@ -30,7 +30,7 @@ public class EditAccountActivity extends AppCompatActivity {
     EditText teacherNEdit;
     EditText emergencyEdit;
 
-    User current = model.getCurrentUser()
+    User current = model.getCurrentUser();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
