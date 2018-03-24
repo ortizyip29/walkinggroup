@@ -57,7 +57,7 @@ public class EditAccountActivity extends AppCompatActivity {
 
 
     private void updateUI(User user) {
-        Long email = user.getId();
+        String email = user.getEmail();
         String address = user.getAddress();
         String name = user.getName();
         int birthM = user.getBirthMonth();
@@ -90,11 +90,9 @@ public class EditAccountActivity extends AppCompatActivity {
                 String name = nameEdit.getText().toString();
                 int birthM = Integer.parseInt(birthMEdit.getText().toString());
                 if(birthMEdit.getText().toString().matches("")){
-                    birthM = 0;
                 }
                 int birthY = Integer.parseInt(birthYEdit.getText().toString());
                 if(birthYEdit.getText().toString().matches("")){
-                    birthY = 0;
                 }
 
                 String address = addressEdit.getText().toString();
