@@ -101,11 +101,9 @@ public class EditAccountActivity extends AppCompatActivity {
                 String name = nameEdit.getText().toString();
                 int birthM = Integer.parseInt(birthMEdit.getText().toString());
                 if(birthMEdit.getText().toString().matches("")){
-                    birthM = 0;
                 }
                 int birthY = Integer.parseInt(birthYEdit.getText().toString());
                 if(birthYEdit.getText().toString().matches("")){
-                    birthY = 0;
                 }
 
                 String address = addressEdit.getText().toString();
