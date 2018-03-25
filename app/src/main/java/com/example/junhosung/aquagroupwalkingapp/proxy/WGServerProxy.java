@@ -139,10 +139,10 @@ public interface WGServerProxy {
     Call<Message> newMsgToGroup(@Path("groupId") Long groupId, @Body Message newMessage);
 
     @POST("/messages/toparentsof/{userId}") // to Monitoring
-    Call<Message> sendMsgeToParents(@Path("userId") Long userId, @Body Message newMessage);
+    Call<Message> sendMsgToParents(@Path("userId") Long userId, @Body Message newMessage);
 
     @POST("/messages/{messageId}/readby/{userId}")
-    Call<User> changeMsgStatusForUser(@Path("messageId") Long messageId, @Path("userId") Long userId, boolean trueOrFalse);
+    Call<User> msgMarkAsRead(@Path("messageId") Long messageId, @Path("userId") Long userId, boolean trueOrFalse);
 
     // Messages - @Delete
 

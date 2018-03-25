@@ -4,8 +4,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.example.junhosung.aquagroupwalkingapp.SimpleCallback;
+import com.example.junhosung.aquagroupwalkingapp.proxy.ProxyBuilder;
 
 import java.util.List;
+
+import retrofit2.Call;
 
 /**
  * Created by karti on 2018-03-04.
@@ -51,6 +54,7 @@ public class Model extends AppCompatActivity {
     private SimpleCallback callbackForGetUserReadMessages;
     private SimpleCallback callbackForNewMsgToGroup;
     private SimpleCallback callbackForNewMsgToParents;
+    private SimpleCallback callbackForMsgMarkAsRead;
 
 
     //for internal model class
@@ -215,34 +219,13 @@ public class Model extends AppCompatActivity {
         this.callbackForNewMsgToParents.callback(msg);
     }
 
+    private void responseForMsgMarkAsRead(User user) {
+        this.callbackForMsgMarkAsRead.callback(user);
+    }
+
 
     //calls to server methods
     // Adding in currentUser
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     public void logIn(String loginEmail, String password, SimpleCallback<Void> callback) {
@@ -431,15 +414,26 @@ public class Model extends AppCompatActivity {
         this.callbackForNewMsgToParents = callback;
         Server server = new Server();
         if(isUserLoggedin) {
-            server.newMsgToGroup(userId,msg,this.tokenForLogin,this::responseForNewMsgToParents);
+            server.newMsgToParents(userId,msg,this.tokenForLogin,this::responseForNewMsgToParents);
+        }
+    }
+
+    public void updateUser(User user,SimpleCallback<User> callback) {
+        this.serverCallbackForUpdateUser = callback;
+        if(isUserLoggedin) {
+            Server server = new Server();
+            server.updateUser(user, tokenForLogin, serverCallbackForUpdateUser);
+        }
+    }
+
+    public void msgMarkAsRead(Long messageId, Long userId, boolean sendFalse, SimpleCallback<User> callback) {
+        this.callbackForMsgMarkAsRead = callback;
+        if (isUserLoggedin) {
+            Server server = new Server();
+            server.msgMarkAsRead(messageId,userId,sendFalse,tokenForLogin,this::responseForMsgMarkAsRead);
         }
     }
 
 
 
-    public void updateUser(User user,SimpleCallback<User> callback) {
-        serverCallbackForUpdateUser = callback;
-        Server server = new Server();
-        server.updateUser(user,tokenForLogin,serverCallbackForUpdateUser);
-    }
 }

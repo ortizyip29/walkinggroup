@@ -1,5 +1,6 @@
 package com.example.junhosung.aquagroupwalkingapp.UI;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,8 +10,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.example.junhosung.aquagroupwalkingapp.R;
+import com.example.junhosung.aquagroupwalkingapp.model.Group;
 import com.example.junhosung.aquagroupwalkingapp.model.Message;
 import com.example.junhosung.aquagroupwalkingapp.model.Model;
+import com.example.junhosung.aquagroupwalkingapp.model.User;
 
 import java.util.List;
 
@@ -20,6 +23,7 @@ public class ViewNewMessagesActivity extends AppCompatActivity {
     private List<Message> unreadMessages;
     private String unread = "unread";
     private String[] content;
+    private User currentUser = model.getCurrentUser();
 
 
 
@@ -50,6 +54,23 @@ public class ViewNewMessagesActivity extends AppCompatActivity {
 
         ListView list = (ListView) findViewById(R.id.listNewMsg);
         list.setAdapter(adapter);
+
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                        @Override
+                                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                            Message clickedMessage = unreadMessages.get(i);
+
+                                            model.msgMarkAsRead(clickedMessage.getId(),currentUser.getId(),false,this::responseForMsgMarkAsRead);
+
+                                        }
+
+                                        private void responseForMsgMarkAsRead(User user) {
+                                            populateListView();
+                                        }
+
+                                    }
+
+        );
 
 
     }
