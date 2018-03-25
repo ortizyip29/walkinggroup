@@ -94,6 +94,7 @@ public class SeeMonitoringActivity extends AppCompatActivity {
         updateListOfMonitoring();
         setUpAddButton();
         setUpDeleteButton();
+        setUpEditButton();
 
     }
 
