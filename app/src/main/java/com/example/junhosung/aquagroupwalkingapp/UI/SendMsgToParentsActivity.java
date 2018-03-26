@@ -10,21 +10,36 @@ import android.widget.Toast;
 import com.example.junhosung.aquagroupwalkingapp.R;
 import com.example.junhosung.aquagroupwalkingapp.model.Message;
 import com.example.junhosung.aquagroupwalkingapp.model.Model;
+import com.example.junhosung.aquagroupwalkingapp.model.User;
 
 public class SendMsgToParentsActivity extends AppCompatActivity {
 
 
     private Model model = Model.getInstance();
-    private Long urmomGroupId = Long.valueOf(11);
-
+    private User currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send_msg_to_parent);
 
-        Button btnSendMsgGroup = (Button) findViewById(R.id.btnSendMsgParent);
-        btnSendMsgGroup.setOnClickListener(new View.OnClickListener() {
+        currentUser = model.getCurrentUser();
+
+        if (currentUser.getMonitoredByUsers().isEmpty()) {
+            Toast.makeText(this,"You don't have any 'parents' ... currently ... :( ",Toast.LENGTH_LONG).show();
+            finish();
+        }
+
+        else {
+            setupBtnSendMsgParent();
+        }
+
+    }
+
+    private void setupBtnSendMsgParent() {
+
+        Button btnSendMsgParent = (Button) findViewById(R.id.btnSendMsgParent);
+        btnSendMsgParent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 EditText text = (EditText) findViewById(R.id.txtSendMsgParent);
@@ -34,7 +49,7 @@ public class SendMsgToParentsActivity extends AppCompatActivity {
                 msg.setText(msgBody);
                 msg.setEmergency(false);
 
-                model.newMsgToParents(urmomGroupId,msg,this::responseNewMsgToParents);
+                model.newMsgToParents(currentUser.getId(),msg,this::responseNewMsgToParents);
 
                 finish();
 
@@ -44,12 +59,10 @@ public class SendMsgToParentsActivity extends AppCompatActivity {
                 //
             }
 
-
-
         });
 
-
-
-
     }
+
+
+
 }

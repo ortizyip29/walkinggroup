@@ -58,15 +58,29 @@ public class ViewNewMessagesActivity extends AppCompatActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                         @Override
                                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                            Message clickedMessage = unreadMessages.get(i);
 
-                                            model.msgMarkAsRead(clickedMessage.getId(),currentUser.getId(),false,this::responseForMsgMarkAsRead);
+                                            Message clickedMessage = unreadMessages.get(i);
+                                            model.msgMarkAsRead(clickedMessage.getId(),currentUser.getId(),true,this::responseForMsgMarkAsRead);
 
                                         }
 
                                         private void responseForMsgMarkAsRead(User user) {
-                                            populateListView();
+                                            model.getUserUnreadMessages(model.getCurrentUser().getId(),unread,this::responseGetUserUnreadMessages);
                                         }
+
+
+                                        private void responseGetUserUnreadMessages(List<Message> messages) {
+                                            unreadMessages = messages;
+                                            content = new String[unreadMessages.size()];
+                                            for (int i = 0; i < unreadMessages.size(); i ++) {
+                                                content[i] = unreadMessages.get(i).getText();
+                                            }
+
+                                            populateListView();
+
+                                            }
+
+
 
                                     }
 

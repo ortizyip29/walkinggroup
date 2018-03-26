@@ -141,13 +141,12 @@ public interface WGServerProxy {
     @POST("/messages/toparentsof/{userId}") // to Monitoring
     Call<Message> sendMsgToParents(@Path("userId") Long userId, @Body Message newMessage);
 
-    @POST("/messages/{messageId}/readby/{userId}")
-    Call<User> msgMarkAsRead(@Path("messageId") Long messageId, @Path("userId") Long userId, boolean trueOrFalse);
+    @POST("/messages/{messageId}/readby/{userId}") // in practical use, send only true since you shouldn't be able to mark a read message as unread
+    Call<User> msgMarkAsRead(@Path("messageId") Long messageId, @Path("userId") Long userId,@Body boolean trueOrFalse);
 
     // Messages - @Delete
 
     @DELETE("/messages/{id}")
     Call<Void> deleteMsg(@Path("id") Long messageId);
-
 
 }

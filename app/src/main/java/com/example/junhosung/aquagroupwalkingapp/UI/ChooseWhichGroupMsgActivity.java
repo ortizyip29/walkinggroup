@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.junhosung.aquagroupwalkingapp.R;
 import com.example.junhosung.aquagroupwalkingapp.model.Group;
@@ -26,11 +27,23 @@ public class ChooseWhichGroupMsgActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_which_group_msg);
 
-        for (int i = 0; i < userIsLeaderOf.size();i++) {
-            groupIdList[i] = userIsLeaderOf.get(i).getId();
+        if (userIsLeaderOf.isEmpty()) {
+            Toast.makeText(this,"you are not leading any groups!",Toast.LENGTH_LONG).show();
+            finish();
         }
 
-        populateListView();
+        else {
+
+            groupIdList = new Long [userIsLeaderOf.size()];
+            for (int i = 0; i < userIsLeaderOf.size();i++) {
+                groupIdList[i] = userIsLeaderOf.get(i).getId();
+            }
+
+            populateListView();
+
+        }
+
+
 
     }
 
@@ -50,13 +63,11 @@ public class ChooseWhichGroupMsgActivity extends AppCompatActivity {
                                             Intent intent = new Intent(ChooseWhichGroupMsgActivity.this,SendMsgToGroupActivity.class);
 
                                             Group group = userIsLeaderOf.get(i);
-
                                             Long groupId = group.getId();
 
                                             intent.putExtra("groupId",groupId);
 
                                             startActivity(intent);
-
 
                                         }
                                     }

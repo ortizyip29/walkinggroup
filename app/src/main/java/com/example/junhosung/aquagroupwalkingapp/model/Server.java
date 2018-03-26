@@ -334,10 +334,10 @@ public class Server extends AppCompatActivity {
         ProxyBuilder.callProxy(Server.this, caller, this::responseForNewMsgToParents);
     }
 
-    public void msgMarkAsRead(Long messageId, Long userId, boolean sendFalse, String token, SimpleCallback<User> callback) {
+    public void msgMarkAsRead(Long messageId, Long userId, boolean sendTrue, String token, SimpleCallback<User> callback) {
         onReceiveToken(token);
         serverCallbackForMsgMarkAsRead = callback;
-        Call<User> caller = proxy.msgMarkAsRead(messageId, userId, sendFalse);
+        Call<User> caller = proxy.msgMarkAsRead(messageId, userId, sendTrue);
         ProxyBuilder.callProxy(Server.this, caller, this::responseForMsgMarkAsRead);
     }
 

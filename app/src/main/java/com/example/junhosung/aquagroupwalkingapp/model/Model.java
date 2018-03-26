@@ -426,11 +426,11 @@ public class Model extends AppCompatActivity {
         }
     }
 
-    public void msgMarkAsRead(Long messageId, Long userId, boolean sendFalse, SimpleCallback<User> callback) {
+    public void msgMarkAsRead(Long messageId, Long userId, boolean sendTrue, SimpleCallback<User> callback) {
         this.callbackForMsgMarkAsRead = callback;
         if (isUserLoggedin) {
             Server server = new Server();
-            server.msgMarkAsRead(messageId,userId,sendFalse,tokenForLogin,this::responseForMsgMarkAsRead);
+            server.msgMarkAsRead(messageId,userId,sendTrue,tokenForLogin,this::responseForMsgMarkAsRead);
         }
     }
 
