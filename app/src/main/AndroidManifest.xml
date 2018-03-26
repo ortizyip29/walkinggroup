@@ -62,12 +62,12 @@
         <activity android:name=".UI.ViewNewMessagesActivity" />
         <activity android:name=".UI.ViewOldMessagesActivity" />
         <activity android:name=".UI.SendMessageActivity" />
-        <activity android:name=".UI.GroupsLeaderOfActivity"/>
         <activity android:name=".UI.SendMsgToGroupActivity" />
         <activity android:name=".UI.SendEmergencyMsgActivity" />
-        <activity android:name=".UI.SendMsgToParentsActivity"></activity>
+        <activity android:name=".UI.SendMsgToParentsActivity"/>
         <activity android:name=".UI.CheckGroupsDetails" />
-        <activity android:name=".UI.ParentDashboard"></activity>
+        <activity android:name=".UI.GroupsLeaderOfActivity" />
+        <activity android:name=".UI.ParentDashboard"></activity>3
     </application>
 
 </manifest>
