@@ -118,6 +118,7 @@ public class EditAccountActivity extends AppCompatActivity {
                 current.setEmergencyContactInfo(emergency);
 
                 model.updateUser(current, this::getUserUpdateCallBack);
+                finish();
 
             }
             private void getUserUpdateCallBack(User user){}

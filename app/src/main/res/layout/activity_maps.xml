@@ -94,7 +94,7 @@
         android:layout_height="38dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="4dp"
-        android:text="edit User"
+        android:text="edit my profile"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
