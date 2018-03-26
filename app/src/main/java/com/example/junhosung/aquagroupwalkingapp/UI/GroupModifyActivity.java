@@ -38,7 +38,7 @@ public class GroupModifyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_modify);
         if(model.getCurrentGroupInUseByUser()!=null){
-            currentUserID= model.getCurrentGroupInUseByUser().getId();
+            currentUserID = model.getCurrentGroupInUseByUser().getId();
         }
 
         refreshPage();
@@ -94,7 +94,10 @@ public class GroupModifyActivity extends AppCompatActivity {
     }
 
     public void refreshPage(){
+        Log.w(TAG,"model.getCurrentUSer"+model.getCurrentUser().toString());
+
         if(model.getCurrentGroupInUseByUser()!=null){
+
             model.getMonitorsById(model.getCurrentUser().getId(),this::responseWithUserMonitors); //list of monitoring
             //      model.getMonitoredById(current.getId(),this::responseWithUserMonitors);
             model.getGroupDetailsById(model.getCurrentGroupInUseByUser().getId(),this::callbackForGetCurrentGroup);//list of delete

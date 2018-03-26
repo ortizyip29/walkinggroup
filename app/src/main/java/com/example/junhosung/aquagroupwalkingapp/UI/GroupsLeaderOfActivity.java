@@ -16,15 +16,19 @@ import com.example.junhosung.aquagroupwalkingapp.model.Model;
 import com.example.junhosung.aquagroupwalkingapp.model.User;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+
 
 public class GroupsLeaderOfActivity extends AppCompatActivity {
 
     Model model = Model.getInstance();
     User currentUser = new User();
+//    List<User> listOfUsersThatAreGettingMoniterByCurrentUser = new ArrayList<>();
+    List<User> listOfUsersThatAreGettingMoniterByCurrentUserWithIdOnly = new ArrayList<>();
     User currentUserSelectedForGroupSelected = new User();
-    List<Group> groupsLeaderOf = new ArrayList<>();
-    List<Group> leaderOfGroupsWithIdOnly = new ArrayList<>();
+    List<Group> groupsThatUsersCanSeeInformationOn = new ArrayList<>();
+    List<Group> groupsThatUsersCanSeeInformationOnWithIdOnly = new ArrayList<>();
     List<User> listOfUsersForSelectedGroup = new ArrayList<>();
     List<User> listOfUserWhoMonitorUserWithIdOnly = new ArrayList<>();
     List<User> listOfUserWhoMonitorUser = new ArrayList<>();
@@ -44,39 +48,149 @@ public class GroupsLeaderOfActivity extends AppCompatActivity {
         for(Group group:currentUser.getLeadsGroups()) {
             Group newGroup = new Group();
             newGroup.setId(group.getId());
-            leaderOfGroupsWithIdOnly.add(newGroup);
+            groupsThatUsersCanSeeInformationOnWithIdOnly.add(newGroup);
             Log.v(TAG,"callded");
         }
-        getInformationOnGroups();
+        for(Group group:currentUser.getMemberOfGroups()) {
+            Group newGroup = new Group();
+            newGroup.setId(group.getId());
+            groupsThatUsersCanSeeInformationOnWithIdOnly.add(newGroup);
+            Log.v(TAG,"callded");
+        }
+        for(User user:currentUser.getMonitorsUsers())
+        {
+            User newUser = new User();
+            newUser.setId(user.getId());
+            listOfUsersThatAreGettingMoniterByCurrentUserWithIdOnly.add(newUser);
+        }
+        if(listOfUsersThatAreGettingMoniterByCurrentUserWithIdOnly.isEmpty()){
+            removeDuplicates();
+        } else {
+            getGroupsForUser();
+        }
         SetupBackBtn();
+    }
+    private void getGroupsForUser(){
+        while(!listOfUsersThatAreGettingMoniterByCurrentUserWithIdOnly.isEmpty()) {
+            progressBar.setVisibility(View.VISIBLE);
+            model.getUserById(listOfUsersThatAreGettingMoniterByCurrentUserWithIdOnly.get(0).getId(),this::responseForGetUserDetails);
+            listOfUsersThatAreGettingMoniterByCurrentUserWithIdOnly.remove(0);
+        }
+    }
+
+    private void responseForGetUserDetails(User responseUser) {
+        for(Group group:responseUser.getMemberOfGroups()) {
+            groupsThatUsersCanSeeInformationOnWithIdOnly.add(group);
+        }
+        if(!listOfUsersThatAreGettingMoniterByCurrentUserWithIdOnly.isEmpty()){
+            getGroupsForUser();
+        } else {
+            progressBar.setVisibility(View.GONE);
+            removeDuplicates();
+        }
+    }
+    private int compareTo1(Group a,Group b) {
+        if(a.getId() > b.getId()){
+            return 1;
+        } else if(a.getId() == b.getId()) {
+            return 0;
+        }
+        else {
+            return -1;
+        }
+    }
+
+    private void removeDuplicates() {
+        if(!groupsThatUsersCanSeeInformationOnWithIdOnly.isEmpty()) {
+            Collections.sort(groupsThatUsersCanSeeInformationOnWithIdOnly, (a, b) -> compareTo1(a,b) );
+            Log.w(TAG,"removeDuplicatesFunctionCalled");
+            for(Group group: groupsThatUsersCanSeeInformationOnWithIdOnly){
+                Log.w(TAG,"group ID in sorted order" + group.getId());
+            }
+            int checkUpperIndexForDuplicate = 1;
+            int checkLowerIndexForDuplicate = 0;
+            boolean duplicateFound = false;
+            if(groupsThatUsersCanSeeInformationOnWithIdOnly.size()>=2){
+                while(checkUpperIndexForDuplicate<groupsThatUsersCanSeeInformationOnWithIdOnly.size()) {
+                    if(groupsThatUsersCanSeeInformationOnWithIdOnly.get(checkLowerIndexForDuplicate).getId()==groupsThatUsersCanSeeInformationOnWithIdOnly.get(checkUpperIndexForDuplicate).getId()){
+                        Log.w(TAG,"duplicate Found: " + groupsThatUsersCanSeeInformationOnWithIdOnly.get(checkLowerIndexForDuplicate).getId()
+                                + " and " +groupsThatUsersCanSeeInformationOnWithIdOnly.get(checkUpperIndexForDuplicate).getId());
+                        groupsThatUsersCanSeeInformationOnWithIdOnly.remove(checkUpperIndexForDuplicate);
+                        duplicateFound = true;
+                    } else {
+                        Log.w(TAG,"duplicate Not  Found: " + groupsThatUsersCanSeeInformationOnWithIdOnly.get(checkLowerIndexForDuplicate).getId()
+                                + " and " +groupsThatUsersCanSeeInformationOnWithIdOnly.get(checkUpperIndexForDuplicate).getId());
+                        duplicateFound = false;
+                    }
+                    if(!duplicateFound){
+                        checkUpperIndexForDuplicate++;
+                        checkLowerIndexForDuplicate++;
+                        Log.w(TAG,"updating index upper: " + checkUpperIndexForDuplicate +" and lower " +checkLowerIndexForDuplicate);
+
+                    }
+                }
+            }
+            for(Group group: groupsThatUsersCanSeeInformationOnWithIdOnly){
+                Log.w(TAG,"group ID in sorted order after removing duplicates" + group.getId());
+            }
+
+        }
+        getInformationOnGroups();
+        /*        groupsThatUsersCanSeeInformationOnWithIdOnly.sort(Comparator.comparing((Group::getId)));
+        Comparator<Double> comp = (Double a, Double b) -> {
+            return b.compareTo(a);
+        };
+      Collections.sort(groupsThatUsersCanSeeInformationOnWithIdOnly, comp);
+*//*
+        Collections.sort(groupsThatUsersCanSeeInformationOnWithIdOnly, new Comparator<CustomData>() {
+            @Override
+            public int compare(CustomData lhs, CustomData rhs) {
+                // -1 - less than, 1 - greater than, 0 - equal, all inversed for descending
+                return lhs.customInt > rhs.customInt ? -1 : (lhs.customInt < rhs.customInt) ? 1 : 0;
+            }
+        });
+*/
+
     }
 
     private void getInformationOnGroups() {
-        if(!leaderOfGroupsWithIdOnly.isEmpty()){
+        if(!groupsThatUsersCanSeeInformationOnWithIdOnly.isEmpty()){
             progressBar.setVisibility(View.VISIBLE);
-            model.getGroupDetailsById(leaderOfGroupsWithIdOnly.get(0).getId(),this::responseGetGroupDetails);
-            leaderOfGroupsWithIdOnly.remove(0);
+            long id = groupsThatUsersCanSeeInformationOnWithIdOnly.get(0).getId();
+            Log.w(TAG,"group ID in sorted order before calling" + id);
+            groupsThatUsersCanSeeInformationOnWithIdOnly.remove(0);
+            model.getGroupDetailsById(id,this::responseGetGroupDetails);
         }
 
     }
 
     private void responseGetGroupDetails(Group group) {
-        groupsLeaderOf.add(group);
-        if(!leaderOfGroupsWithIdOnly.isEmpty()){
+        Log.w(TAG,"group ID in sorted order after response " + group.getId());
+        if(!groupsThatUsersCanSeeInformationOn.isEmpty()) {
+            if(groupsThatUsersCanSeeInformationOn.get(groupsThatUsersCanSeeInformationOn.size()-1).getId()!=group.getId() ) {
+                groupsThatUsersCanSeeInformationOn.add(group);
+            }
+        } else {
+            groupsThatUsersCanSeeInformationOn.add(group);
+        }
+        if(!groupsThatUsersCanSeeInformationOnWithIdOnly.isEmpty()){
             getInformationOnGroups();
         }else{
             progressBar.setVisibility(View.GONE);
-            SetupSelectGroupRadioButton();
+            for(Group printDubugGroup: groupsThatUsersCanSeeInformationOn){
+                Log.w(TAG,"group ID in sorted order" + printDubugGroup.getId() +  " and name " + printDubugGroup.getGroupDescription());
+            }
+            SetupSelectGroupSpinner();
         }
     }
 
 
-    private void SetupSelectGroupRadioButton() {
+    private void SetupSelectGroupSpinner() {
         Spinner spinner = (Spinner) findViewById(R.id.SelectGroup);
 
         List<String> groupDetail = new ArrayList<>();
-        if(groupsLeaderOf!=null){
-            for(Group group:groupsLeaderOf){
+        if(groupsThatUsersCanSeeInformationOn !=null){
+            for(Group group: groupsThatUsersCanSeeInformationOn){
                 groupDetail.add(group.getGroupDescription());
             }
         }
@@ -92,8 +206,8 @@ public class GroupsLeaderOfActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 listOfUsersWithIdOnlyForSelectedGroup = new ArrayList<>();
                 listOfUsersForSelectedGroup = new ArrayList<>();
-                if(!groupsLeaderOf.get(i).getMemberUsers().isEmpty()) {
-                    for(User user:groupsLeaderOf.get(i).getMemberUsers() ){
+                if(!groupsThatUsersCanSeeInformationOn.get(i).getMemberUsers().isEmpty()) {
+                    for(User user: groupsThatUsersCanSeeInformationOn.get(i).getMemberUsers() ){
                         User newUser = new User();
                         newUser.setId(user.getId());
                         listOfUsersWithIdOnlyForSelectedGroup.add(newUser);
@@ -119,7 +233,13 @@ public class GroupsLeaderOfActivity extends AppCompatActivity {
 
     private void responseWithUserDetailsAboutSelectedGroup(User user) {
         if(user!=null){
-            listOfUsersForSelectedGroup.add(user);
+            if(listOfUsersForSelectedGroup.isEmpty()){
+                listOfUsersForSelectedGroup.add(user);
+            } else {
+                if(listOfUsersForSelectedGroup.get(listOfUsersForSelectedGroup.size()-1).getId()!=user.getId()) {
+                    listOfUsersForSelectedGroup.add(user);
+                }
+            }
         }
         if(! listOfUsersWithIdOnlyForSelectedGroup.isEmpty()) {
             getUsersInformation();
@@ -180,6 +300,7 @@ public class GroupsLeaderOfActivity extends AppCompatActivity {
                     }
                 }
                 if(currentUserSelected!=null){
+
                     getInformationOnUsersForMonitoredBy();
                 }
             }
@@ -204,7 +325,13 @@ public class GroupsLeaderOfActivity extends AppCompatActivity {
     }
 
     private void responseForGetInformationOnUserForMonitoredByUSer(User user){
-        listOfUserWhoMonitorUser.add(user);
+        if(listOfUserWhoMonitorUser.isEmpty()) {
+            listOfUserWhoMonitorUser.add(user);
+        } else {
+            if(listOfUserWhoMonitorUser.get(listOfUserWhoMonitorUser.size()-1).getId()!=user.getId()) {
+                listOfUserWhoMonitorUser.add(user);
+            }
+        }
         if(!listOfUserWhoMonitorUserWithIdOnly.isEmpty()){
             getInformationOnUsersForMonitoredBy();
         } else {
@@ -216,7 +343,7 @@ public class GroupsLeaderOfActivity extends AppCompatActivity {
         Spinner spinner = (Spinner) findViewById(R.id.userMonitoredBySpinner);
 
         List<String> usersWhoMonitorSelectedUserDetails = new ArrayList<>();
-        if(groupsLeaderOf!=null){
+        if(groupsThatUsersCanSeeInformationOn !=null){
             for(User user:listOfUserWhoMonitorUser){
                 usersWhoMonitorSelectedUserDetails.add(user.getName()+ " , " + user.getEmail());
             }

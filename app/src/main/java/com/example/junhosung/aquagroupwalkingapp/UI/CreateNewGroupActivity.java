@@ -50,7 +50,6 @@ public class CreateNewGroupActivity extends AppCompatActivity {
                     Group group = new Group();
                     group.setGroupDescription(groupName);
                     group.setLeader(model.getCurrentUser());
-                    group.setId(-1);
                     Log.i(TAG,group.toString());
                     model.createNewGroup(group,this::responseForCreateNewUser);
                 }
