@@ -74,6 +74,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         setUpLogoutBtn();
         setUpViewGroupBtn();
         setUpParentDashboard();
+        setUpEditUserBtn();
         Button btn = (Button) findViewById(R.id.monitorbtn);
         btn.setOnClickListener(new OnClickListener() {
             @Override
@@ -267,24 +268,25 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
     }
-
+    private void setUpEditUserBtn(){
+        Button editUserButton = (Button) findViewById(R.id.editUserBtn);
+        editUserButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MapsActivity.this,EditAccountActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
 
    private void sendGroupCurrentLocation(Group group) {
 
         currentGroup = group;
-        //currentUser = currentGroup.getLeader();
-       // Double[] curlat = {49.2826, 49.2827};
-       // Double[] curlng = {-123.1206, 49.2728};
-       // GpsLocation myCurrentLocation = new GpsLocation();
-       // myCurrentLocation.setLat(49.2828);
-       // myCurrentLocation.setLng(-123.1208);
-       // currentUser.setLastGpsLocation(myCurrentLocation);
         setLatList = Arrays.asList(currentUserLat);
         setLngList = Arrays.asList(currentUserLng);
        currentGroup.setRouteLngArray(setLatList);
        currentGroup.setRouteLngArray(setLngList);
-        //currentGroup.setRouteLatArray(setLatList);
-        //currentGroup.setRouteLngArray(setLngList);
+
     }
 
     private void sendLocationSever() {
@@ -298,14 +300,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         model.getGroups(this::groupNameCallback);
     }
     private void sendMyLocation(User user){
-        //currentUser = user ;
         GpsLocation myCurrentLocation = new GpsLocation();
         myCurrentLocation.setLat(currentUserLat);
         myCurrentLocation.setLng(currentUserLng);
-        //setLatList = Arrays.asList(currentUserLat);
-        //setLngList = Arrays.asList(currentUserLng);
-        //Log.d("check lat", "onLocationChanged"+ setLatList);
-        //Log.d("check lng", "onLocationChanged"+ setLngList);
         user.setLastGpsLocation(myCurrentLocation);
 
     }
@@ -325,29 +322,28 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         else{
             markLatLng = new LatLng(groupLatArray[groupLatArray.length - 1], groupLngArray[groupLngArray.length - 1]);
         }
-
-
-        //currentGroup.getRouteLngArray().
-
     }
     private void groupNameCallback(List<Group> groups){
         List<String> groupsDisplay = new ArrayList<>();
         for(Group group:groups){
             groupsDisplay.add(group.getId()+ " , " + group.getGroupDescription());
+            Log.d("tag" ,"idc what it is"+ group.getGroupDescription());
+
         }
         String[] groupDisplayArray = new String[groupsDisplay.size()];
         int i;
         for (i = 0; i < groupDisplayArray.length; i++) {
             LatLng markLocation = new LatLng(49.2829,-123.1411 );
             getCoordinates();
-            mapDisplay.addMarker(groupMarker = new MarkerOptions().position(markLatLng).title(groupDisplayArray[i]).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
+            mapDisplay.addMarker(groupMarker = new MarkerOptions().position(markLocation).title(groupDisplayArray[i]).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
+            Log.d("tag" ,"idc what it is"+ groupDisplayArray[i]);
         }
     }
 
 
     private void locationTimer() {
         TextView updateTime = (TextView) findViewById(R.id.textViewTimeUpdate);
-        CountDownTimer timer = new CountDownTimer(30000, 1000) {
+        new CountDownTimer(30000, 1000) {
                 public void onTick(long millisUntilFinished) {
                     secondElapsed = millisUntilFinished / 1000;
                     updateTime.setText( Long.toString(secondElapsed) + " Seconds");

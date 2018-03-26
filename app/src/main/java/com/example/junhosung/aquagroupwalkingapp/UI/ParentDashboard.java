@@ -3,6 +3,7 @@ package com.example.junhosung.aquagroupwalkingapp.UI;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.CountDownTimer;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -34,7 +35,9 @@ public class ParentDashboard extends AppCompatActivity implements OnMapReadyCall
     String[] groupMembers;
     double currentUserLat = 0.00;
     double currentUserLng = 0.00;
-
+    long secondElapsed = 0;
+    long minuteElapsed =0;
+    boolean reachDestination = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,7 +116,9 @@ public class ParentDashboard extends AppCompatActivity implements OnMapReadyCall
             for (User user : users) {
                 members.add(user.getName());
                 user.getLastGpsLocation();
-                LatLng currentLocation = new LatLng(user.getLastGpsLocation().getLat(), user.getLastGpsLocation().getLng());
+                LatLng currentLocation = new LatLng(49.1617, -123.1019);
+
+                //LatLng currentLocation = new LatLng(user.getLastGpsLocation().getLat(), user.getLastGpsLocation().getLng());
                 marker = new MarkerOptions().position(currentLocation).title(user.getName());
                 parentMap.addMarker(marker);
             }
@@ -129,6 +134,7 @@ public class ParentDashboard extends AppCompatActivity implements OnMapReadyCall
     }
     private void responseSetChildLocation(List<User> users){
         for(User user:users){
+            currentUser = user;
             myLocationCallback();
         }
     }
@@ -137,5 +143,23 @@ public class ParentDashboard extends AppCompatActivity implements OnMapReadyCall
     }
     private void getUserAttributesAndLocation(){
         model.getMembersOfGroup(model.getCurrentGroupInUseByUser().getId(),this::responseGetUserAttributes);
+    }
+    private void childLocationTimer() {
+        TextView updateTime = (TextView) findViewById(R.id.textViewTimeUpdate);
+        new CountDownTimer(600000, 1000) {
+            public void onTick(long millisUntilFinished) {
+                secondElapsed = millisUntilFinished / 1000;
+                minuteElapsed = secondElapsed/60;
+                updateTime.setText( Long.toString(minuteElapsed)+"Minute"+ Long.toString(secondElapsed) + " Seconds");
+                /*if(reachDestination){
+                    cancel();
+                }*/
+            }
+            public void onFinish() {
+                updateTime.setText(Long.toString(minuteElapsed)+"Minute" + Long.toString(secondElapsed) + " Seconds");
+                updateTime.setText("The child has arrived at his destination with his group");
+
+            }
+        }.start();
     }
 }

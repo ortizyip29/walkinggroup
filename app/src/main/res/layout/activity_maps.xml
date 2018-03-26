@@ -85,4 +85,14 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
+    <Button
+        android:id="@+id/editUserBtn"
+        android:layout_width="149dp"
+        android:layout_height="38dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="4dp"
+        android:text="edit User"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </android.support.constraint.ConstraintLayout>

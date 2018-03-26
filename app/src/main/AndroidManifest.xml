@@ -61,6 +61,8 @@
         <activity android:name=".UI.MessagePanelActivity" />
         <activity android:name=".UI.ViewNewMessagesActivity" />
         <activity android:name=".UI.ViewOldMessagesActivity" />
+        <activity android:name=".UI.EditAccountActivity" />
+        <activity android:name=".UI.EditChildActivity" />
         <activity android:name=".UI.SendMessageActivity" />
         <activity android:name=".UI.SendMsgToGroupActivity" />
         <activity android:name=".UI.SendEmergencyMsgActivity" />
