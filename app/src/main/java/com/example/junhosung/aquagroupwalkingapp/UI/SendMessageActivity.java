@@ -16,6 +16,8 @@ public class SendMessageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_send_message);
 
         setupMsgToGroupBtn();
+        setupMsgToParentsBtn();
+        setupMsgEmergencyBtn();
     }
 
     private void setupMsgToGroupBtn() {
@@ -23,7 +25,7 @@ public class SendMessageActivity extends AppCompatActivity {
         btnMsgGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(SendMessageActivity.this,SendMsgToGroupActivity.class);
+                Intent intent = new Intent(SendMessageActivity.this,ChooseWhichGroupMsgActivity.class);
                 startActivity(intent);
 
             }
@@ -56,7 +58,5 @@ public class SendMessageActivity extends AppCompatActivity {
         });
 
     }
-
-
 
 }
