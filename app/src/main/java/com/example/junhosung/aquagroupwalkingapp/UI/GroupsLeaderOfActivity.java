@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+
 public class GroupsLeaderOfActivity extends AppCompatActivity {
 
     Model model = Model.getInstance();
