@@ -3,6 +3,7 @@ package com.example.junhosung.aquagroupwalkingapp.UI;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.CountDownTimer;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,12 +13,15 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.junhosung.aquagroupwalkingapp.R;
+import com.example.junhosung.aquagroupwalkingapp.model.GpsLocation;
 import com.example.junhosung.aquagroupwalkingapp.model.Group;
 import com.example.junhosung.aquagroupwalkingapp.model.Model;
 import com.example.junhosung.aquagroupwalkingapp.model.User;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,11 +29,15 @@ import java.util.List;
 public class ParentDashboard extends AppCompatActivity implements OnMapReadyCallback {
     GoogleMap parentMap;
     Model model = Model.getInstance();
+    MarkerOptions marker;
     Group currentGroup = model.getCurrentGroupInUseByUser();
     User currentUser = model.getCurrentUser();
     String[] groupMembers;
-
-
+    double currentUserLat = 0.00;
+    double currentUserLng = 0.00;
+    long secondElapsed = 0;
+    long minuteElapsed =0;
+    boolean reachDestination = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +47,10 @@ public class ParentDashboard extends AppCompatActivity implements OnMapReadyCall
         MapFragment parentMapFrag = ((MapFragment) getFragmentManager().findFragmentById(R.id.parentMapFragment));
         parentMapFrag.getMapAsync(this);
         getCurrentMembersInGroup();
+        updateChildrenLocation();
+        myLocationCallback();
+        setChildLocation();
+        getUserAttributesAndLocation();
         Log.d("", "responseForGetCurrentMembersInGroup:" + groupMembers);
     }
 
@@ -82,19 +94,72 @@ public class ParentDashboard extends AppCompatActivity implements OnMapReadyCall
     }
     public void getCurrentMembersInGroup(){
         if(model.getCurrentGroupInUseByUser()==null){
-            responseForGetCurrentMembersInGroup(null);
+            responseGetUserAttributes(null);
         } else {
-            model.getMembersOfGroup(model.getCurrentGroupInUseByUser().getId(),this::responseForGetCurrentMembersInGroup);
+            model.getMembersOfGroup(model.getCurrentGroupInUseByUser().getId(),this::responseGetUserAttributes);
         }
     }
-    private void responseForGetCurrentMembersInGroup(List<User> users) {
+    private void sendMyLocation(User user){
+        //currentUser = user ;
+        GpsLocation myCurrentLocation = new GpsLocation();
+        myCurrentLocation.setLat(currentUserLat);
+        myCurrentLocation.setLng(currentUserLng);
+        //setLatList = Arrays.asList(currentUserLat);
+        //setLngList = Arrays.asList(currentUserLng);
+        //Log.d("check lat", "onLocationChanged"+ setLatList);
+        //Log.d("check lng", "onLocationChanged"+ setLngList);
+        user.setLastGpsLocation(myCurrentLocation);
+    }
+    private void responseGetUserAttributes(List<User> users) {
         List<String> members = new ArrayList<>();
         if (!(users == null)) {
             for (User user : users) {
-                members.add(user.getName() + " , " + user.getEmail());
+                members.add(user.getName());
+                user.getLastGpsLocation();
+                LatLng currentLocation = new LatLng(49.1617, -123.1019);
+
+                //LatLng currentLocation = new LatLng(user.getLastGpsLocation().getLat(), user.getLastGpsLocation().getLng());
+                marker = new MarkerOptions().position(currentLocation).title(user.getName());
+                parentMap.addMarker(marker);
             }
             groupMembers = members.toArray(new String[members.size()]);
             Log.d("", "responseForGetCurrentMembersInGroup:" + groupMembers);
         }
+    }
+    private void myLocationCallback() {
+        model.updateUser(currentUser, this::sendMyLocation);
+    }
+    private void updateChildrenLocation(){
+        model.getMembersOfGroup(model.getCurrentGroupInUseByUser().getId(),this::responseSetChildLocation);
+    }
+    private void responseSetChildLocation(List<User> users){
+        for(User user:users){
+            currentUser = user;
+            myLocationCallback();
+        }
+    }
+    private void setChildLocation(){
+        model.getMembersOfGroup(model.getCurrentGroupInUseByUser().getId(),this::responseSetChildLocation);
+    }
+    private void getUserAttributesAndLocation(){
+        model.getMembersOfGroup(model.getCurrentGroupInUseByUser().getId(),this::responseGetUserAttributes);
+    }
+    private void childLocationTimer() {
+        TextView updateTime = (TextView) findViewById(R.id.textViewTimeUpdate);
+        new CountDownTimer(600000, 1000) {
+            public void onTick(long millisUntilFinished) {
+                secondElapsed = millisUntilFinished / 1000;
+                minuteElapsed = secondElapsed/60;
+                updateTime.setText( Long.toString(minuteElapsed)+"Minute"+ Long.toString(secondElapsed) + " Seconds");
+                /*if(reachDestination){
+                    cancel();
+                }*/
+            }
+            public void onFinish() {
+                updateTime.setText(Long.toString(minuteElapsed)+"Minute" + Long.toString(secondElapsed) + " Seconds");
+                updateTime.setText("The child has arrived at his destination with his group");
+
+            }
+        }.start();
     }
 }
