@@ -158,7 +158,6 @@ public class ParentDashboard extends AppCompatActivity implements OnMapReadyCall
             public void onFinish() {
                 updateTime.setText(Long.toString(minuteElapsed)+"Minute" + Long.toString(secondElapsed) + " Seconds");
                 updateTime.setText("The child has arrived at his destination with his group");
-
             }
         }.start();
     }

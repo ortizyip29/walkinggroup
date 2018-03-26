@@ -299,11 +299,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private void getGroupNameOnMap(){
         model.getGroups(this::groupNameCallback);
     }
-    private void sendMyLocation(User user){
+    private void sendMyLocation(User currentUser){
         GpsLocation myCurrentLocation = new GpsLocation();
         myCurrentLocation.setLat(currentUserLat);
         myCurrentLocation.setLng(currentUserLng);
-        user.setLastGpsLocation(myCurrentLocation);
+        currentUser.setLastGpsLocation(myCurrentLocation);
 
     }
     private void myLocationCallback() {
@@ -326,14 +326,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private void groupNameCallback(List<Group> groups){
         List<String> groupsDisplay = new ArrayList<>();
         for(Group group:groups){
-            groupsDisplay.add(group.getId()+ " , " + group.getGroupDescription());
+            groupsDisplay.add(group.getGroupDescription());
+            getCoordinates();
             Log.d("tag" ,"idc what it is"+ group.getGroupDescription());
-
         }
         String[] groupDisplayArray = new String[groupsDisplay.size()];
+
         int i;
-        for (i = 0; i < groupDisplayArray.length; i++) {
+        for (i = 0; i < groupsDisplay.size(); i++) {
             LatLng markLocation = new LatLng(49.2829,-123.1411 );
+            groupDisplayArray[i] = groupsDisplay.get(i);
             getCoordinates();
             mapDisplay.addMarker(groupMarker = new MarkerOptions().position(markLocation).title(groupDisplayArray[i]).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
             Log.d("tag" ,"idc what it is"+ groupDisplayArray[i]);
