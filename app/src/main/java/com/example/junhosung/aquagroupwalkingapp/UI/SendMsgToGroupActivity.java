@@ -27,6 +27,7 @@ public class SendMsgToGroupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send_msg_to_group);
 
+
         Intent receive = getIntent();
         selectedGroupId = receive.getLongExtra("groupId",0);
 
@@ -58,6 +59,8 @@ public class SendMsgToGroupActivity extends AppCompatActivity {
                 model.newMsgToGroup(selectedGroupId,msg,this::responseNewMsgToGroup);
 
                 finish();
+
+                Toast.makeText(SendMsgToGroupActivity.this,"message sent",Toast.LENGTH_LONG).show();
 
             }
 

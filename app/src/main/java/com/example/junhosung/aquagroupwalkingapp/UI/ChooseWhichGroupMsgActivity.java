@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.junhosung.aquagroupwalkingapp.R;
@@ -20,12 +21,18 @@ public class ChooseWhichGroupMsgActivity extends AppCompatActivity {
     Model model = Model.getInstance();
     List<Group> userIsLeaderOf = model.getCurrentUser().getLeadsGroups();
     Long [] groupIdList;
+    TextView selectGroup;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_which_group_msg);
+
+        selectGroup = (TextView) findViewById(R.id.txtChooseGroupMsg);
+        selectGroup.setText(R.string.select_group_to_msg);
+
+
 
         if (userIsLeaderOf.isEmpty()) {
             Toast.makeText(this,"you are not leading any groups!",Toast.LENGTH_LONG).show();
@@ -42,8 +49,6 @@ public class ChooseWhichGroupMsgActivity extends AppCompatActivity {
             populateListView();
 
         }
-
-
 
     }
 

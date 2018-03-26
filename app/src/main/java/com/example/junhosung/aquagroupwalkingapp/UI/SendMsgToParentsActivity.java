@@ -51,6 +51,8 @@ public class SendMsgToParentsActivity extends AppCompatActivity {
 
                 model.newMsgToParents(currentUser.getId(),msg,this::responseNewMsgToParents);
 
+                Toast.makeText(SendMsgToParentsActivity.this,"message sent",Toast.LENGTH_LONG).show();
+
                 finish();
 
             }
@@ -62,7 +64,6 @@ public class SendMsgToParentsActivity extends AppCompatActivity {
         });
 
     }
-
 
 
 }

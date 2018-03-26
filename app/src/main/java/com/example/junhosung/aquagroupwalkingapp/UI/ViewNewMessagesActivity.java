@@ -79,9 +79,6 @@ public class ViewNewMessagesActivity extends AppCompatActivity {
                                             populateListView();
 
                                             }
-
-
-
                                     }
 
         );

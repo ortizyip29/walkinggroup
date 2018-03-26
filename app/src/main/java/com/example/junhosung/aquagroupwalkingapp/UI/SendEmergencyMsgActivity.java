@@ -65,6 +65,9 @@ public class SendEmergencyMsgActivity extends AppCompatActivity {
 
                 Message msgEmergencyOptional = new Message(optionalText,true);
                 model.newMsgToParents(currentUser.getId(),msgEmergencyOptional,this::responseToOptionalMsg);
+
+                Toast.makeText(SendEmergencyMsgActivity.this,"optional emergency message sent!",Toast.LENGTH_LONG).show();
+
                 finish();
 
             }
