@@ -43,8 +43,10 @@ public class SeeMonitoringActivity extends AppCompatActivity {
 
     private Model model = Model.getInstance();
     private UserCollectionServer users = model.users;
+    User currentUser;
     Button btnAddMonitoring;
     Button btnDeleteMonitoring;
+    Button btnEdit;
     String currentUserEmail = model.getCurrentUser().getEmail();
     User receivedUser;
     List<User> monitorsList;
@@ -54,6 +56,22 @@ public class SeeMonitoringActivity extends AppCompatActivity {
     public class Clicked{
         public boolean clicked = false;
     }
+
+
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_see_monitoring);
+        updateListOfMonitoring();
+        setUpAddButton();
+        setUpDeleteButton();
+        setUpEditButton();
+
+
+    }
+
     private void updateListOfMonitoring(){
         model.getMonitorsById(model.getCurrentUser().getId(), this::responseWithUserMonitorsOnActivityResult);
     }
@@ -67,7 +85,7 @@ public class SeeMonitoringActivity extends AppCompatActivity {
         for(User user:users){
             Log.i(TAG,user.toString());
         }
-       // Toast.makeText(SeeMonitoringActivity.this,"this is runing!",Toast.LENGTH_LONG).show();
+        // Toast.makeText(SeeMonitoringActivity.this,"this is runing!",Toast.LENGTH_LONG).show();
 
         updateDisplayListAndDeleteList(users);
         populateListView();
@@ -83,16 +101,6 @@ public class SeeMonitoringActivity extends AppCompatActivity {
         }
     }
 
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_see_monitoring);
-        updateListOfMonitoring();
-        setUpAddButton();
-        setUpDeleteButton();
-
-    }
 
     private void setUpAddButton() {
         btnAddMonitoring = (Button) findViewById(R.id.btnAddMonitoree);
@@ -123,6 +131,29 @@ public class SeeMonitoringActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void setUpEditButton() {
+        btnEdit = (Button) findViewById(R.id.btnEdit);
+        btnEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int counter = 0;
+                for(Clicked thisItem: isItemClicked){
+                    if(thisItem.clicked){
+                        Long userId = monitorsList.get(counter).getId();
+                        Intent intent = EditChildActivity.makeIntent(SeeMonitoringActivity.this, userId);
+                        startActivity(intent);
+                    }
+                    counter++;
+                }
+            }
+
+
+
+        });
+
+    }
+
     private void populateListView() {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,R.layout.see_monitoring,
                 nameAndEmail);

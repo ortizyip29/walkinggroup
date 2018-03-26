@@ -6,7 +6,6 @@ import com.example.junhosung.aquagroupwalkingapp.proxy.WGServerProxy;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import java.nio.file.Path;
 import java.util.List;
 
 import retrofit2.Call;
@@ -57,8 +56,12 @@ public class Server extends AppCompatActivity {
     private SimpleCallback serverCallbackForGetMembersOfGroup;
     private SimpleCallback serverCallbackForGetUserUnreadMessages;
     private SimpleCallback serverCallbackForGetUserReadMessages;
-    private SimpleCallback serverCallbackForNewMsgtoGroup;
+    private SimpleCallback serverCallbackForNewMsgToGroup;
     private SimpleCallback serverCallbackForNewMsgToParents;
+    private SimpleCallback serverCallbackForMsgMarkAsRead;
+
+
+
 
     // response functions
     private void loginResponse(Void returnedNothing) {
@@ -145,11 +148,15 @@ public class Server extends AppCompatActivity {
     }
 
     private void responseForNewMsgToGroup(Message msg) {
-        serverCallbackForNewMsgtoGroup.callback(msg);
+        serverCallbackForNewMsgToGroup.callback(msg);
     }
 
     private void responseForNewMsgToParents(Message msg) {
-        serverCallbackForNewMsgtoGroup.callback(msg);
+        serverCallbackForNewMsgToParents.callback(msg);
+    }
+
+    private void responseForMsgMarkAsRead(User user) {
+        serverCallbackForMsgMarkAsRead.callback(user);
     }
 
 
@@ -313,7 +320,7 @@ public class Server extends AppCompatActivity {
 
     public void newMsgToGroup(Long groupId, Message msg, String token, SimpleCallback<Message> callback) {
         onReceiveToken(token);
-        serverCallbackForNewMsgtoGroup = callback;
+        serverCallbackForNewMsgToGroup = callback;
         Call<Message> caller = proxy.newMsgToGroup(groupId,msg);
         ProxyBuilder.callProxy(Server.this, caller, this::responseForNewMsgToGroup);
     }
@@ -322,10 +329,21 @@ public class Server extends AppCompatActivity {
 
     public void newMsgToParents(Long userId, Message msg, String token, SimpleCallback<Message> callback) {
         onReceiveToken(token);
-        serverCallbackForNewMsgtoGroup = callback;
-        Call<Message> caller = proxy.sendMsgeToParents(userId,msg);
+        serverCallbackForNewMsgToParents = callback;
+        Call<Message> caller = proxy.sendMsgToParents(userId,msg);
         ProxyBuilder.callProxy(Server.this, caller, this::responseForNewMsgToParents);
     }
+
+    public void msgMarkAsRead(Long messageId, Long userId, boolean sendTrue, String token, SimpleCallback<User> callback) {
+        onReceiveToken(token);
+        serverCallbackForMsgMarkAsRead = callback;
+        Call<User> caller = proxy.msgMarkAsRead(messageId, userId, sendTrue);
+        ProxyBuilder.callProxy(Server.this, caller, this::responseForMsgMarkAsRead);
+    }
+
+
+
+
 
 
 

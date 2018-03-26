@@ -12,8 +12,8 @@ public class User {
     private String name;
     private String email;
     private String password;
-    private String birthYear;
-    private String birthMonth;
+    private int birthYear;
+    private int birthMonth;
     private String address;
     private String cellPhone;
     private String homePhone;
@@ -34,11 +34,11 @@ public class User {
     public User(){
     }
 
-    public String getBirthYear() {
+    public int getBirthYear() {
         return birthYear;
     }
 
-    public String getBirthMonth() {
+    public int getBirthMonth() {
         return birthMonth;
     }
 
@@ -68,11 +68,11 @@ public class User {
 
 
 
-    public void setBirthYear(String birthYear) {
+    public void setBirthYear(int birthYear) {
         this.birthYear = birthYear;
     }
 
-    public void setBirthMonth(String birthMonth) {
+    public void setBirthMonth(int birthMonth) {
         this.birthMonth = birthMonth;
     }
 

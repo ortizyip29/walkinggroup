@@ -6,17 +6,29 @@ import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.junhosung.aquagroupwalkingapp.R;
+import com.example.junhosung.aquagroupwalkingapp.model.Group;
+import com.example.junhosung.aquagroupwalkingapp.model.Model;
+import com.example.junhosung.aquagroupwalkingapp.model.User;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ParentDashboard extends AppCompatActivity implements OnMapReadyCallback {
     GoogleMap parentMap;
+    Model model = Model.getInstance();
+    Group currentGroup = model.getCurrentGroupInUseByUser();
+    User currentUser = model.getCurrentUser();
+    String[] groupMembers;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +38,8 @@ public class ParentDashboard extends AppCompatActivity implements OnMapReadyCall
         setupViewButton();
         MapFragment parentMapFrag = ((MapFragment) getFragmentManager().findFragmentById(R.id.parentMapFragment));
         parentMapFrag.getMapAsync(this);
+        getCurrentMembersInGroup();
+        Log.d("", "responseForGetCurrentMembersInGroup:" + groupMembers);
     }
 
     private void setupViewButton() {
@@ -65,5 +79,22 @@ public class ParentDashboard extends AppCompatActivity implements OnMapReadyCall
             return;
         }
         parentMap.setMyLocationEnabled(true);
+    }
+    public void getCurrentMembersInGroup(){
+        if(model.getCurrentGroupInUseByUser()==null){
+            responseForGetCurrentMembersInGroup(null);
+        } else {
+            model.getMembersOfGroup(model.getCurrentGroupInUseByUser().getId(),this::responseForGetCurrentMembersInGroup);
+        }
+    }
+    private void responseForGetCurrentMembersInGroup(List<User> users) {
+        List<String> members = new ArrayList<>();
+        if (!(users == null)) {
+            for (User user : users) {
+                members.add(user.getName() + " , " + user.getEmail());
+            }
+            groupMembers = members.toArray(new String[members.size()]);
+            Log.d("", "responseForGetCurrentMembersInGroup:" + groupMembers);
+        }
     }
 }
