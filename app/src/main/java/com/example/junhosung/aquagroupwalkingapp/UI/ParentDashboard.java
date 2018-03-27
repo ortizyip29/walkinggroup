@@ -17,6 +17,8 @@ import com.example.junhosung.aquagroupwalkingapp.model.GpsLocation;
 import com.example.junhosung.aquagroupwalkingapp.model.Group;
 import com.example.junhosung.aquagroupwalkingapp.model.Model;
 import com.example.junhosung.aquagroupwalkingapp.model.User;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -29,7 +31,8 @@ import java.util.List;
 public class ParentDashboard extends AppCompatActivity implements OnMapReadyCallback {
     GoogleMap parentMap;
     Model model = Model.getInstance();
-    MarkerOptions marker;
+    MarkerOptions childMarker;
+    MarkerOptions monitoredMarker;
     Group currentGroup = model.getCurrentGroupInUseByUser();
     User currentUser = model.getCurrentUser();
     String[] groupMembers;
@@ -46,12 +49,14 @@ public class ParentDashboard extends AppCompatActivity implements OnMapReadyCall
         setupViewButton();
         MapFragment parentMapFrag = ((MapFragment) getFragmentManager().findFragmentById(R.id.parentMapFragment));
         parentMapFrag.getMapAsync(this);
+        updateListOfMonitoring();
         getCurrentMembersInGroup();
-        updateChildrenLocation();
-        myLocationCallback();
-        setChildLocation();
         getUserAttributesAndLocation();
-        Log.d("", "responseForGetCurrentMembersInGroup:" + groupMembers);
+        updateChildrenLocation();
+        sendMyLocation();
+        setChildLocation();
+
+        Log.d("", "responseForGetCurrentMembersInGroup:" + currentGroup.getMemberUsers());
     }
 
     private void setupViewButton() {
@@ -91,6 +96,9 @@ public class ParentDashboard extends AppCompatActivity implements OnMapReadyCall
             return;
         }
         parentMap.setMyLocationEnabled(true);
+        parentMap.moveCamera(CameraUpdateFactory.newLatLng((new LatLng(49.28,-123.1210))));
+        CameraUpdate defaultDisplay = CameraUpdateFactory.newLatLngZoom((new LatLng(49.28,-123.1210)), 15);
+        parentMap.animateCamera(defaultDisplay);
     }
     public void getCurrentMembersInGroup(){
         if(model.getCurrentGroupInUseByUser()==null){
@@ -98,51 +106,60 @@ public class ParentDashboard extends AppCompatActivity implements OnMapReadyCall
         } else {
             model.getMembersOfGroup(model.getCurrentGroupInUseByUser().getId(),this::responseGetUserAttributes);
         }
+        Log.d("tag","my honey is here ");// user.getName());
     }
-    private void sendMyLocation(User user){
+    private void sendMyLocation(){
         //currentUser = user ;
         GpsLocation myCurrentLocation = new GpsLocation();
-        myCurrentLocation.setLat(currentUserLat);
-        myCurrentLocation.setLng(currentUserLng);
+        //myCurrentLocation.setLat(currentUserLat);
+        //myCurrentLocation.setLng(currentUserLng);
+        myCurrentLocation.getLat();
+        myCurrentLocation.getLng();
         //setLatList = Arrays.asList(currentUserLat);
         //setLngList = Arrays.asList(currentUserLng);
         //Log.d("check lat", "onLocationChanged"+ setLatList);
         //Log.d("check lng", "onLocationChanged"+ setLngList);
-        user.setLastGpsLocation(myCurrentLocation);
+        currentUser.setLastGpsLocation(myCurrentLocation);
+        model.updateUser(currentUser, this::myLocationCallback);
+        Log.d("check lat", "onLocationChanged"+ currentUser.getLastGpsLocation().getLat());
+        Log.d("check lng", "onLocationChanged"+ currentUser.getLastGpsLocation().getLng());
+
     }
     private void responseGetUserAttributes(List<User> users) {
         List<String> members = new ArrayList<>();
-        if (!(users == null)) {
+       // if (!(users == null)) {
             for (User user : users) {
                 members.add(user.getName());
                 user.getLastGpsLocation();
-                LatLng currentLocation = new LatLng(49.1617, -123.1019);
-
+                //LatLng currentLocation = new LatLng(49.1617, -123.1019);
+                LatLng currentLocation = new LatLng(user.getLastGpsLocation().getLat(), user.getLastGpsLocation().getLng());
+                Log.d("tag","my child is "+ user.getName());
+                Log.d("tag", "child is at"+ user.getLastGpsLocation().getLat());
                 //LatLng currentLocation = new LatLng(user.getLastGpsLocation().getLat(), user.getLastGpsLocation().getLng());
-                marker = new MarkerOptions().position(currentLocation).title(user.getName());
-                parentMap.addMarker(marker);
+                childMarker = new MarkerOptions().position(currentLocation).title("Group Member: "+user.getName());
+                parentMap.addMarker(childMarker);
             }
             groupMembers = members.toArray(new String[members.size()]);
             Log.d("", "responseForGetCurrentMembersInGroup:" + groupMembers);
-        }
+        //}
     }
-    private void myLocationCallback() {
-        model.updateUser(currentUser, this::sendMyLocation);
-    }
-    private void updateChildrenLocation(){
-        model.getMembersOfGroup(model.getCurrentGroupInUseByUser().getId(),this::responseSetChildLocation);
+    private void myLocationCallback(User user) {
     }
     private void responseSetChildLocation(List<User> users){
-        for(User user:users){
-            currentUser = user;
-            myLocationCallback();
-        }
     }
+    private void updateChildrenLocation(){
+        for(User user:currentGroup.getMemberUsers()){
+            //currentUser = user;
+            sendMyLocation();
+        }
+        model.getMembersOfGroup(Long.valueOf(15),this::responseSetChildLocation);
+    }
+    //model.getCurrentGroupInUseByUser().getId()
     private void setChildLocation(){
-        model.getMembersOfGroup(model.getCurrentGroupInUseByUser().getId(),this::responseSetChildLocation);
+        model.getMembersOfGroup(Long.valueOf(15),this::responseSetChildLocation);
     }
     private void getUserAttributesAndLocation(){
-        model.getMembersOfGroup(model.getCurrentGroupInUseByUser().getId(),this::responseGetUserAttributes);
+        model.getMembersOfGroup(Long.valueOf(15),this::responseGetUserAttributes);
     }
     private void childLocationTimer() {
         TextView updateTime = (TextView) findViewById(R.id.textViewTimeUpdate);
@@ -160,5 +177,25 @@ public class ParentDashboard extends AppCompatActivity implements OnMapReadyCall
                 updateTime.setText("The child has arrived at his destination with his group");
             }
         }.start();
+    }
+    private void updateListOfMonitoring(){
+        model.getMonitorsById(model.getCurrentUser().getId(), this::responseWithUserMonitorsOnActivityResult);
+    }
+    private void responseWithUserMonitorsOnActivityResult(List<User> users) {
+        if(users==null){
+            Log.v("TAG","Users is null----------------------------------------------------");
+        } else{
+            Log.v("TAG","Users is not null----------------------------------------------");
+        }
+        for(User user:users){
+            Log.i("TAG",user.toString());
+            Log.i("tag", "monitoringperson"+ user.getLastGpsLocation().getLat());
+            Log.i("tag", "monitoringperson"+ user.getLastGpsLocation().getLng());
+            Log.i(     "tag","monitoringperson"+user.getName());
+            //LatLng monitoredLocation = new LatLng(user.getLastGpsLocation().getLat(),user.getLastGpsLocation().getLng());
+            LatLng monitoredLocation = new LatLng(user.getLastGpsLocation().getLat(),user.getLastGpsLocation().getLng());
+            monitoredMarker = new MarkerOptions().position(monitoredLocation).title("Monitoring Member "+user.getName());
+            parentMap.addMarker( monitoredMarker);
+        }
     }
 }
