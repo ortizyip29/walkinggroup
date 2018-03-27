@@ -127,8 +127,7 @@ public interface WGServerProxy {
     Call<List<Message>> getUserReadMessages(@Query("foruser") Long userId, @Query("status") String read);
 
     @GET("/messages")
-    Call<List<Message>> getUserUnreadEmergencyMessages(@Query("foruser") Long userId, @Query("status") String unread, @Query("is-emergency")
-                                                       boolean is_emergency);
+    Call<List<Message>> getUserUnreadEmergencyMessages(@Query("foruser") Long userId, @Query("status") String unread, @Query("is-emergency") boolean is_emergency);
 
     @GET("/messages/{id}")
     Call<Message> getMessageById(@Path("id") Long userId);
