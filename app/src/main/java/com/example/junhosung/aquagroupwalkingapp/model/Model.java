@@ -384,6 +384,7 @@ public class Model extends AppCompatActivity {
     private SimpleCallback serverCallbackForUpdateUser;
     // Model methods regarding messages ...
 
+
     public void getUserUnreadMessages(Long userId, String readUnread, SimpleCallback<List<Message>> callback) {
         this.callbackForGetUserUnreadMessages = callback;
         readUnread = "unread";

@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.junhosung.aquagroupwalkingapp.R;
 import com.example.junhosung.aquagroupwalkingapp.model.Group;
@@ -77,6 +78,8 @@ public class ViewNewMessagesActivity extends AppCompatActivity {
                                             }
 
                                             populateListView();
+                                            Toast.makeText(ViewNewMessagesActivity.this,
+                                                    "Message read and moved to old messages",Toast.LENGTH_LONG).show();
 
                                             }
                                     }

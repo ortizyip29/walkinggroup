@@ -49,7 +49,6 @@ public class MessagePanelActivity extends AppCompatActivity {
 
             private void responseGetUserUnreadMessages(List<Message> messages) {
                 unreadMessages = messages;
-                //Toast.makeText(MessagePanelActivity.this, ""+unreadMessages.size(),Toast.LENGTH_LONG).show();
 
                 TextView txtNumNewMsg = (TextView) findViewById(R.id.txtNumNewMsg);
                 txtNumNewMsg.setText("You have " + unreadMessages.size() + " unread messages!"  );
