@@ -27,6 +27,7 @@ public class EditChildActivity extends AppCompatActivity {
     EditText gradeEdit;
     EditText teacherNEdit;
     EditText emergencyEdit;
+
     User child;
 
     @Override
@@ -47,21 +48,32 @@ public class EditChildActivity extends AppCompatActivity {
         teacherNEdit = (EditText) findViewById(R.id.editTeacherName);
         emergencyEdit = (EditText) findViewById(R.id.editEmergency);
 
-        updateUI(child);
-
         setUpCancelbtn();
         setUpDonebtn();
-
     }
+
+
+
 
     boolean isEmailValid(CharSequence email) {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
+    private void extractDataFromIntent() {
+
+        Intent intent = getIntent();
+        if(intent != null) {
+            CHILD_ID = intent.getLongExtra(USER_ID, 1);
+            model.getUserById(this.CHILD_ID, this::getUserCallBack);
+
+        }
     }
 
     private void getUserCallBack(User user){
         child = user;
         updateUI(child);
     }
+
 
     private void updateUI(User user) {
 
@@ -87,7 +99,6 @@ public class EditChildActivity extends AppCompatActivity {
         teacherNEdit.setText(teacherN, TextView.BufferType.EDITABLE);
         emergencyEdit.setText(emergencyContact, TextView.BufferType.EDITABLE);
 
-        child = user;
     }
 
     private void setUpDonebtn() {
@@ -121,7 +132,6 @@ public class EditChildActivity extends AppCompatActivity {
                 String teacherN = teacherNEdit.getText().toString();
                 String emergency = emergencyEdit.getText().toString();
 
-
                 child.setName(name);
                 child.setAddress(address);
                 child.setHomePhone(homeP);
@@ -133,8 +143,9 @@ public class EditChildActivity extends AppCompatActivity {
 
                 model.updateUser(child, this::getUpdatedUserBack);
             }
-
-            private void getUpdatedUserBack(User user){}
+            private void getUpdatedUserBack(User user){
+                finish();
+            }
         });
     }
 
@@ -156,15 +167,7 @@ public class EditChildActivity extends AppCompatActivity {
 
     }
 
-    private void extractDataFromIntent() {
 
-        Intent intent = getIntent();
-        if(intent != null) {
-            CHILD_ID = intent.getLongExtra(USER_ID, 1);
-            model.getUserById(this.CHILD_ID, this::getUserCallBack);
-
-        }
-    }
 }
 
 

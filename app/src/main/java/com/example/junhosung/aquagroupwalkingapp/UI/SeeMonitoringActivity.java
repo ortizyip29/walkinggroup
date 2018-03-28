@@ -57,9 +57,6 @@ public class SeeMonitoringActivity extends AppCompatActivity {
         public boolean clicked = false;
     }
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -141,7 +138,12 @@ public class SeeMonitoringActivity extends AppCompatActivity {
                     if(thisItem.clicked){
                         Long userId = monitorsList.get(counter).getId();
                         Intent intent = EditChildActivity.makeIntent(SeeMonitoringActivity.this, userId);
-                        startActivity(intent);
+                        //Intent intent = new Intent(SeeMonitoringActivity.this, EditChildActivity.class);
+                        //intent.putExtra("test",userId);
+
+                        if (userId != null) {
+                            startActivity(intent);
+                        }
                     }
                     counter++;
                 }

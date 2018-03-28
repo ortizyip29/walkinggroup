@@ -73,7 +73,7 @@
         <activity android:name=".UI.ListUsers" />
         <activity android:name=".UI.DeleteMonitoringActivity" />
         <activity android:name=".UI.DeleteMonitoredByActivity" />
-        <activity android:name=".UI.ParentDashboard"></activity>3
+        <activity android:name=".UI.ParentDashboard"></activity>
     </application>
 
 </manifest>
