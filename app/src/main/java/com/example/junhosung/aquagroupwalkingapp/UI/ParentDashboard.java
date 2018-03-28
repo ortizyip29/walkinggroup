@@ -57,9 +57,10 @@ public class ParentDashboard extends AppCompatActivity implements OnMapReadyCall
         getUserAttributesAndLocation();
         updateChildrenLocation();
         sendMyLocation();
-        setChildLocation();
+       // setChildLocation();
         refreshMonitoringLocation();
         Log.d("", "responseForGetCurrentMembersInGroup:" + currentGroup.getMemberUsers());
+        Log.d("","mytimestamp"+currentUser.getLastGpsLocation().getTimestamp());
     }
 
     private void setupViewButton() {
@@ -100,8 +101,9 @@ public class ParentDashboard extends AppCompatActivity implements OnMapReadyCall
         }
         parentMap.setMyLocationEnabled(true);
         LatLng displayLatLng = new LatLng(currentUser.getLastGpsLocation().getLat(),currentUser.getLastGpsLocation().getLng());
+        Log.d("tag","wewerehere"+currentUser.getLastGpsLocation().getLat());
         parentMap.moveCamera(CameraUpdateFactory.newLatLng(displayLatLng));
-        CameraUpdate defaultDisplay = CameraUpdateFactory.newLatLngZoom(displayLatLng, 15);
+        CameraUpdate defaultDisplay = CameraUpdateFactory.newLatLngZoom(displayLatLng, 12);
         parentMap.animateCamera(defaultDisplay);
     }
     public void getCurrentMembersInGroup(){
@@ -127,7 +129,6 @@ public class ParentDashboard extends AppCompatActivity implements OnMapReadyCall
         model.updateUser(currentUser, this::myLocationCallback);
         Log.d("check lat", "onLocationChanged"+ currentUser.getLastGpsLocation().getLat());
         Log.d("check lng", "onLocationChanged"+ currentUser.getLastGpsLocation().getLng());
-
     }
     private void responseGetUserAttributes(List<User> users) {
         List<String> members = new ArrayList<>();
@@ -158,9 +159,9 @@ public class ParentDashboard extends AppCompatActivity implements OnMapReadyCall
         model.getMembersOfGroup(model.getCurrentGroupInUseByUser().getId(),this::responseSetChildLocation);
     }
     //model.getCurrentGroupInUseByUser().getId()
-    private void setChildLocation(){
+   /* private void setChildLocation(){
         model.getMembersOfGroup(model.getCurrentGroupInUseByUser().getId(),this::responseSetChildLocation);
-    }
+    }*/
     private void getUserAttributesAndLocation(){
         model.getMembersOfGroup(model.getCurrentGroupInUseByUser().getId(),this::responseGetUserAttributes);
     }
@@ -180,14 +181,11 @@ public class ParentDashboard extends AppCompatActivity implements OnMapReadyCall
         model.getMonitorsById(model.getCurrentUser().getId(), this::responseWithUserMonitorsOnActivityResult);
     }
     private void responseWithUserMonitorsOnActivityResult(List<User> users) {
-        if(users==null){
-            Log.v("TAG","Users is null----------------------------------------------------");
-        }
         for(User user:users){
-            Log.i("TAG",user.toString());
-            Log.i("tag", "monitoringperson"+ user.getLastGpsLocation().getLat());
-            Log.i("tag", "monitoringperson"+ user.getLastGpsLocation().getLng());
-            Log.i(     "tag","monitoringperson"+user.getName());
+            Log.d("TAG",user.toString());
+            Log.d("tag", "monitoringperson"+ user.getLastGpsLocation().getLat());
+            Log.d("tag", "monitoringperson"+ user.getLastGpsLocation().getLng());
+            Log.d(     "tag","monitoringperson"+user.getName());
            // LatLng monitoredLocation = new LatLng(user.getLastGpsLocation().getLat(),user.getLastGpsLocation().getLng());
             LatLng monitoredLocation = new LatLng(49.2827,-123.1208);
             minuteElapsed = childLocationTimer();
@@ -202,13 +200,13 @@ public class ParentDashboard extends AppCompatActivity implements OnMapReadyCall
             }
             public void onFinish() {
                 Toast.makeText(getApplicationContext(),"Monitoring users' location being updated",Toast.LENGTH_SHORT).show();
-                childLocationTimer();
+               // childLocationTimer();
                 updateListOfMonitoring();
                 getCurrentMembersInGroup();
                 getUserAttributesAndLocation();
                 updateChildrenLocation();
                 sendMyLocation();
-                setChildLocation();
+                //setChildLocation();
                 start();
             }
         }.start();

@@ -40,8 +40,10 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -49,6 +51,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     Model model = Model.getInstance();
     User currentUser = model.getCurrentUser();
     Group currentGroup = model.getCurrentGroupInUseByUser();
+   // GpsLocation myCurrentLocation = currentUser.getLastGpsLocation();
+    GpsLocation myCurrentLocation = new GpsLocation();
+
     private GoogleMap mapDisplay;
     Circle myRadius;
     MarkerOptions marker;
@@ -129,8 +134,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         mapDisplay.setMapType(GoogleMap.MAP_TYPE_NORMAL);
                         marker = new MarkerOptions().position(currentLocation).title("I'm Here");
                         mapDisplay.addMarker(marker);
-                        //markGroupsOnMap();
-                        // displayTimeSinceLastUpdate();
                         mapDisplay.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
                         CameraUpdate defaultDisplay = CameraUpdateFactory.newLatLngZoom(currentLocation, 17);
                         mapDisplay.animateCamera(defaultDisplay);
@@ -172,34 +175,34 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 100, 1, new LocationListener() {
                 @Override
                 public void onLocationChanged(Location location) {
+                    // LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                    LatLng currentLocation = new LatLng(currentUser.getLastGpsLocation().getLat(), currentUser.getLastGpsLocation().getLng());
                     Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
-                    LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
                     if (myRadius != null || marker != null) {
                         mapDisplay.clear();
                     }
+
                     try {
-                        geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 0);
-                        mapDisplay.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+                        //GpsLocation myCurrentLocation = new GpsLocation();
+                        //geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 0);
+                        geocoder.getFromLocation(currentUser.getLastGpsLocation().getLat(), currentUser.getLastGpsLocation().getLng(), 0);
+                        Toast.makeText(getApplicationContext(), "Our location is Latitude: " + currentUser.getLastGpsLocation().getLat() + "  Longitude: " + currentUser.getLastGpsLocation().getLng() + "  Location uploaded", Toast.LENGTH_LONG).show();
+                        mapDisplay.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+                        marker = new MarkerOptions().position(currentLocation).title("I'm Here");
+                        mapDisplay.addMarker(marker);
+                        mapDisplay.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
+                        CameraUpdate defaultDisplay = CameraUpdateFactory.newLatLngZoom(currentLocation, 17);
+                        mapDisplay.animateCamera(defaultDisplay);
                         currentUserLat = location.getLatitude();
                         currentUserLng = location.getLongitude();
-                        marker = new MarkerOptions().position(currentLocation).title("I'm here").snippet("Latitude" + Double.toString(currentUserLat) + "Longitude+" + Double.toString(currentUserLng));
-                        mapDisplay.addMarker(marker);
-                        // markGroupsOnMap();
-                        mapDisplay.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
-                        CameraUpdate defaultDisplay = CameraUpdateFactory.newLatLngZoom(currentLocation, 15);
-                        mapDisplay.animateCamera(defaultDisplay);
                         setLatList = Arrays.asList(currentUserLat);
                         setLngList = Arrays.asList(currentUserLng);
                         sendLocationSever();
                         sendMyLocation();
                         getGroupNameOnMap();
-
-                        Log.d("check lat", "onLocationChanged" + currentUserLat);
-                        Log.d("check lng", "onLocationChanged" + currentUserLng);
-                        //Log.d("check get coord","check coor" + currentGroup.getGroupDescription());
                         myRadius = mapDisplay.addCircle(new CircleOptions()
                                 .center(currentLocation)
-                                .radius(1000)
+                                .radius(100)
                                 .strokeColor(Color.BLUE)
                                 .fillColor(Color.TRANSPARENT));
 
@@ -331,11 +334,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void sendMyLocation() {
-        GpsLocation myCurrentLocation = new GpsLocation();
+        //myCurrentLocation = currentUser.getLastGpsLocation();
+        GpsLocation myCurrentLocation  = new GpsLocation();
         myCurrentLocation.setLat(currentUserLat);
         myCurrentLocation.setLng(currentUserLng);
+       // String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+        //myCurrentLocation.setTimestamp(timeStamp);
         currentUser.setLastGpsLocation(myCurrentLocation);
-        model.updateUser(currentUser, this :: myLocationCallback);
+        model.updateUser(currentUser, this::myLocationCallback);
         Log.d("Albert", "Albert" + myCurrentLocation.getLat() + myCurrentLocation.getLng());
         Log.d("albert", "Alert" + currentUser.getLastGpsLocation().getLat());//works
     }
@@ -352,7 +358,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         Log.d("tag", "holy" + groupLngArray[groupLngArray.length - 1]);
         if (currentGroup.getRouteLatArray().size() < 1) {
             Log.d("tag", "No groups have route array");
-            markLatLng = new LatLng(49.2829, -123.1411);
+            //markLatLng = new LatLng(49.2829, -123.1411);
         } else {
             markLatLng = new LatLng(groupLatArray[groupLatArray.length - 1], groupLngArray[groupLngArray.length - 1]);
         }
@@ -382,6 +388,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private void locationTimer() {
         TextView updateTime = (TextView) findViewById(R.id.textViewTimeUpdate);
+        atSchoolLocationTimer();
         new CountDownTimer(30000, 1000) {
             public void onTick(long millisUntilFinished) {
                 secondElapsed = millisUntilFinished / 1000;
@@ -397,17 +404,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 updateTime.setText(Long.toString(secondElapsed) + " Seconds");
                 Log.d("tag", "PreviousLat" + prevLat);
                 Log.d("tag", "PreviousLat" + prevLng);
-                atSchoolLocationTimer();
-                if (prevLat != currentUserLat && prevLng != currentUserLng && !atSchool) {
+                if (prevLat != currentUserLat && prevLng != currentUserLng) {
                     atSchoolLocationTimer();
                 }
-                start();
+                if(!atSchool) {
+                    start();
+                }
             }
         }.start();
     }
-
+   //
     private void atSchoolLocationTimer() {
-        new CountDownTimer(600000, 1000) {
+        new CountDownTimer(60000, 1000) {
             public void onTick(long millisUntilFinished) {
             }
 
