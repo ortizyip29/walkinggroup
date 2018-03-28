@@ -47,6 +47,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import static java.lang.Thread.sleep;
+
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
     Model model = Model.getInstance();
     User currentUser = model.getCurrentUser();
@@ -63,15 +65,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     List<Double> setLngList;
     Double[] groupLatArray;
     Double[] groupLngArray;
-    double currentUserLat = 49.2827;
-    double currentUserLng = -123.1207;
+    double currentUserLat;// = 49.2827;
+    double currentUserLng;// = -123.1207;
     double prevLat = 0.00;
     double prevLng = 0.00;
-    //long minuteElapsed;
     long secondElapsed = 0;
     boolean atSchool = false;
+    boolean cancelTimer = false;
     LatLng markLatLng = new LatLng(0.00, 0.00);
-    //Long groupId= Long. ;
 
 
     @Override
@@ -127,10 +128,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     }
 
                     try {
-                        //GpsLocation myCurrentLocation = new GpsLocation();
                         //geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 0);
                         geocoder.getFromLocation(currentUser.getLastGpsLocation().getLat(), currentUser.getLastGpsLocation().getLng(), 0);
-                        Toast.makeText(getApplicationContext(), "Our location is Latitude: " + currentUser.getLastGpsLocation().getLat() + "  Longitude: " + currentUser.getLastGpsLocation().getLng() + "  Location uploaded", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Our location is Latitude: " + currentUser.getLastGpsLocation().getLat() + "  Longitude: " + currentUser.getLastGpsLocation().getLng() + "  Location uploaded", Toast.LENGTH_SHORT).show();
                         mapDisplay.setMapType(GoogleMap.MAP_TYPE_NORMAL);
                         marker = new MarkerOptions().position(currentLocation).title("I'm Here");
                         mapDisplay.addMarker(marker);
@@ -183,7 +183,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     }
 
                     try {
-                        //GpsLocation myCurrentLocation = new GpsLocation();
                         //geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 0);
                         geocoder.getFromLocation(currentUser.getLastGpsLocation().getLat(), currentUser.getLastGpsLocation().getLng(), 0);
                         Toast.makeText(getApplicationContext(), "Our location is Latitude: " + currentUser.getLastGpsLocation().getLat() + "  Longitude: " + currentUser.getLastGpsLocation().getLng() + "  Location uploaded", Toast.LENGTH_LONG).show();
@@ -376,11 +375,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         int i;
         for (i = 0; i < groupsDisplay.size(); i++) {
-            LatLng markLocation = new LatLng(49.1217 + (i / 100), -123.1269 + (i / 100));
+            LatLng markLocation = new LatLng(49.1217 , -123.1269);
             groupDisplayArray[i] = groupsDisplay.get(i);
             //getCoordinates();
             mapDisplay.addMarker(groupMarker = new MarkerOptions().position(markLocation).title(groupDisplayArray[i]).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
-            Log.d("tag", "idc what it is" + groupDisplayArray[i]);
+            Log.d("tag", "who are these groups" + groupDisplayArray[i]);
         }
 
     }
@@ -405,6 +404,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 Log.d("tag", "PreviousLat" + prevLat);
                 Log.d("tag", "PreviousLat" + prevLng);
                 if (prevLat != currentUserLat && prevLng != currentUserLng) {
+                    cancelTimer = true;
                     atSchoolLocationTimer();
                 }
                 if(!atSchool) {
@@ -413,12 +413,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         }.start();
     }
-   //
-    private void atSchoolLocationTimer() {
-        new CountDownTimer(60000, 1000) {
-            public void onTick(long millisUntilFinished) {
-            }
 
+    private void atSchoolLocationTimer() {
+        new CountDownTimer(600000, 1000) {
+            public void onTick(long millisUntilFinished) {
+                if(cancelTimer){
+                    cancel();
+                }
+            }
             public void onFinish() {
                 atSchool = true;
                 Toast.makeText(getApplicationContext(),"ARRIVED at school,location update will stop",Toast.LENGTH_SHORT).show();

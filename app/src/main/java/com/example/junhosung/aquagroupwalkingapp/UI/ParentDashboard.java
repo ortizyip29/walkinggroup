@@ -37,12 +37,10 @@ public class ParentDashboard extends AppCompatActivity implements OnMapReadyCall
     Group currentGroup = model.getCurrentGroupInUseByUser();
     User currentUser = model.getCurrentUser();
     String[] groupMembers;
-    double currentUserLat = 0.00;
-    double currentUserLng = 0.00;
+  //  double currentUserLat = 0.00;
+   // double currentUserLng = 0.00;
     long secondElapsed = 0;
     long minuteElapsed = 0;
-   // long minuteElapsed =0;
-    boolean reachDestination = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,6 +99,7 @@ public class ParentDashboard extends AppCompatActivity implements OnMapReadyCall
         }
         parentMap.setMyLocationEnabled(true);
         LatLng displayLatLng = new LatLng(currentUser.getLastGpsLocation().getLat(),currentUser.getLastGpsLocation().getLng());
+        displayLatLng = new LatLng(49.2767,-122.918);
         Log.d("tag","wewerehere"+currentUser.getLastGpsLocation().getLat());
         parentMap.moveCamera(CameraUpdateFactory.newLatLng(displayLatLng));
         CameraUpdate defaultDisplay = CameraUpdateFactory.newLatLngZoom(displayLatLng, 12);
@@ -115,14 +114,9 @@ public class ParentDashboard extends AppCompatActivity implements OnMapReadyCall
         Log.d("tag","my honey is here ");// user.getName());
     }
     private void sendMyLocation(){
-        //currentUser = user ;
         GpsLocation myCurrentLocation = new GpsLocation();
-        //myCurrentLocation.setLat(currentUserLat);
-        //myCurrentLocation.setLng(currentUserLng);
         myCurrentLocation.getLat();
         myCurrentLocation.getLng();
-        //setLatList = Arrays.asList(currentUserLat);
-        //setLngList = Arrays.asList(currentUserLng);
         //Log.d("check lat", "onLocationChanged"+ setLatList);
         //Log.d("check lng", "onLocationChanged"+ setLngList);
         currentUser.setLastGpsLocation(myCurrentLocation);
@@ -201,6 +195,8 @@ public class ParentDashboard extends AppCompatActivity implements OnMapReadyCall
             public void onFinish() {
                 Toast.makeText(getApplicationContext(),"Monitoring users' location being updated",Toast.LENGTH_SHORT).show();
                // childLocationTimer();
+                minuteElapsed=0;
+                minuteElapsed = childLocationTimer();
                 updateListOfMonitoring();
                 getCurrentMembersInGroup();
                 getUserAttributesAndLocation();
