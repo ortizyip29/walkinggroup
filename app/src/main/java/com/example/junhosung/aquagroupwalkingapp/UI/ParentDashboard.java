@@ -56,7 +56,7 @@ public class ParentDashboard extends AppCompatActivity implements OnMapReadyCall
         getCurrentMembersInGroup();
         getUserAttributesAndLocation();
         updateChildrenLocation();
-        sendMyLocation();
+        //sendMyLocation();
        // setChildLocation();
         refreshMonitoringLocation();
     }
@@ -148,7 +148,7 @@ public class ParentDashboard extends AppCompatActivity implements OnMapReadyCall
     }
     private void updateChildrenLocation(){
         for(User user:currentGroup.getMemberUsers()){
-            sendMyLocation();
+            //sendMyLocation();
         }
         model.getMembersOfGroup(model.getCurrentGroupInUseByUser().getId(),this::responseSetChildLocation);
     }
@@ -202,7 +202,7 @@ public class ParentDashboard extends AppCompatActivity implements OnMapReadyCall
                 getCurrentMembersInGroup();
                 getUserAttributesAndLocation();
                 updateChildrenLocation();
-                sendMyLocation();
+               // sendMyLocation();
                 start();
             }
         }.start();

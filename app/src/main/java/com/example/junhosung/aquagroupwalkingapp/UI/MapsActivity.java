@@ -332,10 +332,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void sendMyLocation() {
-        GpsLocation lastGpsLocation =  new GpsLocation(49.1207,-123.1207,null);
         Log.d("tag","currentUerLat"+currentUserLat);
-        lastGpsLocation.setLat(currentUserLat);
-        lastGpsLocation.setLng(currentUserLng);
+      //  lastGpsLocation.setLat(currentUserLat);
+        //lastGpsLocation.setLng(currentUserLng);
+        //GpsLocation lastGpsLocation =  new GpsLocation(currentUserLat,currentUserLng,null);
+        GpsLocation lastGpsLocation =  new GpsLocation(49.1208,-123.1210,null);
         currentUser.setLastGpsLocation(lastGpsLocation);
         Log.d("Albert", "Alert" + lastGpsLocation.getLat() +" "+ lastGpsLocation.getLng());
         Log.d("Albert", "Alert" + model.getCurrentUser());
@@ -343,6 +344,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void myLocationCallback(User currentUser) {
+        Log.d("","DOYOUWORK");
     }
 
     private void groupAttributesCallback(Group group) {
