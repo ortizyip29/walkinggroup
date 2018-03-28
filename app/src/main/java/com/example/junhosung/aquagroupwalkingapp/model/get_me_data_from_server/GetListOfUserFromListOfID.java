@@ -10,9 +10,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+
 /**
  * Created by karti on 2018-03-26.
  */
+
 
 public class GetListOfUserFromListOfID {
     private final String TAG = "GetListOfUserFromListO";
@@ -20,17 +22,16 @@ public class GetListOfUserFromListOfID {
     private List<User> listOfUsersWithIdOnlyChangeable = new ArrayList<>();
     private List<User> listOfUsersAllInformation = new ArrayList<>();
     private boolean sortAndIgnoreDuplicates;
-    private boolean compensateForMultipleResponse;
     Model model = Model.getInstance();
     SimpleCallback simpleCallback;
-    public GetListOfUserFromListOfID(List<User> listOfUsersWithIdOnly , SimpleCallback<List<User>> callback, boolean sortAndIgnoreDuplicates, boolean compensateForMultipleResponse) {
+
+    public GetListOfUserFromListOfID(List<User> listOfUsersWithIdOnly , SimpleCallback<List<User>> callback, boolean sortAndIgnoreDuplicates) {
 
         Log.w(TAG,"GetListOfUserFromListOfID called");
         if (listOfUsersWithIdOnly == null || callback == null) {
             Log.w(TAG, "Got a null object so not doing anything!!");
         } else {
             this.sortAndIgnoreDuplicates = sortAndIgnoreDuplicates;
-            this.compensateForMultipleResponse = compensateForMultipleResponse;
             listOfUsersWithIdOnlyReadOnly = new ArrayList<>();
             listOfUsersWithIdOnlyChangeable = new ArrayList<>();
             listOfUsersAllInformation = new ArrayList<>();
@@ -43,9 +44,7 @@ public class GetListOfUserFromListOfID {
 
     private void startGettingInformationFromServer() {
         Log.w(TAG,"call this method called");
-        if(this.sortAndIgnoreDuplicates) {
-            removeDuplicates();
-        }
+        removeDuplicates();
         copyReadOnlyList();
         getUsersInformation();
     }
@@ -71,16 +70,12 @@ public class GetListOfUserFromListOfID {
     private void responseWithUserDetails(User user) {
         Log.w(TAG,"responseWithUserDetails called");
         if(user!=null){
-            if(compensateForMultipleResponse) {
-                if(listOfUsersAllInformation.isEmpty()){
-                    listOfUsersAllInformation.add(user);
-                } else {
-                    if(listOfUsersAllInformation.get(listOfUsersAllInformation.size()-1).getId()!=user.getId()) {
-                        listOfUsersAllInformation.add(user);
-                    }
-                }
-            } else {
+            if(listOfUsersAllInformation.isEmpty()){
                 listOfUsersAllInformation.add(user);
+            } else {
+                if(listOfUsersAllInformation.get(listOfUsersAllInformation.size()-1).getId()!=user.getId()) {
+                    listOfUsersAllInformation.add(user);
+                }
             }
         }
         if(! listOfUsersWithIdOnlyChangeable.isEmpty()) {
@@ -91,18 +86,22 @@ public class GetListOfUserFromListOfID {
         }
 
     private void fillInReturnList() {
-
-        List<User> matchedList = new ArrayList<>();
-        for(User userWithIDOnly:listOfUsersWithIdOnlyReadOnly) {
-            User newUser = new User();
-            for(User userWithAllInformation:listOfUsersAllInformation){
-                if(userWithIDOnly.getId()==userWithAllInformation.getId()){
-                    newUser = userWithAllInformation;
+        if( !sortAndIgnoreDuplicates) {
+            List<User> matchedList = new ArrayList<>();
+            for(User userWithIDOnly:listOfUsersWithIdOnlyReadOnly) {
+                User newUser = new User();
+                for(User userWithAllInformation:listOfUsersAllInformation){
+                    if(userWithIDOnly.getId()==userWithAllInformation.getId()){
+                        newUser = userWithAllInformation;
+                    }
                 }
+                matchedList.add(newUser);
             }
-            matchedList.add(newUser);
+            simpleCallback.callback(matchedList);
+
+        } else {
+            simpleCallback.callback(listOfUsersAllInformation);
         }
-        simpleCallback.callback(matchedList);
     }
 
     private int compareTo1(User a,User b) {
@@ -117,7 +116,7 @@ public class GetListOfUserFromListOfID {
     }
 
     private void sortInComingList() {
-        if ( sortAndIgnoreDuplicates && !listOfUsersWithIdOnlyChangeable.isEmpty()) {
+        if ( !listOfUsersWithIdOnlyChangeable.isEmpty()) {
             Collections.sort(listOfUsersWithIdOnlyChangeable, (a, b) -> compareTo1(a, b));
             Log.i(TAG,"Sorted List");
         }

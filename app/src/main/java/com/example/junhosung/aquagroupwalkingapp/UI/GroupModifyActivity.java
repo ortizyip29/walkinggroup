@@ -49,7 +49,7 @@ public class GroupModifyActivity extends AppCompatActivity {
     }
 
     private void setUpBackbtn() {
-        Button button = (Button) findViewById(R.id.btnDone);
+        Button button = (Button) findViewById(R.id.btnBack);
         button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {

@@ -245,7 +245,7 @@ public class GroupsLeaderOfActivity extends AppCompatActivity {
         GetListOfUserFromListOfID getListOfUserFromListOfID =
             new GetListOfUserFromListOfID(listOfUsersWithIdOnlyForSelectedGroup,
             this::responseListOfUsersForSelectedGroup,
-            false,true);
+            true);
 
 //            getListOfUserFromListOfID.callthisMethod();
         Log.w(TAG,"getListOfUserFromListOfID.callthisMethod called");
