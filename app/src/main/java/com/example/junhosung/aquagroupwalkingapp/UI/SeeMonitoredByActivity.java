@@ -144,10 +144,6 @@ public class SeeMonitoredByActivity extends AppCompatActivity {
                         }
                     };
                     timer.start();
-
-
-
-
                     updateListOfMonitoring();
                 }
         }
