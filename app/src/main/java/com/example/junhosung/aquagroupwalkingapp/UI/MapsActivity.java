@@ -49,9 +49,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     Model model = Model.getInstance();
     User currentUser = model.getCurrentUser();
     Group currentGroup = model.getCurrentGroupInUseByUser();
-    //GpsLocation myCurrentLocation = currentUser.getLastGpsLocation();
-    //GpsLocation myCurrentLocation;//= new GpsLocation();
-    //String reference = currentGroup.getHref();
     private GoogleMap mapDisplay;
     Circle myRadius;
     MarkerOptions marker;
@@ -61,11 +58,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     List<Double> setLngList;
     Double[] groupLatArray;
     Double[] groupLngArray;
-    double currentUserLat = 0.00;
-    double currentUserLng = 0.00;
-    long elapsedTime;
+    double currentUserLat = 49.2827;
+    double currentUserLng = -123.1207;
+    double prevLat = 0.00;
+    double prevLng = 0.00;
+    //long minuteElapsed;
     long secondElapsed = 0;
-    LatLng markLatLng = new LatLng(0.00,0.00);
+    boolean atSchool = false;
+    LatLng markLatLng = new LatLng(0.00, 0.00);
     //Long groupId= Long. ;
 
 
@@ -96,10 +96,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         sendMyLocation();
         getGroupNameOnMap();
         //sendLocationSever();
-        //getCoordinates();
-        Log.d("tag","Who am i"+model.getCurrentUser());
-        Log.d("tag","WHAT GROUP ARE WE  "+ model.getCurrentGroupInUseByUser().getGroupDescription());
-       // Log.d("tag","tellmereference"+reference);
+        getCoordinates();
+        Log.d("tag", "Who am i" + model.getCurrentUser());
+        Log.d("tag", "WHAT GROUP ARE WE  " + model.getCurrentGroupInUseByUser().getGroupDescription());
+        // Log.d("tag","tellmereference"+reference);
 
     }
 
@@ -114,7 +114,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 100, 1, new LocationListener() {
                 @Override
                 public void onLocationChanged(Location location) {
-                   // LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                    // LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
                     LatLng currentLocation = new LatLng(currentUser.getLastGpsLocation().getLat(), currentUser.getLastGpsLocation().getLng());
                     Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
                     if (myRadius != null || marker != null) {
@@ -125,7 +125,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         //GpsLocation myCurrentLocation = new GpsLocation();
                         //geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 0);
                         geocoder.getFromLocation(currentUser.getLastGpsLocation().getLat(), currentUser.getLastGpsLocation().getLng(), 0);
-                        Toast.makeText(getApplicationContext(), "Our location is Latitude: " + currentUser.getLastGpsLocation().getLat() + "  Longitude: " + currentUser.getLastGpsLocation().getLng(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Our location is Latitude: " + currentUser.getLastGpsLocation().getLat() + "  Longitude: " + currentUser.getLastGpsLocation().getLng() + "  Location uploaded", Toast.LENGTH_LONG).show();
                         mapDisplay.setMapType(GoogleMap.MAP_TYPE_NORMAL);
                         marker = new MarkerOptions().position(currentLocation).title("I'm Here");
                         mapDisplay.addMarker(marker);
@@ -182,9 +182,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         mapDisplay.setMapType(GoogleMap.MAP_TYPE_HYBRID);
                         currentUserLat = location.getLatitude();
                         currentUserLng = location.getLongitude();
-                        marker = new MarkerOptions().position(currentLocation).title("I'm here").snippet("Latitude"+Double.toString(currentUserLat)+"Longitude+"+Double.toString(currentUserLng));
+                        marker = new MarkerOptions().position(currentLocation).title("I'm here").snippet("Latitude" + Double.toString(currentUserLat) + "Longitude+" + Double.toString(currentUserLng));
                         mapDisplay.addMarker(marker);
-                       // markGroupsOnMap();
+                        // markGroupsOnMap();
                         mapDisplay.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
                         CameraUpdate defaultDisplay = CameraUpdateFactory.newLatLngZoom(currentLocation, 15);
                         mapDisplay.animateCamera(defaultDisplay);
@@ -194,8 +194,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         sendMyLocation();
                         getGroupNameOnMap();
 
-                        Log.d("check lat", "onLocationChanged"+ currentUserLat);
-                        Log.d("check lng", "onLocationChanged"+ currentUserLng);
+                        Log.d("check lat", "onLocationChanged" + currentUserLat);
+                        Log.d("check lng", "onLocationChanged" + currentUserLng);
                         //Log.d("check get coord","check coor" + currentGroup.getGroupDescription());
                         myRadius = mapDisplay.addCircle(new CircleOptions()
                                 .center(currentLocation)
@@ -235,7 +235,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        if(mapDisplay!= null){
+        if (mapDisplay != null) {
             mapDisplay.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
                 @Override
                 public View getInfoWindow(Marker marker) {
@@ -244,11 +244,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 @Override
                 public View getInfoContents(Marker marker) {
-                    View view = getLayoutInflater().inflate(R.layout.info_box,null);
-                    TextView tvName = (TextView)findViewById(R.id.nameView);
-                    TextView tvLoc = (TextView)findViewById(R.id.locationView);
-                    TextView tvTimer = (TextView)findViewById(R.id.timerView);
-                   // tvName.setText()
+                    View view = getLayoutInflater().inflate(R.layout.info_box, null);
+                    TextView tvName = (TextView) findViewById(R.id.nameView);
+                    TextView tvLoc = (TextView) findViewById(R.id.locationView);
+                    TextView tvTimer = (TextView) findViewById(R.id.timerView);
+                    // tvName.setText()
                     return null;
                 }
             });
@@ -288,87 +288,93 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
     }
 
-    private void setUpParentDashboard(){
+    private void setUpParentDashboard() {
         Button parentDashButton = (Button) findViewById(R.id.parentDashboardBtn);
         parentDashButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MapsActivity.this,ParentDashboard.class);
-                startActivity(intent);
-            }
-        });
-    }
-    private void setUpEditUserBtn(){
-        Button editUserButton = (Button) findViewById(R.id.editUserBtn);
-        editUserButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MapsActivity.this,EditAccountActivity.class);
+                Intent intent = new Intent(MapsActivity.this, ParentDashboard.class);
                 startActivity(intent);
             }
         });
     }
 
-   private void sendGroupCurrentLocation(Group group) {
+    private void setUpEditUserBtn() {
+        Button editUserButton = (Button) findViewById(R.id.editUserBtn);
+        editUserButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MapsActivity.this, EditAccountActivity.class);
+                startActivity(intent);
+            }
+        });
     }
+
+    private void sendGroupCurrentLocation(Group group) {
+    }
+
     private void sendLocationSever() {
         setLatList = Arrays.asList(currentUserLat);
         setLngList = Arrays.asList(currentUserLng);
         currentGroup.setRouteLatArray(setLatList);
         currentGroup.setRouteLngArray(setLngList);
-        model.updateGroupDetails(Long.valueOf(15),model.getCurrentGroupInUseByUser(),this::sendGroupCurrentLocation);
+        model.updateGroupDetails(model.getCurrentGroupInUseByUser().getId(), model.getCurrentGroupInUseByUser(), this :: sendGroupCurrentLocation);
     }
-//model.getCurrentGroupInUseByUser().getId()
+
+    //model.getCurrentGroupInUseByUser().getId()
     private void getCoordinates() {
-        model.getGroupDetailsById(model.getCurrentGroupInUseByUser().getId(), this::groupAttributesCallback);
+        model.getGroupDetailsById(model.getCurrentGroupInUseByUser().getId(), this :: groupAttributesCallback);
     }
-    private void getGroupNameOnMap(){
-        model.getGroups(this::groupNameCallback);
+
+    private void getGroupNameOnMap() {
+        model.getGroups(this :: groupNameCallback);
     }
-    private void sendMyLocation(){
+
+    private void sendMyLocation() {
         GpsLocation myCurrentLocation = new GpsLocation();
         myCurrentLocation.setLat(currentUserLat);
         myCurrentLocation.setLng(currentUserLng);
         currentUser.setLastGpsLocation(myCurrentLocation);
-        model.updateUser(currentUser, this::myLocationCallback);
-        Log.d("Albert","Albert" + myCurrentLocation.getLat()+myCurrentLocation.getLng());
-        Log.d("albert","Alert"+ currentUser.getLastGpsLocation().getLat());//works
+        model.updateUser(currentUser, this :: myLocationCallback);
+        Log.d("Albert", "Albert" + myCurrentLocation.getLat() + myCurrentLocation.getLng());
+        Log.d("albert", "Alert" + currentUser.getLastGpsLocation().getLat());//works
     }
+
     private void myLocationCallback(User user) {
     }
 
     private void groupAttributesCallback(Group group) {
         currentGroup = group;
         model.getCurrentGroupInUseByUser().getGroupDescription();
-        groupLatArray = new Double [currentGroup.getRouteLatArray().size()];
-        groupLngArray = new Double [currentGroup.getRouteLngArray().size()];
+        groupLatArray = new Double[currentGroup.getRouteLatArray().size()];
+        groupLngArray = new Double[currentGroup.getRouteLngArray().size()];
         markLatLng = new LatLng(groupLatArray[groupLatArray.length - 1], groupLngArray[groupLngArray.length - 1]);
-        Log.d("tag","holy"+groupLngArray[groupLngArray.length - 1]);
-        if(currentGroup.getRouteLatArray().size() < 1){
-            Log.d("tag","No groups have route array");
-            markLatLng = new LatLng(49.2829,-123.1411);
-        }
-        else{
+        Log.d("tag", "holy" + groupLngArray[groupLngArray.length - 1]);
+        if (currentGroup.getRouteLatArray().size() < 1) {
+            Log.d("tag", "No groups have route array");
+            markLatLng = new LatLng(49.2829, -123.1411);
+        } else {
             markLatLng = new LatLng(groupLatArray[groupLatArray.length - 1], groupLngArray[groupLngArray.length - 1]);
         }
     }
-    private void groupNameCallback(List<Group> groups){
+
+    private void groupNameCallback(List<Group> groups) {
         List<String> groupsDisplay = new ArrayList<>();
-        for(Group group:groups){
+        for (Group group : groups) {
             groupsDisplay.add(group.getGroupDescription());
             getCoordinates();
-           // Log.d("tag" ,"idc what it is"+ group.getGroupDescription());
+            // Log.d("tag" ,"idc what it is"+ group.getGroupDescription());
         }
         String[] groupDisplayArray = new String[groupsDisplay.size()];
         //Log.d("tag","what size"+groupsDisplay.size());
 
         int i;
         for (i = 0; i < groupsDisplay.size(); i++) {
-            LatLng markLocation = new LatLng(49.1217+(i/100),-123.1269+(i/100) );
+            LatLng markLocation = new LatLng(49.1217 + (i / 100), -123.1269 + (i / 100));
             groupDisplayArray[i] = groupsDisplay.get(i);
             //getCoordinates();
             mapDisplay.addMarker(groupMarker = new MarkerOptions().position(markLocation).title(groupDisplayArray[i]).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
-            Log.d("tag" ,"idc what it is"+ groupDisplayArray[i]);
+            Log.d("tag", "idc what it is" + groupDisplayArray[i]);
         }
 
     }
@@ -377,17 +383,38 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private void locationTimer() {
         TextView updateTime = (TextView) findViewById(R.id.textViewTimeUpdate);
         new CountDownTimer(30000, 1000) {
-                public void onTick(long millisUntilFinished) {
-                    secondElapsed = millisUntilFinished / 1000;
-                    updateTime.setText( Long.toString(secondElapsed) + " Seconds");
+            public void onTick(long millisUntilFinished) {
+                secondElapsed = millisUntilFinished / 1000;
+                updateTime.setText(Long.toString(secondElapsed) + " Seconds");
+            }
+
+            public void onFinish() {
+                prevLat = currentUserLat;
+                prevLng = currentUserLng;
+                locationUpdate();
+                sendLocationSever();
+                secondElapsed = 0;
+                updateTime.setText(Long.toString(secondElapsed) + " Seconds");
+                Log.d("tag", "PreviousLat" + prevLat);
+                Log.d("tag", "PreviousLat" + prevLng);
+                atSchoolLocationTimer();
+                if (prevLat != currentUserLat && prevLng != currentUserLng && !atSchool) {
+                    atSchoolLocationTimer();
                 }
-                public void onFinish() {
-                        locationUpdate();
-                        sendLocationSever();
-                        secondElapsed = 0;
-                        updateTime.setText(Long.toString(secondElapsed) + " Seconds");
-                        start();
-                }
-            }.start();
+                start();
+            }
+        }.start();
+    }
+
+    private void atSchoolLocationTimer() {
+        new CountDownTimer(600000, 1000) {
+            public void onTick(long millisUntilFinished) {
+            }
+
+            public void onFinish() {
+                atSchool = true;
+                Toast.makeText(getApplicationContext(),"ARRIVED at school,location update will stop",Toast.LENGTH_SHORT).show();
+            }
+        }.start();
     }
 }
