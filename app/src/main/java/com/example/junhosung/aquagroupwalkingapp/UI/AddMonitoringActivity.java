@@ -42,34 +42,28 @@ public class AddMonitoringActivity extends AppCompatActivity {
             public void onClick(View view) {
                 EditText newUser = (EditText) findViewById(R.id.typeEmail);
                 String email = newUser.getText().toString();
-                Log.v(TAG,"usersServer.size() " + usersServer.size());
-                //for (int i  = 0; i < usersServer.size();i++ ){
-               //     Log.i(TAG,"usersServer.getEmail().equal(email) " + usersServer.get(i).getEmail().equals(email));
-                  //  if (usersServer.get(i).getEmail().equals(email)) {
-                   //     userMatch = usersServer.get(i);
-                Log.v(TAG,"called get user by email" + email);
 
                 model.getUserByEmail(email,this::responseWithUserEmail);
-                   // }
-               // }
 
             }
 
             private void responseWithUserEmail(User user) {
-                Log.v(TAG,"callback came back with User");
               if(user!=null){
 
-                  Log.v(TAG,"callback came back with User" +
-                          user.getId());
-                  //receivedUser = user;
                   model.addNewMonitors(model.getCurrentUser().getId(),user,this::responseAddNewMonitors);
               }
+
+              else {
+                  Toast.makeText(AddMonitoringActivity.this,"This email does not match our records ...",
+                          Toast.LENGTH_LONG).show();
+                  finish();
+              }
+
             }
 
             private void responseAddNewMonitors(List<User> users) {
 
-                Log.v(TAG,"response from server");
-                Toast.makeText(AddMonitoringActivity.this,"Succes",Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddMonitoringActivity.this,"Success",Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent();
                 setResult(Activity.RESULT_OK,intent);
                 finish();

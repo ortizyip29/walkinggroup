@@ -31,6 +31,4 @@ public class CheckGroupsDetails extends AppCompatActivity {
     }
 
 
-
-
 }

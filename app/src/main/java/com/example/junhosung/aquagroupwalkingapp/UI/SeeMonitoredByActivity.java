@@ -102,6 +102,7 @@ public class SeeMonitoredByActivity extends AppCompatActivity {
             isItemClicked.add(new Clicked());
         }
     }
+
     private void populateListView() {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.see_monitoring,
                 nameAndEmail);
