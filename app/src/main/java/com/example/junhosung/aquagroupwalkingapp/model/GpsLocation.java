@@ -7,13 +7,13 @@ package com.example.junhosung.aquagroupwalkingapp.model;
 public class GpsLocation {
     private double lat;
     private double lng;
-    private double timestamp;
+    private String timestamp;
 
     public GpsLocation(){
 
     }
 
-    public GpsLocation(double lat, double lng, double timestamp) {
+    public GpsLocation(double lat, double lng, String timestamp) {
         this.lat = lat;
         this.lng = lng;
         this.timestamp = timestamp;
@@ -35,11 +35,11 @@ public class GpsLocation {
         this.lng = lng;
     }
 
-    public double getTimestamp() {
+    public String getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(double timestamp) {
+    public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
     }
 }

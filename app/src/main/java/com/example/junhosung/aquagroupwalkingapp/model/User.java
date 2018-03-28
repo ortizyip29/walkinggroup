@@ -24,7 +24,6 @@ public class User {
     private List<Message> unreadMessages;
     private List<Message> readMessages;
     private String href;
-
     private List<User> monitoredByUsers = new ArrayList<>();
     private List<User> monitorsUsers = new ArrayList<>();
     private List<Group> memberOfGroups = new ArrayList<>();

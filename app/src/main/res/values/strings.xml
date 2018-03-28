@@ -54,10 +54,9 @@
     <string name="destination">Destination</string>
 
 
-
     <!-- Strings related to sending/receiving messages Activities -->
 
-    <string name = "select_group_to_msg">Here are the id(s) of groups which are leader of!</string>
+    <string name="select_group_to_msg">Here are the id(s) of groups which are leader of!</string>
 
 
 </resources>
