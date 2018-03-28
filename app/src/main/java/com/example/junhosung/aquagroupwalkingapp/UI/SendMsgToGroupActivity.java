@@ -32,8 +32,8 @@ public class SendMsgToGroupActivity extends AppCompatActivity {
         selectedGroupId = receive.getLongExtra("groupId",0);
 
         if (currentUser.getMonitoredByUsers().isEmpty()) {
-            Toast.makeText(this, "You are not leading any groups!", Toast.LENGTH_LONG).show();
-            finish();
+            //Toast.makeText(this, "You are not leading any groups!", Toast.LENGTH_LONG).show();
+            //finish();
         }
 
         else {
