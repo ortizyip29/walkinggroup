@@ -53,7 +53,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     Model model = Model.getInstance();
     User currentUser = model.getCurrentUser();
     Group currentGroup = model.getCurrentGroupInUseByUser();
-    GpsLocation lastGpsLocation =  new GpsLocation(0.00,0.00,null);
     private GoogleMap mapDisplay;
     Circle myRadius;
     MarkerOptions marker;
@@ -97,6 +96,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapFrag.getMapAsync(this);
         locationUpdate();
         locationTimer();
+        //sendMyLocation(currentUser);
         sendMyLocation();
         getGroupNameOnMap();
         //sendLocationSever();
@@ -139,6 +139,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         setLatList = Arrays.asList(currentUserLat);
                         setLngList = Arrays.asList(currentUserLng);
                         sendLocationSever();
+                        //sendMyLocation(currentUser);
                         sendMyLocation();
                         getGroupNameOnMap();
                         myRadius = mapDisplay.addCircle(new CircleOptions()
@@ -194,6 +195,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         setLatList = Arrays.asList(currentUserLat);
                         setLngList = Arrays.asList(currentUserLng);
                         sendLocationSever();
+                        //sendMyLocation(currentUser);
                         sendMyLocation();
                         getGroupNameOnMap();
                         myRadius = mapDisplay.addCircle(new CircleOptions()
@@ -330,16 +332,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void sendMyLocation() {
+        GpsLocation lastGpsLocation =  new GpsLocation(49.1207,-123.1207,null);
         Log.d("tag","currentUerLat"+currentUserLat);
-        currentUser.setLastGpsLocation(lastGpsLocation);
         lastGpsLocation.setLat(currentUserLat);
         lastGpsLocation.setLng(currentUserLng);
+        currentUser.setLastGpsLocation(lastGpsLocation);
         Log.d("Albert", "Alert" + lastGpsLocation.getLat() +" "+ lastGpsLocation.getLng());
         Log.d("Albert", "Alert" + model.getCurrentUser());
         model.updateUser(currentUser,this :: myLocationCallback);
     }
 
-    private void myLocationCallback(User user) {
+    private void myLocationCallback(User currentUser) {
     }
 
     private void groupAttributesCallback(Group group) {
