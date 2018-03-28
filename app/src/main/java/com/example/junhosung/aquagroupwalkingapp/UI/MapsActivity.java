@@ -53,9 +53,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     Model model = Model.getInstance();
     User currentUser = model.getCurrentUser();
     Group currentGroup = model.getCurrentGroupInUseByUser();
-   // GpsLocation myCurrentLocation = currentUser.getLastGpsLocation();
-    GpsLocation myCurrentLocation = new GpsLocation();
-
+    GpsLocation lastGpsLocation =  new GpsLocation(0.00,0.00,null);
     private GoogleMap mapDisplay;
     Circle myRadius;
     MarkerOptions marker;
@@ -105,7 +103,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         getCoordinates();
         Log.d("tag", "Who am i" + model.getCurrentUser());
         Log.d("tag", "WHAT GROUP ARE WE  " + model.getCurrentGroupInUseByUser().getGroupDescription());
-        // Log.d("tag","tellmereference"+reference);
 
     }
 
@@ -135,7 +132,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         marker = new MarkerOptions().position(currentLocation).title("I'm Here");
                         mapDisplay.addMarker(marker);
                         mapDisplay.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
-                        CameraUpdate defaultDisplay = CameraUpdateFactory.newLatLngZoom(currentLocation, 17);
+                        CameraUpdate defaultDisplay = CameraUpdateFactory.newLatLngZoom(currentLocation, 14);
                         mapDisplay.animateCamera(defaultDisplay);
                         currentUserLat = location.getLatitude();
                         currentUserLng = location.getLongitude();
@@ -333,16 +330,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void sendMyLocation() {
-        //myCurrentLocation = currentUser.getLastGpsLocation();
-        GpsLocation myCurrentLocation  = new GpsLocation();
-        myCurrentLocation.setLat(currentUserLat);
-        myCurrentLocation.setLng(currentUserLng);
-       // String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
-        //myCurrentLocation.setTimestamp(timeStamp);
-        currentUser.setLastGpsLocation(myCurrentLocation);
-        model.updateUser(currentUser, this::myLocationCallback);
-        Log.d("Albert", "Albert" + myCurrentLocation.getLat() + myCurrentLocation.getLng());
-        Log.d("albert", "Alert" + currentUser.getLastGpsLocation().getLat());//works
+        Log.d("tag","currentUerLat"+currentUserLat);
+        currentUser.setLastGpsLocation(lastGpsLocation);
+        lastGpsLocation.setLat(currentUserLat);
+        lastGpsLocation.setLng(currentUserLng);
+        Log.d("Albert", "Alert" + lastGpsLocation.getLat() +" "+ lastGpsLocation.getLng());
+        Log.d("Albert", "Alert" + model.getCurrentUser());
+        model.updateUser(currentUser,this :: myLocationCallback);
     }
 
     private void myLocationCallback(User user) {
@@ -371,15 +365,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             // Log.d("tag" ,"idc what it is"+ group.getGroupDescription());
         }
         String[] groupDisplayArray = new String[groupsDisplay.size()];
+        if(groupsDisplay.size()==0){
+            Toast.makeText(getApplicationContext(), "There are no groups in your map range", Toast.LENGTH_SHORT).show();
+        }
         //Log.d("tag","what size"+groupsDisplay.size());
 
         int i;
         for (i = 0; i < groupsDisplay.size(); i++) {
-            LatLng markLocation = new LatLng(49.1217 , -123.1269);
+            LatLng markLocation = new LatLng(49.1217 , -123.1207);
             groupDisplayArray[i] = groupsDisplay.get(i);
             //getCoordinates();
             mapDisplay.addMarker(groupMarker = new MarkerOptions().position(markLocation).title(groupDisplayArray[i]).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
-            Log.d("tag", "who are these groups" + groupDisplayArray[i]);
+            //Log.d("tag", "who are these groups" + groupDisplayArray[i]);
         }
 
     }

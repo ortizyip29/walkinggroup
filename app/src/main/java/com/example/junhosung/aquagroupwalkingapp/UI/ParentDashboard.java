@@ -29,6 +29,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.sql.Types.NULL;
+
 public class ParentDashboard extends AppCompatActivity implements OnMapReadyCallback {
     GoogleMap parentMap;
     Model model = Model.getInstance();
@@ -37,8 +39,8 @@ public class ParentDashboard extends AppCompatActivity implements OnMapReadyCall
     Group currentGroup = model.getCurrentGroupInUseByUser();
     User currentUser = model.getCurrentUser();
     String[] groupMembers;
-  //  double currentUserLat = 0.00;
-   // double currentUserLng = 0.00;
+    double currentUserLat = 0.00;
+    double currentUserLng = 0.00;
     long secondElapsed = 0;
     long minuteElapsed = 0;
     @Override
@@ -57,8 +59,6 @@ public class ParentDashboard extends AppCompatActivity implements OnMapReadyCall
         sendMyLocation();
        // setChildLocation();
         refreshMonitoringLocation();
-        Log.d("", "responseForGetCurrentMembersInGroup:" + currentGroup.getMemberUsers());
-        Log.d("","mytimestamp"+currentUser.getLastGpsLocation().getTimestamp());
     }
 
     private void setupViewButton() {
@@ -111,7 +111,6 @@ public class ParentDashboard extends AppCompatActivity implements OnMapReadyCall
         } else {
             model.getMembersOfGroup(model.getCurrentGroupInUseByUser().getId(),this::responseGetUserAttributes);
         }
-        Log.d("tag","my honey is here ");// user.getName());
     }
     private void sendMyLocation(){
         GpsLocation myCurrentLocation = new GpsLocation();
@@ -126,21 +125,22 @@ public class ParentDashboard extends AppCompatActivity implements OnMapReadyCall
     }
     private void responseGetUserAttributes(List<User> users) {
         List<String> members = new ArrayList<>();
-       // if (!(users == null)
             for (User user : users) {
                 members.add(user.getName());
-                user.getLastGpsLocation();
+                //user.getLastGpsLocation();
                 //LatLng currentLocation = new LatLng(49.1617, -123.1019);
                 LatLng currentLocation = new LatLng(user.getLastGpsLocation().getLat(), user.getLastGpsLocation().getLng());
-                Log.d("tag","my child is "+ user.getName());
-                Log.d("tag", "child is at"+ user.getLastGpsLocation().getLat());
+                currentUserLat = user.getLastGpsLocation().getLat();
+                currentUserLng = user.getLastGpsLocation().getLng();
+                if(currentUserLat == NULL || currentUserLng == NULL){
+                    Toast.makeText(getApplicationContext(), "No monitoring member in range", Toast.LENGTH_SHORT).show();
+                }
                 //LatLng currentLocation = new LatLng(user.getLastGpsLocation().getLat(), user.getLastGpsLocation().getLng());
                 childMarker = new MarkerOptions().position(currentLocation).title("Group Member: "+user.getName());
                 parentMap.addMarker(childMarker);
             }
             groupMembers = members.toArray(new String[members.size()]);
             Log.d("", "responseForGetCurrentMembersInGroup:" + groupMembers);
-        //}
     }
     private void myLocationCallback(User user) {
     }
@@ -160,7 +160,6 @@ public class ParentDashboard extends AppCompatActivity implements OnMapReadyCall
         model.getMembersOfGroup(model.getCurrentGroupInUseByUser().getId(),this::responseGetUserAttributes);
     }
     private int childLocationTimer() {
-        //TextView updateTime = (TextView) findViewById(R.id.textViewTimeUpdate);
         new CountDownTimer(3000000, 1000) {
             public void onTick(long millisUntilFinished) {
                 secondElapsed = millisUntilFinished / 1000;
@@ -180,8 +179,16 @@ public class ParentDashboard extends AppCompatActivity implements OnMapReadyCall
             Log.d("tag", "monitoringperson"+ user.getLastGpsLocation().getLat());
             Log.d("tag", "monitoringperson"+ user.getLastGpsLocation().getLng());
             Log.d(     "tag","monitoringperson"+user.getName());
-           // LatLng monitoredLocation = new LatLng(user.getLastGpsLocation().getLat(),user.getLastGpsLocation().getLng());
-            LatLng monitoredLocation = new LatLng(49.2827,-123.1208);
+            LatLng monitoredLocation = new LatLng(user.getLastGpsLocation().getLat(),user.getLastGpsLocation().getLng());
+            currentUserLat = user.getLastGpsLocation().getLat();
+            currentUserLng = user.getLastGpsLocation().getLng();
+            if(currentUserLat == NULL || currentUserLng == NULL){
+                Toast.makeText(getApplicationContext(), "No monitoring member or child in range", Toast.LENGTH_SHORT).show();
+            }
+            else if(currentUserLng<0.001 && currentUserLng <0.001){
+                Toast.makeText(getApplicationContext(), "No monitoring member or child in range", Toast.LENGTH_SHORT).show();
+            }
+           // LatLng monitoredLocation = new LatLng(49.2827,-123.1208);
             minuteElapsed = childLocationTimer();
             monitoredMarker = new MarkerOptions().position(monitoredLocation).title("Location for Monitoring Member: "+user.getName()).snippet("updated "+ minuteElapsed + " minutes ago");
             parentMap.addMarker( monitoredMarker);
@@ -194,7 +201,6 @@ public class ParentDashboard extends AppCompatActivity implements OnMapReadyCall
             }
             public void onFinish() {
                 Toast.makeText(getApplicationContext(),"Monitoring users' location being updated",Toast.LENGTH_SHORT).show();
-               // childLocationTimer();
                 minuteElapsed=0;
                 minuteElapsed = childLocationTimer();
                 updateListOfMonitoring();
@@ -202,7 +208,6 @@ public class ParentDashboard extends AppCompatActivity implements OnMapReadyCall
                 getUserAttributesAndLocation();
                 updateChildrenLocation();
                 sendMyLocation();
-                //setChildLocation();
                 start();
             }
         }.start();
