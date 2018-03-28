@@ -142,6 +142,7 @@ public class EditChildActivity extends AppCompatActivity {
                     return;
                 }
 
+
                     String grade = gradeEdit.getText().toString();
                 String teacherN = teacherNEdit.getText().toString();
                 String emergency = emergencyEdit.getText().toString();
