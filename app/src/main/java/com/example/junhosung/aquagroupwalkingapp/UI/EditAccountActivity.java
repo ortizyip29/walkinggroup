@@ -134,7 +134,6 @@ public class EditAccountActivity extends AppCompatActivity {
                 current.setGrade(grade);
                 current.setTeacherName(teacherN);
                 current.setEmergencyContactInfo(emergency);
-
                 model.updateUser(current, this::getUserUpdateCallBack);
                 finish();
 

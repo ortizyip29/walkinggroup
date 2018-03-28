@@ -23,7 +23,7 @@ public class GroupModifyActivity extends AppCompatActivity {
     private Model model = Model.getInstance();
 
 
-    long currentUserID; //= model.getCurrentGroupInUseByUser().getId();
+    long currentUserID = model.getCurrentGroupInUseByUser().getId();
     private List<User> listOfUsersDeleteable;
     private List<User> monitorsList;
     private String[] nameAndEmail;
@@ -38,7 +38,7 @@ public class GroupModifyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_modify);
         if(model.getCurrentGroupInUseByUser()!=null){
-            currentUserID = model.getCurrentGroupInUseByUser().getId();
+            model.getCurrentGroupInUseByUser().getId();
         }
 
         refreshPage();
@@ -83,7 +83,7 @@ public class GroupModifyActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(listOfUsersDeleteable!=null){
-                long userIdOfUserToDeleteFromGroup=listOfUsersDeleteable.get(itemClickedForDelete).getId();
+                    long userIdOfUserToDeleteFromGroup=listOfUsersDeleteable.get(itemClickedForDelete).getId();
                     model.deleteMemberOfGroup(currentGroup.getId(),userIdOfUserToDeleteFromGroup,this::responseAfterRemove);
                 }
             }
@@ -94,15 +94,12 @@ public class GroupModifyActivity extends AppCompatActivity {
     }
 
     public void refreshPage(){
-        Log.w(TAG,"model.getCurrentUSer"+model.getCurrentUser().toString());
-
-        if(model.getCurrentGroupInUseByUser()!=null){
-
-            model.getMonitorsById(model.getCurrentUser().getId(),this::responseWithUserMonitors); //list of monitoring
-            //      model.getMonitoredById(current.getId(),this::responseWithUserMonitors);
-            model.getGroupDetailsById(model.getCurrentGroupInUseByUser().getId(),this::callbackForGetCurrentGroup);//list of delete
-        }
+            if(model.getCurrentGroupInUseByUser()!=null){
+                model.getGroupDetailsById(model.getCurrentGroupInUseByUser().getId(),this::callbackForGetCurrentGroup);
+                model.getMonitoredById(currentUserID,this::responseWithUserMonitors);
+            }
     }
+
 
     private void callbackForGetCurrentGroup(Group group) {
         currentGroup = group;
