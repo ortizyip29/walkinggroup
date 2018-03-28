@@ -1,6 +1,7 @@
 package com.example.junhosung.aquagroupwalkingapp.UI;
 
 import android.content.Intent;
+import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -19,16 +20,45 @@ public class MessagePanelActivity extends AppCompatActivity {
     private Model model = Model.getInstance();
     private List<Message> unreadMessages;
     String unread = "unread";
+    private CountDownTimer timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_panel);
 
-        model.getUserUnreadMessages(model.getCurrentUser().getId(),unread,this::responseGetUserUnreadMessages);
+        timer = new CountDownTimer(60000,1000) {
+            @Override
+            public void onTick(long l) {
 
-        setupBtnNewMsg();
-        setupBtnOldMsg();
+                model.getUserUnreadMessages(model.getCurrentUser().getId(),unread,this::responseGetUserUnreadMessages);
+
+                setupBtnNewMsg();
+                setupBtnOldMsg();
+
+            }
+
+            @Override
+            public void onFinish() {
+                model.getUserUnreadMessages(model.getCurrentUser().getId(),unread,this::responseGetUserUnreadMessages);
+
+                setupBtnNewMsg();
+                setupBtnOldMsg();
+
+            }
+
+            private void responseGetUserUnreadMessages(List<Message> messages) {
+                unreadMessages = messages;
+                //Toast.makeText(MessagePanelActivity.this, ""+unreadMessages.size(),Toast.LENGTH_LONG).show();
+
+                TextView txtNumNewMsg = (TextView) findViewById(R.id.txtNumNewMsg);
+                txtNumNewMsg.setText("You have " + unreadMessages.size() + " unread messages!"  );
+
+            }
+
+
+        }.start();
+
 
     }
 

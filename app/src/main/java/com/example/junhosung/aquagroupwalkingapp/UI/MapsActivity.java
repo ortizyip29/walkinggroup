@@ -22,6 +22,7 @@ import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -44,23 +45,22 @@ import java.util.Locale;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
     Model model = Model.getInstance();
-    User currentUser;
+    User currentUser = model.getCurrentUser();
+    Group currentGroup = model.getCurrentGroupInUseByUser();
     private GoogleMap mapDisplay;
-    Group currentGroup;
     Circle myRadius;
     MarkerOptions marker;
     MarkerOptions groupMarker;
     private LocationManager locationManager;
-    List<String> groupList;
-    //List<List<Double>> LatList;
-    //List<List<Double>> LngList;
     List<Double> setLatList;
     List<Double> setLngList;
+    double currentUserLat = 0.00;
+    double currentUserLng = 0.00;
     long elapsedTime;
-    Chronometer Timer = null;
-    int minElapsed = 0;
+    //int minElapsed = 0;
     long secondElapsed = 0;
     boolean atSchool = false;
+    boolean logInState = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +68,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         setContentView(R.layout.activity_maps);
         TextView updateDisplay = (TextView) findViewById(R.id.textViewUpdate);
         TextView updateTime = (TextView) findViewById(R.id.textViewTimeUpdate);
-        //updateTime.setText(Integer.toString(minElapsed) + " Minutes: " + Integer.toString(secondElapsed) + " Seconds");
         setUpUpdateBtn();
         setUpLogoutBtn();
         setUpViewGroupBtn();
@@ -84,8 +83,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         MapFragment mapFrag = ((MapFragment) getFragmentManager().findFragmentById(R.id.mapFrag));
         mapFrag.getMapAsync(this);
-        locationUpdate();
+        //locationUpdate();
         locationTimer();
+        //getCoordinates();
 
     }
 
@@ -107,6 +107,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     }
 
                     try {
+                        GpsLocation myCurrentLocation = new GpsLocation();
                         geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 0);
                         Toast.makeText(getApplicationContext(), "Our location is Latitude: " + location.getLatitude() + "  Longitude: " + location.getLongitude(), Toast.LENGTH_LONG).show();
                         mapDisplay.setMapType(GoogleMap.MAP_TYPE_NORMAL);
@@ -117,6 +118,20 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         mapDisplay.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
                         CameraUpdate defaultDisplay = CameraUpdateFactory.newLatLngZoom(currentLocation, 17);
                         mapDisplay.animateCamera(defaultDisplay);
+                        currentUserLat = location.getLatitude();
+                        currentUserLng = location.getLongitude();
+                        Log.d("check lat", "onLocationChanged "+ currentUserLat);
+                        Log.d("check lng", "onLocationChanged "+ currentUserLng);
+                        myCurrentLocation.setLat(currentUserLat);
+                        myCurrentLocation.setLng(currentUserLng);
+                        Log.d("check lat", "onLocationChanged "+  myCurrentLocation.getLat());
+                        setLatList = Arrays.asList(currentUserLat);
+                        setLngList = Arrays.asList(currentUserLng);
+                        Log.d("check lat", "onLocationChanged"+ setLatList);
+                        Log.d("check lng", "onLocationChanged"+ setLngList);
+                        currentUser.setLastGpsLocation(myCurrentLocation);
+                        currentGroup.setRouteLngArray(setLatList);
+                        currentGroup.setRouteLngArray(setLngList);
                         myRadius = mapDisplay.addCircle(new CircleOptions()
                                 .center(currentLocation)
                                 .radius(100)
@@ -162,6 +177,22 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         mapDisplay.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
                         CameraUpdate defaultDisplay = CameraUpdateFactory.newLatLngZoom(currentLocation, 15);
                         mapDisplay.animateCamera(defaultDisplay);
+                        currentUserLat = location.getLatitude();
+                        currentUserLng = location.getLongitude();
+                        Log.d("check lat", "onLocationChanged"+ currentUserLat);
+                        Log.d("check lng", "onLocationChanged"+ currentUserLng);
+                        GpsLocation myCurrentLocation = new GpsLocation();
+                        currentUser = currentGroup.getLeader();
+                        myCurrentLocation.setLat(currentUserLat);
+                        myCurrentLocation.setLng(currentUserLng);
+                        setLatList = Arrays.asList(currentUserLat);
+                        setLngList = Arrays.asList(currentUserLng);
+                        Log.d("check lat", "onLocationChanged"+ setLatList);
+                        Log.d("check lng", "onLocationChanged"+ setLngList);
+                        currentUser.setLastGpsLocation(myCurrentLocation);
+                        currentGroup.setRouteLngArray(setLatList);
+                        currentGroup.setRouteLngArray(setLngList);
+                        Log.d("check get coord","check coor" + currentGroup.getGroupDescription());
                         myRadius = mapDisplay.addCircle(new CircleOptions()
                                 .center(currentLocation)
                                 .radius(1000)
@@ -219,6 +250,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         groupButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                boolean logInState = false;
                 Intent intent = new Intent(MapsActivity.this, GroupManagementActivity.class);
                 startActivity(intent);
             }
@@ -230,7 +262,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         updateButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                //displayTimeSinceLastUpdate();
                 locationUpdate();
             }
         });
@@ -242,7 +273,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         Double[] longitudeList = {-123.1206, -123.1209, -123.1219, -123.1221};
         setLatList = Arrays.asList(latitudeList);
         setLngList = Arrays.asList(longitudeList);
-        //String[] groupList = {"Yipper Group", "group2", "Big Daddy's group","yipper"};
         for (i = 0; i < latitudeList.length; i++) {
             LatLng markLocation = new LatLng(latitudeList[i], longitudeList[i]);
            // mapDisplay.addMarker(groupMarker = new MarkerOptions().position(markLocation).title(groupList[i]).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
@@ -260,56 +290,54 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
     }
 
-    /*private void displayTimeSinceLastUpdate() {
-        long minutes = ((SystemClock.elapsedRealtime() - Timer.getBase()) / 1000) / 60;
-        long seconds = ((SystemClock.elapsedRealtime() - Timer.getBase()) / 1000) % 60;
-        elapsedTime = SystemClock.elapsedRealtime();
-        Log.d("Check Time", "Since last location update: " + minutes + " : " + seconds);
-    }*/
 
-   private void sendGroupCurrentLocation(Group group) {
+ /*  private void sendGroupCurrentLocation(Group group) {
         currentGroup = group;
         currentUser = currentGroup.getLeader();
-        Double[] curlat = {49.2826, 49.2827};
-        Double[] curlng = {-123.1206, 49.2728};
-        GpsLocation myCurrentLocation = new GpsLocation();
-        myCurrentLocation.setLat(49.2828);
-        myCurrentLocation.setLng(-123.1208);
-        currentUser.setLastGpsLocation(myCurrentLocation);
-        setLatList = Arrays.asList(curlat);
-        setLngList = Arrays.asList(curlng);
-        currentGroup.setRouteLatArray(setLatList);
-        currentGroup.setRouteLngArray(setLngList);
+       // Double[] curlat = {49.2826, 49.2827};
+       // Double[] curlng = {-123.1206, 49.2728};
+       // GpsLocation myCurrentLocation = new GpsLocation();
+       // myCurrentLocation.setLat(49.2828);
+       // myCurrentLocation.setLng(-123.1208);
+       // currentUser.setLastGpsLocation(myCurrentLocation);
+        //setLatList = Arrays.asList(curlat);
+        //setLngList = Arrays.asList(curlng);
+        //currentGroup.setRouteLatArray(setLatList);
+        //currentGroup.setRouteLngArray(setLngList);
     }
 
     private void sendLocationSever() {
         model.updateGroupDetails(currentGroup.getId(), currentGroup, this :: sendGroupCurrentLocation);
-    }
+    }*/
 
     private void getCoordinates() {
         model.getGroupDetailsById(currentGroup.getId(), this :: groupAttributesCallback);
     }
 
     private void groupAttributesCallback(Group group) {
-        model.getCurrentGroupInUseByUser().getGroupDescription();
         currentGroup = group;
-        currentUser = currentGroup.getLeader();
-        currentUser.getLastGpsLocation();
+        model.getCurrentGroupInUseByUser().getGroupDescription();
+        //currentGroup = group;
+        //currentUser = currentGroup.getLeader();
+       // currentUser.getLastGpsLocation();
         currentGroup.getRouteLatArray();
         currentGroup.getRouteLngArray();
     }
 
     private void locationTimer() {
         TextView updateTime = (TextView) findViewById(R.id.textViewTimeUpdate);
-        CountDownTimer timer = new CountDownTimer(30000, 1000) {
+        CountDownTimer timer = new CountDownTimer(15000, 1000) {
                 public void onTick(long millisUntilFinished) {
-                    secondElapsed = 30 - millisUntilFinished / 1000;
-                    updateTime.setText(Integer.toString(minElapsed) + " Minutes: " + Long.toString(secondElapsed) + " Seconds");
+                    secondElapsed = millisUntilFinished / 1000;
+                    updateTime.setText( Long.toString(secondElapsed) + " Seconds");
                 }
                 public void onFinish() {
-                    locationUpdate();
-                    secondElapsed = 0;
-                    updateTime.setText(Integer.toString(minElapsed) + " Minutes: " + Long.toString(secondElapsed) + " Seconds");
+                        locationUpdate();
+                        //sendLocationSever();
+                        secondElapsed = 0;
+                        updateTime.setText(Long.toString(secondElapsed) + " Seconds");
+                        start();
+
                 }
             }.start();
     }
