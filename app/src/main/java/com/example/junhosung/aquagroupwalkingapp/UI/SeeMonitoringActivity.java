@@ -69,7 +69,6 @@ public class SeeMonitoringActivity extends AppCompatActivity {
         setUpDeleteButton();
         setUpEditButton();
 
-
     }
 
     private void updateListOfMonitoring(){
@@ -147,8 +146,6 @@ public class SeeMonitoringActivity extends AppCompatActivity {
                     counter++;
                 }
             }
-
-
 
         });
 

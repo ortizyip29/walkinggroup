@@ -27,14 +27,15 @@ public class EditChildActivity extends AppCompatActivity {
     EditText gradeEdit;
     EditText teacherNEdit;
     EditText emergencyEdit;
-
     User child;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        extractDataFromIntent();
         setContentView(R.layout.activity_edit_account);
+
+        extractDataFromIntent();
+
         nameEdit = (EditText) findViewById(R.id.editName);
         birthMEdit = (EditText) findViewById(R.id.editBirthM);
         birthYEdit = (EditText) findViewById(R.id.editBirthY);
@@ -45,23 +46,22 @@ public class EditChildActivity extends AppCompatActivity {
         gradeEdit = (EditText) findViewById(R.id.editGrade);
         teacherNEdit = (EditText) findViewById(R.id.editTeacherName);
         emergencyEdit = (EditText) findViewById(R.id.editEmergency);
+
         updateUI(child);
+
         setUpCancelbtn();
         setUpDonebtn();
+
     }
-
-
-
 
     boolean isEmailValid(CharSequence email) {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
     private void getUserCallBack(User user){
-        updateUI(user);
         child = user;
+        updateUI(child);
     }
-
 
     private void updateUI(User user) {
 
@@ -122,8 +122,6 @@ public class EditChildActivity extends AppCompatActivity {
                 String emergency = emergencyEdit.getText().toString();
 
 
-
-
                 child.setName(name);
                 child.setAddress(address);
                 child.setHomePhone(homeP);
@@ -135,6 +133,7 @@ public class EditChildActivity extends AppCompatActivity {
 
                 model.updateUser(child, this::getUpdatedUserBack);
             }
+
             private void getUpdatedUserBack(User user){}
         });
     }
