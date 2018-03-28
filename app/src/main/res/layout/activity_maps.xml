@@ -11,7 +11,7 @@
         android:layout_width="115dp"
         android:layout_height="75dp"
         android:layout_marginEnd="13dp"
-        android:layout_marginTop="292dp"
+        android:layout_marginTop="332dp"
 
         android:text="@string/Check_Monitoring_Status"
         app:layout_constraintEnd_toStartOf="@+id/viewGroupBtn"
@@ -35,14 +35,13 @@
         android:id="@+id/mapFrag"
         android:name="com.google.android.gms.maps.MapFragment"
         android:layout_width="379dp"
-        android:layout_height="332dp"
+        android:layout_height="0dp"
 
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="44dp"
+        android:layout_marginBottom="127dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/parentDashboardBtn"
+        app:layout_constraintVertical_bias="0.29" />
 
     <Button
         android:id="@+id/viewGroupBtn"
@@ -55,17 +54,20 @@
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/parentDashboardBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="104dp"
-        android:layout_marginTop="44dp"
 
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="4dp"
         android:text="Parent Dashboard"
-        app:layout_constraintStart_toStartOf="@+id/mapFrag"
+        app:layout_constraintBottom_toTopOf="@+id/mapFrag"
+        app:layout_constraintEnd_toStartOf="@+id/editUserBtn"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -90,12 +92,13 @@
 
     <Button
         android:id="@+id/editUserBtn"
-        android:layout_width="149dp"
+        android:layout_width="0dp"
         android:layout_height="38dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginTop="4dp"
-        android:text="edit my profile"
-        app:layout_constraintRight_toRightOf="parent"
+        android:text="edit profile"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/parentDashboardBtn"
         app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

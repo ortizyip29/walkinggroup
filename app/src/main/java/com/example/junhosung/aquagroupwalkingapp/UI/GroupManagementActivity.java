@@ -125,6 +125,7 @@ public class GroupManagementActivity extends AppCompatActivity {
         });
     }
 
+
     private void backToMapsButton(){
         Button  addbackToMapsButton= (Button)findViewById(R.id.backToMapBtn);
         addbackToMapsButton.setOnClickListener(new View.OnClickListener() {
