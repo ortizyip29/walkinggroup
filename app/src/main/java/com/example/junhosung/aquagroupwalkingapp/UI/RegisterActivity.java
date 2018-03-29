@@ -76,12 +76,15 @@ public class RegisterActivity extends AppCompatActivity {
                     Log.i("Walk", "Empty Username");
                     String message = "Please enter an Email";
                     Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_LONG).show();
-                }else{
-                    try{
+                }else if(isEmailValid(emailNew)!= true){
+                    Log.i("Walk", "email not valid");
+                    Toast.makeText(RegisterActivity.this, "Email not valid", Toast.LENGTH_LONG).show();
+                } else if (isPasswordValid(passwordNew) == true) {
+                    try {
                         Intent intent = new Intent();
-                        model.createUser(nameNew,emailNew,passwordNew);
+                        model.createUser(nameNew, emailNew, passwordNew);
                         finish();
-                    }catch (NumberFormatException a) {
+                    } catch (NumberFormatException a) {
                         return;
                     }
                 }
