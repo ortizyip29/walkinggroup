@@ -177,9 +177,6 @@ public class ParentDashboard extends AppCompatActivity implements OnMapReadyCall
             if(currentLat == NULL || currentLng == NULL){
                 Toast.makeText(getApplicationContext(), "No monitoring member or child in range", Toast.LENGTH_SHORT).show();
             }
-            else if(currentLng <0.001 && currentLng <0.001){
-                Toast.makeText(getApplicationContext(), "No monitoring member or child in range", Toast.LENGTH_SHORT).show();
-            }
             monitoredMarker = new MarkerOptions().position(monitoredLocation).title("Location for Monitoring Member: "+user.getName()).snippet("updated "+ minuteSinceUpdate + " minutes ago");
             parentMap.addMarker( monitoredMarker);
         }
