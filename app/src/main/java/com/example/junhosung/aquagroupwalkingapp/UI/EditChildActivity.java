@@ -29,7 +29,6 @@ public class EditChildActivity extends AppCompatActivity {
     EditText gradeEdit;
     EditText teacherNEdit;
     EditText emergencyEdit;
-
     User child;
 
     @Override
@@ -53,8 +52,6 @@ public class EditChildActivity extends AppCompatActivity {
         setUpCancelbtn();
         setUpDonebtn();
     }
-
-
 
 
     boolean isEmailValid(CharSequence email) {
@@ -90,19 +87,19 @@ public class EditChildActivity extends AppCompatActivity {
         String teacherN = user.getTeacherName();
         String emergencyContact = user.getEmergencyContactInfo();
 
-        nameEdit.setText(name, TextView.BufferType.EDITABLE);
-
         if(birthM != 0){
             birthMEdit.setText(String.valueOf(birthM), TextView.BufferType.EDITABLE);
         }else{
             birthMEdit.setText("",TextView.BufferType.EDITABLE);
         }
-
         if(birthY != 0) {
             birthYEdit.setText(String.valueOf(birthY), TextView.BufferType.EDITABLE);
         }else{
             birthYEdit.setText("",TextView.BufferType.EDITABLE);
         }
+
+
+        nameEdit.setText(name, TextView.BufferType.EDITABLE);
         addressEdit.setText(address, TextView.BufferType.EDITABLE);
         homePEdit.setText(phone, TextView.BufferType.EDITABLE);
         mobileEdit.setText(mobile, TextView.BufferType.EDITABLE);
@@ -140,12 +137,14 @@ public class EditChildActivity extends AppCompatActivity {
                 String homeP = homePEdit.getText().toString();
                 String mobile = mobileEdit.getText().toString();
                 String email = emailEdit.getText().toString();
+
                 if(isEmailValid(email) != true) {
                     Toast.makeText(EditChildActivity.this, "Email not valid", Toast.LENGTH_LONG).show();
                     return;
                 }
 
-                String grade = gradeEdit.getText().toString();
+
+                    String grade = gradeEdit.getText().toString();
                 String teacherN = teacherNEdit.getText().toString();
                 String emergency = emergencyEdit.getText().toString();
 
@@ -179,12 +178,11 @@ public class EditChildActivity extends AppCompatActivity {
     }
 
     public static Intent makeIntent(Context context, Long userId) {
-       Intent intent = new Intent(context, EditChildActivity.class);
-       intent.putExtra(USER_ID, userId);
-       return intent;
+        Intent intent = new Intent(context, EditChildActivity.class);
+        intent.putExtra(USER_ID, userId);
+        return intent;
 
     }
-
 
 }
 

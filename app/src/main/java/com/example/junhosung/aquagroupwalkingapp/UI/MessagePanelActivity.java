@@ -27,14 +27,17 @@ public class MessagePanelActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_panel);
 
+        setupBtnNewMsg();
+        setupBtnOldMsg();
+
+        model.getUserUnreadMessages(model.getCurrentUser().getId(),unread,this::responseGetUserUnreadMessages);
+
+
         timer = new CountDownTimer(60000,1000) {
             @Override
             public void onTick(long l) {
 
-                model.getUserUnreadMessages(model.getCurrentUser().getId(),unread,this::responseGetUserUnreadMessages);
-
-                setupBtnNewMsg();
-                setupBtnOldMsg();
+                //
 
             }
 
@@ -44,6 +47,8 @@ public class MessagePanelActivity extends AppCompatActivity {
 
                 setupBtnNewMsg();
                 setupBtnOldMsg();
+
+                start();
 
             }
 
@@ -55,7 +60,6 @@ public class MessagePanelActivity extends AppCompatActivity {
 
             }
 
-
         }.start();
 
 
@@ -63,7 +67,6 @@ public class MessagePanelActivity extends AppCompatActivity {
 
     private void responseGetUserUnreadMessages(List<Message> messages) {
         unreadMessages = messages;
-        //Toast.makeText(MessagePanelActivity.this, ""+unreadMessages.size(),Toast.LENGTH_LONG).show();
 
         TextView txtNumNewMsg = (TextView) findViewById(R.id.txtNumNewMsg);
         txtNumNewMsg.setText("You have " + unreadMessages.size() + " unread messages!"  );

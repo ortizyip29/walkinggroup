@@ -70,8 +70,6 @@ public class EditAccountActivity extends AppCompatActivity {
         String teacherN = user.getTeacherName();
         String emergencyContact = user.getEmergencyContactInfo();
 
-        nameEdit.setText(name, BufferType.EDITABLE);
-
         if(birthM != 0){
             birthMEdit.setText(String.valueOf(birthM), TextView.BufferType.EDITABLE);
         }else{
@@ -83,6 +81,8 @@ public class EditAccountActivity extends AppCompatActivity {
             birthYEdit.setText("",TextView.BufferType.EDITABLE);
         }
 
+
+        nameEdit.setText(name, BufferType.EDITABLE);
         addressEdit.setText(address, BufferType.EDITABLE);
         homePEdit.setText(phone, BufferType.EDITABLE);
         mobileEdit.setText(mobile, BufferType.EDITABLE);
@@ -111,11 +111,13 @@ public class EditAccountActivity extends AppCompatActivity {
                 String homeP = homePEdit.getText().toString();
                 String mobile = mobileEdit.getText().toString();
                 String email = emailEdit.getText().toString();
-                if(isEmailValid(email) != true){
+
+                if(isEmailValid(email) != true) {
                     Toast.makeText(EditAccountActivity.this, "Email not valid", Toast.LENGTH_LONG).show();
                     return;
                 }
-                String grade = gradeEdit.getText().toString();
+
+                    String grade = gradeEdit.getText().toString();
                 String teacherN = teacherNEdit.getText().toString();
                 String emergency = emergencyEdit.getText().toString();
 
