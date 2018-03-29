@@ -57,6 +57,7 @@
     <!-- Strings related to sending/receiving messages Activities -->
 
     <string name="select_group_to_msg">Here are the id(s) of groups which are leader of!</string>
+    <string name="click_to_send_to_old_msg">Click to send message to old messages!</string>
 
 
 </resources>

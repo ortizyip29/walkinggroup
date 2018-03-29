@@ -21,6 +21,18 @@ public class MessagePanelActivity extends AppCompatActivity {
     private List<Message> unreadMessages;
     String unread = "unread";
     private CountDownTimer timer;
+    private boolean isOnCreateDone = false;
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+
+        if (isOnCreateDone) {
+
+            model.getUserUnreadMessages(model.getCurrentUser().getId(),unread,this::responseGetUserUnreadMessages);
+
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +44,7 @@ public class MessagePanelActivity extends AppCompatActivity {
 
         model.getUserUnreadMessages(model.getCurrentUser().getId(),unread,this::responseGetUserUnreadMessages);
 
+        isOnCreateDone = true;
 
         timer = new CountDownTimer(60000,1000) {
             @Override
