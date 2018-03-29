@@ -211,6 +211,17 @@ public class User {
                 '}';
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        //return super.equals(obj);
+        if(obj.getClass() == this.getClass()) {
+            User user = (User) obj;
+            if(user.getId()== this.getId()) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
 
 

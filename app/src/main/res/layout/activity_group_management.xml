@@ -5,12 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.junhosung.aquagroupwalkingapp.UI.GroupManagementActivity">
-    <Button
-        android:id="@+id/launchCheckGroupDetailActivity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="launch CheckGroupDetailActivity" />
+
 
     <LinearLayout
         android:layout_width="match_parent"

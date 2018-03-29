@@ -88,4 +88,15 @@ public class Group {
         return "Id: " + id +
                 "Group: " + groupDescription;
     }
+    @Override
+    public boolean equals(Object obj) {
+        //return super.equals(obj);
+        if(obj.getClass() == this.getClass()) {
+            Group group = (Group) obj;
+            if(group.getId()== this.getId()) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

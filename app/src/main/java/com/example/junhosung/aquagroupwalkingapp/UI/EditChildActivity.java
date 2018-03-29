@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -157,6 +158,7 @@ public class EditChildActivity extends AppCompatActivity {
                 child.setEmergencyContactInfo(emergency);
 
                 model.updateUser(child, this::getUpdatedUserBack);
+                finish();
             }
             private void getUpdatedUserBack(User user){
                 finish();
