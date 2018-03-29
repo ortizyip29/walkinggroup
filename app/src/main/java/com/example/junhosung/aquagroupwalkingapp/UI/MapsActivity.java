@@ -117,17 +117,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 100, 1, new LocationListener() {
                 @Override
                 public void onLocationChanged(Location location) {
-                    // LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
-                    LatLng currentLocation = new LatLng(currentUser.getLastGpsLocation().getLat(), currentUser.getLastGpsLocation().getLng());
+                    LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                    //LatLng currentLocation = new LatLng(currentUser.getLastGpsLocation().getLat(), currentUser.getLastGpsLocation().getLng());
                     Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
                     if (myRadius != null || marker != null) {
                         mapDisplay.clear();
                     }
 
                     try {
-                        //geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 0);
-                        geocoder.getFromLocation(currentUser.getLastGpsLocation().getLat(), currentUser.getLastGpsLocation().getLng(), 0);
-                        Toast.makeText(getApplicationContext(), "Our location is Latitude: " + currentUser.getLastGpsLocation().getLat() + "  Longitude: " + currentUser.getLastGpsLocation().getLng() + "  Location uploaded", Toast.LENGTH_SHORT).show();
+                        //
+                        geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 0);
+                        //geocoder.getFromLocation(currentUser.getLastGpsLocation().getLat(), currentUser.getLastGpsLocation().getLng(), 0);
+                        Toast.makeText(getApplicationContext(), "Our location is Latitude: " +location.getLatitude() + "  Longitude: " + location.getLongitude() + "  Location uploaded", Toast.LENGTH_SHORT).show();
                         mapDisplay.setMapType(GoogleMap.MAP_TYPE_NORMAL);
                         marker = new MarkerOptions().position(currentLocation).title("I'm Here");
                         mapDisplay.addMarker(marker);
