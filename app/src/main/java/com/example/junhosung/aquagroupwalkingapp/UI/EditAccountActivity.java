@@ -100,11 +100,17 @@ public class EditAccountActivity extends AppCompatActivity {
 
 
                 String name = nameEdit.getText().toString();
-                int birthM = Integer.parseInt(birthMEdit.getText().toString());
+                int birthM;
                 if(birthMEdit.getText().toString().matches("")){
+                    birthM = 0;
+                }else{
+                    birthM = Integer.parseInt(birthMEdit.getText().toString());
                 }
-                int birthY = Integer.parseInt(birthYEdit.getText().toString());
+                int birthY;
                 if(birthYEdit.getText().toString().matches("")){
+                    birthY = 0;
+                }else{
+                    birthY = Integer.parseInt(birthYEdit.getText().toString());
                 }
 
                 String address = addressEdit.getText().toString();
@@ -117,7 +123,7 @@ public class EditAccountActivity extends AppCompatActivity {
                     return;
                 }
 
-                    String grade = gradeEdit.getText().toString();
+                String grade = gradeEdit.getText().toString();
                 String teacherN = teacherNEdit.getText().toString();
                 String emergency = emergencyEdit.getText().toString();
 
@@ -127,6 +133,8 @@ public class EditAccountActivity extends AppCompatActivity {
 
 
                 current.setName(name);
+                current.setBirthMonth(birthM);
+                current.setBirthYear(birthY);
                 current.setAddress(address);
                 current.setHomePhone(homeP);
                 current.setCellPhone(mobile);
