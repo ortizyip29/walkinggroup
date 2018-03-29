@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TextView.BufferType;
+import android.widget.Toast;
 
 import com.example.junhosung.aquagroupwalkingapp.R;
 import com.example.junhosung.aquagroupwalkingapp.model.Model;
@@ -70,8 +71,18 @@ public class EditAccountActivity extends AppCompatActivity {
         String emergencyContact = user.getEmergencyContactInfo();
 
         nameEdit.setText(name, BufferType.EDITABLE);
-        birthMEdit.setText(String.valueOf(birthM), BufferType.EDITABLE);
-        birthYEdit.setText(String.valueOf(birthY), BufferType.EDITABLE);
+
+        if(birthM != 0){
+            birthMEdit.setText(String.valueOf(birthM), TextView.BufferType.EDITABLE);
+        }else{
+            birthMEdit.setText("",TextView.BufferType.EDITABLE);
+        }
+        if(birthY != 0) {
+            birthYEdit.setText(String.valueOf(birthY), TextView.BufferType.EDITABLE);
+        }else{
+            birthYEdit.setText("",TextView.BufferType.EDITABLE);
+        }
+
         addressEdit.setText(address, BufferType.EDITABLE);
         homePEdit.setText(phone, BufferType.EDITABLE);
         mobileEdit.setText(mobile, BufferType.EDITABLE);
@@ -100,6 +111,10 @@ public class EditAccountActivity extends AppCompatActivity {
                 String homeP = homePEdit.getText().toString();
                 String mobile = mobileEdit.getText().toString();
                 String email = emailEdit.getText().toString();
+                if(isEmailValid(email) != true){
+                    Toast.makeText(EditAccountActivity.this, "Email not valid", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 String grade = gradeEdit.getText().toString();
                 String teacherN = teacherNEdit.getText().toString();
                 String emergency = emergencyEdit.getText().toString();
