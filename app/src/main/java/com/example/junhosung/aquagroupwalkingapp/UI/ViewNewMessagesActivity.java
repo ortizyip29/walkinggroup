@@ -121,8 +121,8 @@ public class ViewNewMessagesActivity extends AppCompatActivity {
 
                                             fromUserName = new  String[listOfUser.size()];
 
-                                            Toast.makeText(ViewNewMessagesActivity.this,listOfUser.size()+"",Toast.LENGTH_LONG).show();
-                                            Toast.makeText(ViewNewMessagesActivity.this,text.length+"",Toast.LENGTH_LONG).show();
+                                            //Toast.makeText(ViewNewMessagesActivity.this,listOfUser.size()+"",Toast.LENGTH_LONG).show();
+                                            //Toast.makeText(ViewNewMessagesActivity.this,text.length+"",Toast.LENGTH_LONG).show();
 
                                              for (int i = 0; i < listOfUser.size(); i++) {
                                                     fromUserName[i] = "From " + listOfUser.get(i).getEmail() + " : " + text[i];
