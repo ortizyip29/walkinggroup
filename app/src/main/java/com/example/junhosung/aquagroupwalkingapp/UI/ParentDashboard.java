@@ -171,8 +171,8 @@ public class ParentDashboard extends AppCompatActivity implements OnMapReadyCall
             prevLat = currentLat;
             prevLng = currentLng;
             //LatLng monitoredLocation = new LatLng(49.2827,-123.1208);
-            currentLat = user.getLastGpsLocation().getLat();
-            currentLng = user.getLastGpsLocation().getLng();
+            currentLat = 49.2827;// user.getLastGpsLocation().getLat();
+            currentLng = -123.1208;//user.getLastGpsLocation().getLng();
             LatLng monitoredLocation = new LatLng(currentLat, currentLng);
             if(currentLat == NULL || currentLng == NULL){
                 Toast.makeText(getApplicationContext(), "No monitoring member or child in range", Toast.LENGTH_SHORT).show();
