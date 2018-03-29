@@ -47,13 +47,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import static java.lang.Thread.sleep;
+
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
     Model model = Model.getInstance();
     User currentUser = model.getCurrentUser();
     Group currentGroup = model.getCurrentGroupInUseByUser();
-   // GpsLocation myCurrentLocation = currentUser.getLastGpsLocation();
-    GpsLocation myCurrentLocation = new GpsLocation();
-
     private GoogleMap mapDisplay;
     Circle myRadius;
     MarkerOptions marker;
@@ -63,15 +62,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     List<Double> setLngList;
     Double[] groupLatArray;
     Double[] groupLngArray;
-    double currentUserLat = 49.2827;
-    double currentUserLng = -123.1207;
+    double currentUserLat;// = 49.2827;
+    double currentUserLng;// = -123.1207;
     double prevLat = 0.00;
     double prevLng = 0.00;
-    //long minuteElapsed;
     long secondElapsed = 0;
     boolean atSchool = false;
+    boolean cancelTimer = false;
     LatLng markLatLng = new LatLng(0.00, 0.00);
-    //Long groupId= Long. ;
 
 
     @Override
@@ -98,13 +96,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapFrag.getMapAsync(this);
         locationUpdate();
         locationTimer();
+        //sendMyLocation(currentUser);
         sendMyLocation();
         getGroupNameOnMap();
         //sendLocationSever();
         getCoordinates();
         Log.d("tag", "Who am i" + model.getCurrentUser());
         Log.d("tag", "WHAT GROUP ARE WE  " + model.getCurrentGroupInUseByUser().getGroupDescription());
-        // Log.d("tag","tellmereference"+reference);
 
     }
 
@@ -127,21 +125,21 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     }
 
                     try {
-                        //GpsLocation myCurrentLocation = new GpsLocation();
                         //geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 0);
                         geocoder.getFromLocation(currentUser.getLastGpsLocation().getLat(), currentUser.getLastGpsLocation().getLng(), 0);
-                        Toast.makeText(getApplicationContext(), "Our location is Latitude: " + currentUser.getLastGpsLocation().getLat() + "  Longitude: " + currentUser.getLastGpsLocation().getLng() + "  Location uploaded", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Our location is Latitude: " + currentUser.getLastGpsLocation().getLat() + "  Longitude: " + currentUser.getLastGpsLocation().getLng() + "  Location uploaded", Toast.LENGTH_SHORT).show();
                         mapDisplay.setMapType(GoogleMap.MAP_TYPE_NORMAL);
                         marker = new MarkerOptions().position(currentLocation).title("I'm Here");
                         mapDisplay.addMarker(marker);
                         mapDisplay.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
-                        CameraUpdate defaultDisplay = CameraUpdateFactory.newLatLngZoom(currentLocation, 17);
+                        CameraUpdate defaultDisplay = CameraUpdateFactory.newLatLngZoom(currentLocation, 14);
                         mapDisplay.animateCamera(defaultDisplay);
                         currentUserLat = location.getLatitude();
                         currentUserLng = location.getLongitude();
                         setLatList = Arrays.asList(currentUserLat);
                         setLngList = Arrays.asList(currentUserLng);
                         sendLocationSever();
+                        //sendMyLocation(currentUser);
                         sendMyLocation();
                         getGroupNameOnMap();
                         myRadius = mapDisplay.addCircle(new CircleOptions()
@@ -183,7 +181,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     }
 
                     try {
-                        //GpsLocation myCurrentLocation = new GpsLocation();
                         //geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 0);
                         geocoder.getFromLocation(currentUser.getLastGpsLocation().getLat(), currentUser.getLastGpsLocation().getLng(), 0);
                         Toast.makeText(getApplicationContext(), "Our location is Latitude: " + currentUser.getLastGpsLocation().getLat() + "  Longitude: " + currentUser.getLastGpsLocation().getLng() + "  Location uploaded", Toast.LENGTH_LONG).show();
@@ -198,6 +195,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         setLatList = Arrays.asList(currentUserLat);
                         setLngList = Arrays.asList(currentUserLng);
                         sendLocationSever();
+                        //sendMyLocation(currentUser);
                         sendMyLocation();
                         getGroupNameOnMap();
                         myRadius = mapDisplay.addCircle(new CircleOptions()
@@ -334,19 +332,19 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void sendMyLocation() {
-        //myCurrentLocation = currentUser.getLastGpsLocation();
-        GpsLocation myCurrentLocation  = new GpsLocation();
-        myCurrentLocation.setLat(currentUserLat);
-        myCurrentLocation.setLng(currentUserLng);
-       // String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
-        //myCurrentLocation.setTimestamp(timeStamp);
-        currentUser.setLastGpsLocation(myCurrentLocation);
-        model.updateUser(currentUser, this::myLocationCallback);
-        Log.d("Albert", "Albert" + myCurrentLocation.getLat() + myCurrentLocation.getLng());
-        Log.d("albert", "Alert" + currentUser.getLastGpsLocation().getLat());//works
+        Log.d("tag","currentUerLat"+currentUserLat);
+      //  lastGpsLocation.setLat(currentUserLat);
+        //lastGpsLocation.setLng(currentUserLng);
+        //GpsLocation lastGpsLocation =  new GpsLocation(currentUserLat,currentUserLng,null);
+        GpsLocation lastGpsLocation =  new GpsLocation(49.1208,-123.1210,null);
+        currentUser.setLastGpsLocation(lastGpsLocation);
+        Log.d("Albert", "Alert" + lastGpsLocation.getLat() +" "+ lastGpsLocation.getLng());
+        Log.d("Albert", "Alert" + model.getCurrentUser());
+        model.updateUser(currentUser,this :: myLocationCallback);
     }
 
-    private void myLocationCallback(User user) {
+    private void myLocationCallback(User currentUser) {
+        Log.d("","DOYOUWORK");
     }
 
     private void groupAttributesCallback(Group group) {
@@ -372,15 +370,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             // Log.d("tag" ,"idc what it is"+ group.getGroupDescription());
         }
         String[] groupDisplayArray = new String[groupsDisplay.size()];
+        if(groupsDisplay.size()==0){
+            Toast.makeText(getApplicationContext(), "There are no groups in your map range", Toast.LENGTH_SHORT).show();
+        }
         //Log.d("tag","what size"+groupsDisplay.size());
 
         int i;
         for (i = 0; i < groupsDisplay.size(); i++) {
-            LatLng markLocation = new LatLng(49.1217 + (i / 100), -123.1269 + (i / 100));
+            LatLng markLocation = new LatLng(49.1217 , -123.1207);
             groupDisplayArray[i] = groupsDisplay.get(i);
             //getCoordinates();
             mapDisplay.addMarker(groupMarker = new MarkerOptions().position(markLocation).title(groupDisplayArray[i]).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
-            Log.d("tag", "idc what it is" + groupDisplayArray[i]);
+            //Log.d("tag", "who are these groups" + groupDisplayArray[i]);
         }
 
     }
@@ -405,6 +406,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 Log.d("tag", "PreviousLat" + prevLat);
                 Log.d("tag", "PreviousLat" + prevLng);
                 if (prevLat != currentUserLat && prevLng != currentUserLng) {
+                    cancelTimer = true;
                     atSchoolLocationTimer();
                 }
                 if(!atSchool) {
@@ -413,12 +415,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         }.start();
     }
-   //
-    private void atSchoolLocationTimer() {
-        new CountDownTimer(60000, 1000) {
-            public void onTick(long millisUntilFinished) {
-            }
 
+    private void atSchoolLocationTimer() {
+        new CountDownTimer(600000, 1000) {
+            public void onTick(long millisUntilFinished) {
+                if(cancelTimer){
+                    cancel();
+                }
+            }
             public void onFinish() {
                 atSchool = true;
                 Toast.makeText(getApplicationContext(),"ARRIVED at school,location update will stop",Toast.LENGTH_SHORT).show();

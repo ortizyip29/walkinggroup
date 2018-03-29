@@ -14,6 +14,7 @@ import com.example.junhosung.aquagroupwalkingapp.R;
 import com.example.junhosung.aquagroupwalkingapp.model.Group;
 import com.example.junhosung.aquagroupwalkingapp.model.Model;
 import com.example.junhosung.aquagroupwalkingapp.model.User;
+import com.example.junhosung.aquagroupwalkingapp.model.get_me_data_from_server.GetListOfUserFromListOfID;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -186,34 +187,51 @@ public class GroupsLeaderOfActivity extends AppCompatActivity {
 
 
     private void SetupSelectGroupSpinner() {
+
         Spinner spinner = (Spinner) findViewById(R.id.SelectGroup);
+
 
         List<String> groupDetail = new ArrayList<>();
         if(groupsThatUsersCanSeeInformationOn !=null){
+
             for(Group group: groupsThatUsersCanSeeInformationOn){
-                groupDetail.add(group.getGroupDescription());
+                Log.w(TAG,"groupDetail.add(Group.getGroupDescription)" +  group.getGroupDescription());
+                if(group.getGroupDescription() != null) {
+                    groupDetail.add(group.getGroupDescription());
+                }
             }
         }
 
-        ArrayAdapter<String>  adapter = new ArrayAdapter<String>(this, R.layout.leader_groups, groupDetail);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.leader_groups, groupDetail);
 
-// Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // Specify the layout to use when the list of choices appears
+      adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+
 // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
+
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                listOfUsersWithIdOnlyForSelectedGroup = new ArrayList<>();
-                listOfUsersForSelectedGroup = new ArrayList<>();
-                if(!groupsThatUsersCanSeeInformationOn.get(i).getMemberUsers().isEmpty()) {
+                Log.w(TAG,"SetupSelectGroupSpinner3");
+              //  listOfUsersWithIdOnlyForSelectedGroup = new ArrayList<>();
+              //  listOfUsersForSelectedGroup = new ArrayList<>();
+
+
+ if(!groupsThatUsersCanSeeInformationOn.get(i).getMemberUsers().isEmpty()) {
                     for(User user: groupsThatUsersCanSeeInformationOn.get(i).getMemberUsers() ){
+                        Log.w(TAG,"SetupSelectGroupSpinner4");
+
                         User newUser = new User();
                         newUser.setId(user.getId());
                         listOfUsersWithIdOnlyForSelectedGroup.add(newUser);
                     }
+                    Log.w(TAG,"SetupSelectGroupSpinner5");
                     getUsersInformation();
                 }
+
             }
 
             @Override
@@ -222,8 +240,25 @@ public class GroupsLeaderOfActivity extends AppCompatActivity {
             }
         });
     }
+    private void getUsersInformation() {
+        Log.w(TAG,"getUsersInformation called");
+        GetListOfUserFromListOfID getListOfUserFromListOfID =
+            new GetListOfUserFromListOfID(listOfUsersWithIdOnlyForSelectedGroup,
+            this::responseListOfUsersForSelectedGroup,
+            true);
 
+//            getListOfUserFromListOfID.callthisMethod();
+        Log.w(TAG,"getListOfUserFromListOfID.callthisMethod called");
+    }
+    private void responseListOfUsersForSelectedGroup(List<User> users) {
+        Log.w(TAG,"responseListOfUsersForSelectedGroup called");
+        listOfUsersForSelectedGroup = users;
+        setupListViewOfUsers();
+    }
+
+/*
     private void getUsersInformation(){
+
         if(!listOfUsersWithIdOnlyForSelectedGroup.isEmpty()){
             progressBar.setVisibility(View.VISIBLE);
             model.getUserById(listOfUsersWithIdOnlyForSelectedGroup.get(0).getId(),this::responseWithUserDetailsAboutSelectedGroup);
@@ -248,6 +283,7 @@ public class GroupsLeaderOfActivity extends AppCompatActivity {
             setupListViewOfUsers();
         }
     }
+*/
 
     private void setupListViewOfUsers() {
         Spinner groupSelectedLeaderOf = (Spinner) findViewById(R.id.selectUser);
