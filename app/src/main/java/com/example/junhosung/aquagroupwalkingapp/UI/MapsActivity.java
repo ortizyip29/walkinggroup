@@ -315,6 +315,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void sendLocationSever() {
+        currentGroup = model.getCurrentGroupInUseByUser();
         setLatList = Arrays.asList(currentUserLat);
         setLngList = Arrays.asList(currentUserLng);
         currentGroup.setRouteLatArray(setLatList);
@@ -337,6 +338,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         //lastGpsLocation.setLng(currentUserLng);
         //GpsLocation lastGpsLocation =  new GpsLocation(currentUserLat,currentUserLng,null);
         GpsLocation lastGpsLocation =  new GpsLocation(49.1208,-123.1210,null);
+        currentUser = model.getCurrentUser();
         currentUser.setLastGpsLocation(lastGpsLocation);
         Log.d("Albert", "Alert" + lastGpsLocation.getLat() +" "+ lastGpsLocation.getLng());
         Log.d("Albert", "Alert" + model.getCurrentUser());
@@ -348,18 +350,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void groupAttributesCallback(Group group) {
-        currentGroup = group;
-        model.getCurrentGroupInUseByUser().getGroupDescription();
-        groupLatArray = new Double[currentGroup.getRouteLatArray().size()];
-        groupLngArray = new Double[currentGroup.getRouteLngArray().size()];
+        //currentGroup = group;
+       //group = model.getCurrentGroupInUseByUser().getGroupDescription();
+      /*  groupLatArray = new Double[group.getRouteLatArray().size()];
+        groupLngArray = new Double[group.getRouteLngArray().size()];
         markLatLng = new LatLng(groupLatArray[groupLatArray.length - 1], groupLngArray[groupLngArray.length - 1]);
         Log.d("tag", "holy" + groupLngArray[groupLngArray.length - 1]);
-        if (currentGroup.getRouteLatArray().size() < 1) {
+        if (group.getRouteLatArray().size() < 1) {
             Log.d("tag", "No groups have route array");
             //markLatLng = new LatLng(49.2829, -123.1411);
         } else {
             markLatLng = new LatLng(groupLatArray[groupLatArray.length - 1], groupLngArray[groupLngArray.length - 1]);
-        }
+        }*/
     }
 
     private void groupNameCallback(List<Group> groups) {
@@ -399,6 +401,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onFinish() {
                 prevLat = currentUserLat;
                 prevLng = currentUserLng;
+                currentUser = model.getCurrentUser();
+                currentGroup = model.getCurrentGroupInUseByUser();
                 locationUpdate();
                 sendLocationSever();
                 secondElapsed = 0;
