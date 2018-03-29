@@ -54,15 +54,15 @@ public class GroupManagementActivity extends AppCompatActivity {
 
     private void setupTempLaunchCheckGroupDetailActivityBtn() {
 
-     /*   Button button = (Button) findViewById(R.id.launchCheckGroupDetailActivity);
+        Button button = (Button) findViewById(R.id.lastBtn);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {        // GroupsLeaderOfActivity
-                Intent intent = new Intent(GroupManagementActivity.this, CheckGroupsDetails.class);
+            public void onClick(View view) {  //  CheckGroupsDetails.class    // GroupsLeaderOfActivity
+                Intent intent = new Intent(GroupManagementActivity.this,GroupsLeaderOfActivity.class );
                 startActivity(intent);
             }
         });
-*/    }
+    }
 
 
     private void setupChangeGroupButton(){
