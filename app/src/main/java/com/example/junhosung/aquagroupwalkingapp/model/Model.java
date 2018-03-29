@@ -332,7 +332,6 @@ public class Model extends AppCompatActivity {
         if (isUserLoggedin) {
             server.getGroups(this.tokenForLogin, this::responseForGetGroups);
         }
-
     }
 
     public void getGroupDetailsById(Long groupId,SimpleCallback<Group> callback) {
