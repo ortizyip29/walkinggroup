@@ -35,6 +35,7 @@ import com.example.junhosung.aquagroupwalkingapp.model.UserCollectionServer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
 
 
 public class SeeMonitoringActivity extends AppCompatActivity {
@@ -51,11 +52,22 @@ public class SeeMonitoringActivity extends AppCompatActivity {
     List<User> monitorsList;
     String[] nameAndEmail;
     String TAG;
-
     private List<Clicked> isItemClicked = new ArrayList<>();
     public class Clicked{
         public boolean clicked = false;
     }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_see_monitoring);
+        updateListOfMonitoring();
+        setUpAddButton();
+        setUpDeleteButton();
+        setUpEditButton();
+
+    }
+
     private void updateListOfMonitoring(){
         model.getMonitorsById(model.getCurrentUser().getId(), this::responseWithUserMonitorsOnActivityResult);
     }
@@ -69,7 +81,7 @@ public class SeeMonitoringActivity extends AppCompatActivity {
         for(User user:users){
             Log.i(TAG,user.toString());
         }
-       // Toast.makeText(SeeMonitoringActivity.this,"this is runing!",Toast.LENGTH_LONG).show();
+        // Toast.makeText(SeeMonitoringActivity.this,"this is runing!",Toast.LENGTH_LONG).show();
 
         updateDisplayListAndDeleteList(users);
         populateListView();
@@ -85,18 +97,6 @@ public class SeeMonitoringActivity extends AppCompatActivity {
         }
     }
 
-
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_see_monitoring);
-        updateListOfMonitoring();
-        setUpAddButton();
-        setUpDeleteButton();
-        setUpEditButton();
-
-    }
 
     private void setUpAddButton() {
         btnAddMonitoring = (Button) findViewById(R.id.btnAddMonitoree);
@@ -138,13 +138,16 @@ public class SeeMonitoringActivity extends AppCompatActivity {
                     if(thisItem.clicked){
                         Long userId = monitorsList.get(counter).getId();
                         Intent intent = EditChildActivity.makeIntent(SeeMonitoringActivity.this, userId);
-                        startActivity(intent);
+                        //Intent intent = new Intent(SeeMonitoringActivity.this, EditChildActivity.class);
+                        //intent.putExtra("test",userId);
+
+                        if (userId != null) {
+                            startActivity(intent);
+                        }
                     }
                     counter++;
                 }
             }
-
-
 
         });
 

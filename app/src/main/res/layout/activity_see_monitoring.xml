@@ -15,7 +15,6 @@
         android:layout_marginStart="36dp"
         android:text="@string/btn_add_monitoree"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btnDeleteMonitoree"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button

@@ -26,7 +26,17 @@ import java.util.List;
 import static com.example.junhosung.aquagroupwalkingapp.UI.RegisterActivity.makeIntent;
 
 public class GroupManagementActivity extends AppCompatActivity {
-    Model model = Model.getInstance();
+    private Model model = Model.getInstance();
+    private boolean onCreateisDone  = false;
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        if( onCreateisDone ) {
+            refreshPage();
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +48,21 @@ public class GroupManagementActivity extends AppCompatActivity {
         setupAddGroupButton();
         populateListView();
         backToMapsButton();
+        setupTempLaunchCheckGroupDetailActivityBtn();
+        onCreateisDone = true;
     }
+
+    private void setupTempLaunchCheckGroupDetailActivityBtn() {
+
+     /*   Button button = (Button) findViewById(R.id.launchCheckGroupDetailActivity);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {        // GroupsLeaderOfActivity
+                Intent intent = new Intent(GroupManagementActivity.this, CheckGroupsDetails.class);
+                startActivity(intent);
+            }
+        });
+*/    }
 
 
     private void setupChangeGroupButton(){
@@ -86,17 +110,23 @@ public class GroupManagementActivity extends AppCompatActivity {
     }
 
     private void refreshPage() {
-        model.getMembersOfGroup(model.getCurrentGroupInUseByUser().getId(),this::responseForUsersInGroup);
+        if(model.getCurrentGroupInUseByUser()==null){
+            responseForUsersInGroup(null);
+        } else {
+            model.getMembersOfGroup(model.getCurrentGroupInUseByUser().getId(),this::responseForUsersInGroup);
+        }
 
     }
 
     private void responseForUsersInGroup(List<User> users) {
         List<String> members = new ArrayList<>();
+        if(!(users==null)) {
 
-        for(User user:users){
-            members.add(user.getName()+" , " +user.getEmail());
+            for(User user:users){
+                members.add(user.getName()+" , " +user.getEmail());
+            }
+            ((TextView) findViewById(R.id.textViewGroupName)).setText(model.getCurrentGroupInUseByUser().getGroupDescription());
         }
-        ((TextView) findViewById(R.id.textViewGroupName)).setText(model.getCurrentGroupInUseByUser().getGroupDescription());
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,R.layout.members,members);
         ListView memberListView = (ListView) findViewById(R.id.membersList);
         memberListView.setAdapter(adapter);
@@ -106,6 +136,7 @@ public class GroupManagementActivity extends AppCompatActivity {
             }
         });
     }
+
 
     private void backToMapsButton(){
         Button  addbackToMapsButton= (Button)findViewById(R.id.backToMapBtn);

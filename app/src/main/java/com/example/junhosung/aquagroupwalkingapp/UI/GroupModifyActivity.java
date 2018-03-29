@@ -21,22 +21,25 @@ import java.util.List;
 
 public class GroupModifyActivity extends AppCompatActivity {
     private Model model = Model.getInstance();
-    User current = model.getCurrentUser();
-    //User receivedUser;
-    List<User> monitorsList;
-    String[] nameAndEmail;
-    List<User> currentGroupUserList = new ArrayList<>();
+
+
+    long currentUserID = model.getCurrentGroupInUseByUser().getId();
+    private List<User> listOfUsersDeleteable;
+    private List<User> monitorsList;
+    private String[] nameAndEmail;
     private Group currentGroup;
-    private int itemClicked;
+    private int itemClickedForDelete;
     private int itemClickedToAdd;
     private boolean isItemClickedForAdd = false;
-    ArrayAdapter<String> adapter;
     private final String TAG = "GroupModifyActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_modify);
+        if(model.getCurrentGroupInUseByUser()!=null){
+            model.getCurrentGroupInUseByUser().getId();
+        }
 
         refreshPage();
         setUpAddbtn();
@@ -46,7 +49,7 @@ public class GroupModifyActivity extends AppCompatActivity {
     }
 
     private void setUpBackbtn() {
-        Button button = (Button) findViewById(R.id.btnDone);
+        Button button = (Button) findViewById(R.id.btnBack);
         button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -64,41 +67,11 @@ public class GroupModifyActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if(isItemClickedForAdd) {
                     User addthisUser =  monitorsList.get(itemClickedToAdd);
-                    /*if(addthisUser==null){
-                        Log.v(TAG,"------NNNNNNNNNNNNNNNNULLLLLLLLLLLLLLLLL");
-                    } else{
-                        Log.v(TAG,"-------NNNNNNNNNNNNNNNNULLLLLLLLLLLLLLLLL2");
-                    }
-                    Log.v(TAG, "NAme of group here --------------------------"+currentGroup.getGroupDescription());
-                    List<User> groupUsers = currentGroup.getMemberUsers();
-
-                    groupUsers.add(addthisUser);
-                    for(User user:groupUsers){
-                        Log.v(TAG,"USER HAS ADDED"+user.toString());
-                        //user.toString();
-                    }
-                    currentGroup.setMemberUsers(groupUsers);
-                    if(currentGroup==null){
-                        Log.v(TAG,"currentGroup is Null");
-                    } else{
-                        Log.v(TAG,"currentGroup is not Null");
-                    }
-
-
-                    for(User user:currentGroup.getMemberUsers()){
-                        Log.v(TAG,"addded some user  --------------------------------------------------------------------------------");
-                       Log.v(TAG,user.toString());
-
-                    }*/
-                    model.addUserToGroup(currentGroup.getId(),addthisUser,this::responseAfterAdd2);
-                    //model.updateGroupDetails(currentGroup.getId(),currentGroup,this::responseAfterAdd);
+                    model.addUserToGroup(currentGroup.getId(),addthisUser,this::responseAfterAdd);
                 }
             }
 
-            private void responseAfterAdd2(List<User> users) {
-                refreshPage();
-            }
-            private void responseAfterAdd(Group group) {
+            private void responseAfterAdd(List<User> users) {
                 refreshPage();
             }
         });
@@ -109,39 +82,41 @@ public class GroupModifyActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                currentGroupUserList.get(itemClicked).getId();
-                if(currentGroup!=null){
-                         currentGroup.getMemberUsers().remove(itemClicked);
-                    model.updateGroupDetails(currentGroup.getId(),currentGroup,this::responseAfterRemove);
+                if(listOfUsersDeleteable!=null){
+                    long userIdOfUserToDeleteFromGroup=listOfUsersDeleteable.get(itemClickedForDelete).getId();
+                    model.deleteMemberOfGroup(currentGroup.getId(),userIdOfUserToDeleteFromGroup,this::responseAfterRemove);
                 }
             }
-            private void responseAfterRemove(Group group) {
+            private void responseAfterRemove(Void voidObject) {
                 refreshPage();
             }
         });
     }
 
     public void refreshPage(){
-        model.getGroupDetailsById(model.getCurrentGroupInUseByUser().getId(),this::callbackForGetCurrentGroup);
-        model.getMonitoredById(current.getId(),this::responseWithUserMonitors);
-
+            if(model.getCurrentGroupInUseByUser()!=null){
+                model.getGroupDetailsById(model.getCurrentGroupInUseByUser().getId(),this::callbackForGetCurrentGroup);
+                model.getMonitoredById(currentUserID,this::responseWithUserMonitors);
+            }
     }
+
 
     private void callbackForGetCurrentGroup(Group group) {
         currentGroup = group;
-        model.getMembersOfGroup(model.getCurrentGroupInUseByUser().getId(),this::callbackForGetCurrentGroupDetails);
+
+        model.getMembersOfGroup(currentUserID,this::callbackForGetCurrentGroupDetails);
     }
 
     private void responseWithUserMonitors(List<User> users) {
         monitorsList = users;
-        nameAndEmail = new String [monitorsList.size()];
+        nameAndEmail = new String[monitorsList.size()];
         for (int i = 0; i < monitorsList.size();i++) {
             nameAndEmail[i] ="        " + monitorsList.get(i).getName() + "  :  " + monitorsList.get(i).getEmail();
         }
+        ArrayAdapter<String> adapter;
+        adapter = new ArrayAdapter<String>(this, R.layout.add_users_to_current_group_list, nameAndEmail);
 
-        adapter = new ArrayAdapter<String>(this, R.layout.activity_group_modifymm, nameAndEmail);
-
-        ListView list = (ListView) findViewById(R.id.listViewMM);
+        ListView list = (ListView) findViewById(R.id.listViewMemberThatCanBeAddedToCurrentGroup);
         list.setAdapter(adapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
@@ -152,13 +127,8 @@ public class GroupModifyActivity extends AppCompatActivity {
         });
     }
 
-//    private void callbackForGetCurrentGroupDetails(Group group) {
     private void callbackForGetCurrentGroupDetails(List<User> group) {
-
-        //currentGroup = group;
-
-        //Log.v(TAG,"----------------------------Id:    "+group.getId());
-       // List<User> currentGroupUserList = group.getMemberUsers();
+        listOfUsersDeleteable = group;
         List<String> groupUsersDisplayList = new ArrayList<>();
         for(User thisUser: group){
             groupUsersDisplayList.add(thisUser.getName() +" , "+ thisUser.getEmail());
@@ -166,15 +136,13 @@ public class GroupModifyActivity extends AppCompatActivity {
         }
 
         ArrayAdapter<String> adapter;
-        adapter = new ArrayAdapter<String>(this, R.layout.activity_group_mod, groupUsersDisplayList);
-
-        //Configure the list view
-        ListView list = (ListView) findViewById(R.id.listViewGroup);
+        adapter = new ArrayAdapter<String>(this, R.layout.delete_users_from_group_list, groupUsersDisplayList);
+        ListView list = (ListView) findViewById(R.id.listViewMemberOfCurrentGroup);
         list.setAdapter(adapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int item, long l) {
-                itemClicked = item;
+                itemClickedForDelete = item;
             }
         });
 

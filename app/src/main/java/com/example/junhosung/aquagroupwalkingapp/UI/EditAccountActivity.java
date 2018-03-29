@@ -50,6 +50,7 @@ public class EditAccountActivity extends AppCompatActivity {
         updateUI(current);
         setUpCancelbtn();
         setUpDonebtn();
+
     }
     boolean isEmailValid(CharSequence email) {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
@@ -120,7 +121,9 @@ public class EditAccountActivity extends AppCompatActivity {
 
 
 
-                model.editUser(name, birthY, birthM, address, homeP, mobile, email, grade, teacherN, emergency);
+                //model.editUser(name, birthY, birthM, address, homeP, mobile, email, grade, teacherN, emergency);
+
+
                 current.setName(name);
                 current.setAddress(address);
                 current.setHomePhone(homeP);
@@ -129,7 +132,6 @@ public class EditAccountActivity extends AppCompatActivity {
                 current.setGrade(grade);
                 current.setTeacherName(teacherN);
                 current.setEmergencyContactInfo(emergency);
-
                 model.updateUser(current, this::getUserUpdateCallBack);
                 finish();
 

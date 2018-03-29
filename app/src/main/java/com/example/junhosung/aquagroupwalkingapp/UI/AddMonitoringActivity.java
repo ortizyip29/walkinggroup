@@ -13,8 +13,6 @@ import android.widget.Toast;
 import com.example.junhosung.aquagroupwalkingapp.R;
 import com.example.junhosung.aquagroupwalkingapp.model.Model;
 import com.example.junhosung.aquagroupwalkingapp.model.User;
-import com.example.junhosung.aquagroupwalkingapp.model.User2;
-import com.example.junhosung.aquagroupwalkingapp.model.UserCollection;
 
 import java.util.List;
 
@@ -28,6 +26,7 @@ public class AddMonitoringActivity extends AppCompatActivity {
     User receivedUser;
     String currentUserEmail = model.getCurrentUser().getEmail();
     User userMatch;
+    private final String TAG = "AddMonitoringActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,24 +42,31 @@ public class AddMonitoringActivity extends AppCompatActivity {
             public void onClick(View view) {
                 EditText newUser = (EditText) findViewById(R.id.typeEmail);
                 String email = newUser.getText().toString();
-                for (int i  = 0; i < usersServer.size();i++ ){
-                    if (usersServer.get(i).getEmail().equals(email)) {
-                        userMatch = usersServer.get(i);
-                        model.getUserByEmail(currentUserEmail,this::responseWithUserEmail);
-                    }
-                }
-                Intent intent = new Intent();
-                setResult(Activity.RESULT_OK,intent);
-                finish();
+
+                model.getUserByEmail(email,this::responseWithUserEmail);
+
             }
 
             private void responseWithUserEmail(User user) {
-                receivedUser = user;
-                model.addNewMonitors(receivedUser.getId(),userMatch,this::responseAddNewMonitors);
+              if(user!=null){
+
+                  model.addNewMonitors(model.getCurrentUser().getId(),user,this::responseAddNewMonitors);
+              }
+
+              else {
+                  Toast.makeText(AddMonitoringActivity.this,"This email does not match our records ...",
+                          Toast.LENGTH_LONG).show();
+                  finish();
+              }
+
             }
 
             private void responseAddNewMonitors(List<User> users) {
 
+                Toast.makeText(AddMonitoringActivity.this,"Success",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent();
+                setResult(Activity.RESULT_OK,intent);
+                finish();
             }
         });
     }

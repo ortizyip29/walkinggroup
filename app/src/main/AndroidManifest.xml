@@ -58,8 +58,24 @@
         <activity android:name=".UI.GroupManagementActivity" />
         <activity android:name=".UI.CreateNewGroupActivity" />
         <activity android:name=".UI.ChangeGroupActivity" />
+        <activity android:name=".UI.MessagePanelActivity" />
+        <activity android:name=".UI.ViewNewMessagesActivity" />
+        <activity android:name=".UI.ViewOldMessagesActivity" />
         <activity android:name=".UI.EditAccountActivity" />
-        <activity android:name=".UI.EditChildActivity"></activity>
+        <activity android:name=".UI.EditChildActivity" />
+        <activity android:name=".UI.SendMessageActivity" />
+        <activity android:name=".UI.SendMsgToGroupActivity" />
+        <activity android:name=".UI.SendEmergencyMsgActivity" />
+        <activity android:name=".UI.SendMsgToParentsActivity" />
+        <activity android:name=".UI.CheckGroupsDetails" />
+        <activity android:name=".UI.ChooseWhichGroupMsgActivity" />
+        <activity android:name=".UI.GroupsLeaderOfActivity" />
+        <activity android:name=".UI.ListUsers" />
+        <activity android:name=".UI.DeleteMonitoringActivity" />
+        <activity android:name=".UI.DeleteMonitoredByActivity" />
+        <activity android:name=".UI.ParentDashboard" />
+        3
+        <activity android:name=".UI.GetListOfUserFromListOfID"></activity>
     </application>
 
 </manifest>

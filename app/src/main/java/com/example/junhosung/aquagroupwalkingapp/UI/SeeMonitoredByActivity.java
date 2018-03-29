@@ -23,7 +23,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import com.example.junhosung.aquagroupwalkingapp.R;
 import com.example.junhosung.aquagroupwalkingapp.model.Model;
 import com.example.junhosung.aquagroupwalkingapp.model.User;
@@ -103,8 +102,9 @@ public class SeeMonitoredByActivity extends AppCompatActivity {
             isItemClicked.add(new Clicked());
         }
     }
+
     private void populateListView() {
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.see_monitored_by,
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.see_monitoring,
                 nameAndEmail);
 
         ListView list = (ListView) findViewById(R.id.monitoredByList);
@@ -144,10 +144,6 @@ public class SeeMonitoredByActivity extends AppCompatActivity {
                         }
                     };
                     timer.start();
-
-
-
-
                     updateListOfMonitoring();
                 }
         }

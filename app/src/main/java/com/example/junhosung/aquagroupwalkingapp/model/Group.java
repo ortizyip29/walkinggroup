@@ -8,9 +8,6 @@ import java.util.List;
  */
 
 public class Group {
-
-
-    private List<Message> messages = new ArrayList<>();
     private long id;
     private String groupDescription;
     private List<Double> routeLatArray =  new ArrayList<>();
@@ -19,6 +16,15 @@ public class Group {
     private List<User> memberUsers = new ArrayList<>();
   //  private List<User> leadsGroups = new ArrayList<>();
     private String href;
+    private List<Message> messages = new ArrayList<>();
+
+    public List<Message> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(List<Message> messages) {
+        this.messages = messages;
+    }
 
     public void setId(long id) {
         this.id = id;
@@ -75,18 +81,22 @@ public class Group {
         return href;
     }
 
-    public List<Message> getMessages() {
-        return messages;
-    }
-
-    public void setMessages(List<Message> messages) {
-        this.messages = messages;
-    }
 
 
     @Override
     public String toString() {
         return "Id: " + id +
                 "Group: " + groupDescription;
+    }
+    @Override
+    public boolean equals(Object obj) {
+        //return super.equals(obj);
+        if(obj.getClass() == this.getClass()) {
+            Group group = (Group) obj;
+            if(group.getId()== this.getId()) {
+                return true;
+            }
+        }
+        return false;
     }
 }

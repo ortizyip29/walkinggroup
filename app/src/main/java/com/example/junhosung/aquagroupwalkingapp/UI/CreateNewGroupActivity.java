@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.example.junhosung.aquagroupwalkingapp.R;
 import com.example.junhosung.aquagroupwalkingapp.model.Group;
 import com.example.junhosung.aquagroupwalkingapp.model.Model;
+import com.example.junhosung.aquagroupwalkingapp.model.User;
 
 import java.util.List;
 
@@ -49,7 +50,6 @@ public class CreateNewGroupActivity extends AppCompatActivity {
                     Group group = new Group();
                     group.setGroupDescription(groupName);
                     group.setLeader(model.getCurrentUser());
-                    group.setId(-1);
                     Log.i(TAG,group.toString());
                     model.createNewGroup(group,this::responseForCreateNewUser);
                 }
@@ -58,7 +58,14 @@ public class CreateNewGroupActivity extends AppCompatActivity {
             private void responseForCreateNewUser(Group group) {
                 Log.i(TAG,group.toString());
                 Toast.makeText(CreateNewGroupActivity.this,group.toString(),Toast.LENGTH_LONG).show();
+                model.getCurrentUser();
+                model.getUserByEmail(model.getCurrentUser().getEmail(),this::responseGetUserByEmail);
                 finish();
+            }
+            private void responseGetUserByEmail(User user){
+                if(user!=null){
+                    model.setCurrentUser(user);
+                }
             }
         });
 

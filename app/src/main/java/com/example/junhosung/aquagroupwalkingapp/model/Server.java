@@ -54,6 +54,11 @@ public class Server extends AppCompatActivity {
     private SimpleCallback serverCallbackForDeleteMemberOfGroup;
     private SimpleCallback serverCallbackForAddNewUserToGroup;
     private SimpleCallback serverCallbackForGetMembersOfGroup;
+    private SimpleCallback serverCallbackForGetUserUnreadMessages;
+    private SimpleCallback serverCallbackForGetUserReadMessages;
+    private SimpleCallback serverCallbackForNewMsgToGroup;
+    private SimpleCallback serverCallbackForNewMsgToParents;
+    private SimpleCallback serverCallbackForMsgMarkAsRead;
 
 
 
@@ -134,11 +139,30 @@ public class Server extends AppCompatActivity {
         serverCallbackForGetMembersOfGroup.callback(users);
     }
 
-    private void responseForUpdateUser(User user){
-        serverCallbackForUpdateUser.callback(user);
+    private void responseForGetUserUnreadMessages(List<Message> messages) {
+        serverCallbackForGetUserUnreadMessages.callback(messages);
     }
 
-    private SimpleCallback serverCallbackForUpdateUser;
+    private void responseForGetUserReadMessages(List<Message> messages) {
+        serverCallbackForGetUserReadMessages.callback(messages);
+    }
+
+    private void responseForNewMsgToGroup(Message msg) {
+        serverCallbackForNewMsgToGroup.callback(msg);
+    }
+
+    private void responseForNewMsgToParents(Message msg) {
+        serverCallbackForNewMsgToParents.callback(msg);
+    }
+
+    private void responseForMsgMarkAsRead(User user) {
+        serverCallbackForMsgMarkAsRead.callback(user);
+    }
+
+
+
+
+
 
 
     //call function
@@ -265,12 +289,63 @@ public class Server extends AppCompatActivity {
         ProxyBuilder.callProxy(Server.this,caller,this::responseForGetMembersOfGroup);
     }
 
+    private void responseForUpdateUser(User user){
+        serverCallbackForUpdateUser.callback(user);
+    }
+
+    private SimpleCallback serverCallbackForUpdateUser;
+
     public void updateUser(User user,String token,SimpleCallback<User> callback) {
         onReceiveToken(token);
         serverCallbackForUpdateUser = callback;
         Call<User> caller = proxy.updateUser(user.getId(),user);
         ProxyBuilder.callProxy(Server.this,caller,this::responseForUpdateUser);
     }
+
+    public void getUserUnreadMessages(Long userId, String readUnread,String token, SimpleCallback<List<Message>> callback) {
+        onReceiveToken(token);
+        readUnread = "unread";
+        serverCallbackForGetUserUnreadMessages = callback;
+        Call<List<Message>> caller = proxy.getUserUnreadMessages(userId,readUnread);
+        ProxyBuilder.callProxy(Server.this,caller,this::responseForGetUserUnreadMessages);
+    }
+
+    public void getUserReadMessages(Long userId, String readUnread, String token, SimpleCallback<List<Message>> callback) {
+        onReceiveToken(token);
+        readUnread = "read";
+        serverCallbackForGetUserReadMessages = callback;
+        Call<List<Message>> caller = proxy.getUserReadMessages(userId,readUnread);
+        ProxyBuilder.callProxy(Server.this,caller,this::responseForGetUserReadMessages);
+    }
+
+    public void newMsgToGroup(Long groupId, Message msg, String token, SimpleCallback<Message> callback) {
+        onReceiveToken(token);
+        serverCallbackForNewMsgToGroup = callback;
+        Call<Message> caller = proxy.newMsgToGroup(groupId,msg);
+        ProxyBuilder.callProxy(Server.this, caller, this::responseForNewMsgToGroup);
+    }
+
+    // sends msg to 'parents' of the User with the input userId
+
+    public void newMsgToParents(Long userId, Message msg, String token, SimpleCallback<Message> callback) {
+        onReceiveToken(token);
+        serverCallbackForNewMsgToParents = callback;
+        Call<Message> caller = proxy.sendMsgToParents(userId,msg);
+        ProxyBuilder.callProxy(Server.this, caller, this::responseForNewMsgToParents);
+    }
+
+    public void msgMarkAsRead(Long messageId, Long userId, boolean sendTrue, String token, SimpleCallback<User> callback) {
+        onReceiveToken(token);
+        serverCallbackForMsgMarkAsRead = callback;
+        Call<User> caller = proxy.msgMarkAsRead(messageId, userId, sendTrue);
+        ProxyBuilder.callProxy(Server.this, caller, this::responseForMsgMarkAsRead);
+    }
+
+
+
+
+
+
 
 
 }

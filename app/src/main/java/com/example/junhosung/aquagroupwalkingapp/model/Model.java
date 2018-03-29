@@ -4,8 +4,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.example.junhosung.aquagroupwalkingapp.SimpleCallback;
+import com.example.junhosung.aquagroupwalkingapp.proxy.ProxyBuilder;
 
 import java.util.List;
+
+import retrofit2.Call;
 
 /**
  * Created by karti on 2018-03-04.
@@ -25,7 +28,7 @@ public class Model extends AppCompatActivity {
     private boolean isUserLoggedin;
     private String tokenForLogin;
     private List<User> currentListOfUsersForGroupInUseByUser; //for david -modify btn activity
-    private Group currentGroupInUseByUser;
+    private Group currentGroupInUseByUser = new Group();
     private List<Group> usersGroups;
 
 
@@ -47,7 +50,11 @@ public class Model extends AppCompatActivity {
     private SimpleCallback callbackForDeleteMemberOfGroup;
     private SimpleCallback callbackForAddNewUserToGroup;
     private SimpleCallback callbackForGetMembersOfGroup;
-    private SimpleCallback serverCallbackForUpdateUser;
+    private SimpleCallback callbackForGetUserUnreadMessages;
+    private SimpleCallback callbackForGetUserReadMessages;
+    private SimpleCallback callbackForNewMsgToGroup;
+    private SimpleCallback callbackForNewMsgToParents;
+    private SimpleCallback callbackForMsgMarkAsRead;
 
 
     //for internal model class
@@ -63,6 +70,9 @@ public class Model extends AppCompatActivity {
         return modelInstance;
     }
 
+    public void setCurrentUser(User user){
+        this.currentUser = user;
+    }
 
     //methods for request from activities NOT related to the server
     public List<User> getUsers() {
@@ -89,6 +99,17 @@ public class Model extends AppCompatActivity {
 
     public void getGroupsOfUserNoCallToServer() {
     }
+
+
+
+
+
+
+
+
+
+
+
 
 
     //response methods from server
@@ -182,13 +203,30 @@ public class Model extends AppCompatActivity {
         this.callbackForGetMembersOfGroup.callback(users);
     }
 
-    private void responseForUpdateUser(User user){
-        serverCallbackForUpdateUser.callback(user);
+    private void responseForGetUserUnreadMessages(List<Message> messages) {
+        this.callbackForGetUserUnreadMessages.callback(messages);
+    }
+
+    private void responseForGetUserReadMessages(List<Message> messages) {
+        this.callbackForGetUserReadMessages.callback(messages);
+    }
+
+    private void responseForNewMsgToGroup(Message msg) {
+        this.callbackForNewMsgToGroup.callback(msg);
+    }
+
+    private void responseForNewMsgToParents(Message msg) {
+        this.callbackForNewMsgToParents.callback(msg);
+    }
+
+    private void responseForMsgMarkAsRead(User user) {
+        this.callbackForMsgMarkAsRead.callback(user);
     }
 
 
     //calls to server methods
     // Adding in currentUser
+
 
     public void logIn(String loginEmail, String password, SimpleCallback<Void> callback) {
         isUserLoggedin = false;
@@ -216,31 +254,6 @@ public class Model extends AppCompatActivity {
         server.createNewUser(user, this::createNewUserResponse);
     }
 
-    public void editUser(String name, int birthY, int birthM, String address, String homeP, String mobile, String email, String grade, String teacherN, String emergency){
-        /**
-         * May not need this function
-         */
-        User user = getCurrentUser();
-        user.setName(name);
-        user.setBirthMonth(birthM);
-        user.setBirthYear(birthY);
-        user.setAddress(address);
-        user.setHomePhone(homeP);
-        user.setCellPhone(mobile);
-        user.setEmail(email);
-        user.setGrade(grade);
-        user.setTeacherName(teacherN);
-        user.setEmergencyContactInfo(emergency);
-        // return this user to server, have not implemented yet
-    }
-
-    public void editChild(User child, String name, int birthY, int birthM, String address, String homeP, String mobile, String email, String grade, String teacherN, String emergency){
-
-
-    }
-    public void editEmergency(String name, String email, String phone){
-
-    }
     public void getUserById(Long userId, SimpleCallback<User> callback) {
         Server server = new Server();
         callbackForUserId = callback;
@@ -319,7 +332,6 @@ public class Model extends AppCompatActivity {
         if (isUserLoggedin) {
             server.getGroups(this.tokenForLogin, this::responseForGetGroups);
         }
-
     }
 
     public void getGroupDetailsById(Long groupId,SimpleCallback<Group> callback) {
@@ -362,12 +374,65 @@ public class Model extends AppCompatActivity {
         }
     }
 
-    public void updateUser(User user,SimpleCallback<User> callback) {
-        serverCallbackForUpdateUser = callback;
-        Server server = new Server();
-        server.updateUser(user,tokenForLogin,serverCallbackForUpdateUser);
+    private void responseForUpdateUser(User user){
+        if(serverCallbackForUpdateUser!=null){
+            serverCallbackForUpdateUser.callback(user);
+        }
     }
 
+    private SimpleCallback serverCallbackForUpdateUser;
+    // Model methods regarding messages ...
+
+
+    public void getUserUnreadMessages(Long userId, String readUnread, SimpleCallback<List<Message>> callback) {
+        this.callbackForGetUserUnreadMessages = callback;
+        readUnread = "unread";
+        Server server = new Server();
+        if(isUserLoggedin) {
+            server.getUserUnreadMessages(userId,readUnread, this.tokenForLogin, this::responseForGetUserUnreadMessages);
+        }
+    }
+
+    public void getUserReadMessages(Long userId, String readUnread, SimpleCallback<List<Message>> callback) {
+        this.callbackForGetUserReadMessages = callback;
+        readUnread = "read";
+        Server server = new Server();
+        if(isUserLoggedin) {
+            server.getUserReadMessages(userId,readUnread, this.tokenForLogin, this::responseForGetUserReadMessages);
+        }
+    }
+
+    public void newMsgToGroup(Long groupId, Message msg, SimpleCallback<Message> callback) {
+        this.callbackForNewMsgToGroup = callback;
+        Server server = new Server();
+        if(isUserLoggedin) {
+            server.newMsgToGroup(groupId,msg,this.tokenForLogin,this::responseForNewMsgToGroup);
+        }
+    }
+
+    public void newMsgToParents(Long userId, Message msg, SimpleCallback<Message> callback) {
+        this.callbackForNewMsgToParents = callback;
+        Server server = new Server();
+        if(isUserLoggedin) {
+            server.newMsgToParents(userId,msg,this.tokenForLogin,this::responseForNewMsgToParents);
+        }
+    }
+
+    public void updateUser(User user,SimpleCallback<User> callback) {
+        this.serverCallbackForUpdateUser = callback;
+        if(isUserLoggedin) {
+            Server server = new Server();
+            server.updateUser(user, tokenForLogin, serverCallbackForUpdateUser);
+        }
+    }
+
+    public void msgMarkAsRead(Long messageId, Long userId, boolean sendTrue, SimpleCallback<User> callback) {
+        this.callbackForMsgMarkAsRead = callback;
+        if (isUserLoggedin) {
+            Server server = new Server();
+            server.msgMarkAsRead(messageId,userId,sendTrue,tokenForLogin,this::responseForMsgMarkAsRead);
+        }
+    }
 
 
 

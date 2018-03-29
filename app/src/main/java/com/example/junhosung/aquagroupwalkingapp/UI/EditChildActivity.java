@@ -35,8 +35,10 @@ public class EditChildActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        extractDataFromIntent();
         setContentView(R.layout.activity_edit_account);
+
+        extractDataFromIntent();
+
         nameEdit = (EditText) findViewById(R.id.editName);
         birthMEdit = (EditText) findViewById(R.id.editBirthM);
         birthYEdit = (EditText) findViewById(R.id.editBirthY);
@@ -47,7 +49,7 @@ public class EditChildActivity extends AppCompatActivity {
         gradeEdit = (EditText) findViewById(R.id.editGrade);
         teacherNEdit = (EditText) findViewById(R.id.editTeacherName);
         emergencyEdit = (EditText) findViewById(R.id.editEmergency);
-        updateUI(child);
+
         setUpCancelbtn();
         setUpDonebtn();
     }
@@ -59,9 +61,19 @@ public class EditChildActivity extends AppCompatActivity {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
+    private void extractDataFromIntent() {
+
+        Intent intent = getIntent();
+        if(intent != null) {
+            CHILD_ID = intent.getLongExtra(USER_ID, 1);
+            model.getUserById(this.CHILD_ID, this::getUserCallBack);
+
+        }
+    }
+
     private void getUserCallBack(User user){
-        updateUI(user);
         child = user;
+        updateUI(child);
     }
 
 
@@ -99,7 +111,6 @@ public class EditChildActivity extends AppCompatActivity {
         teacherNEdit.setText(teacherN, TextView.BufferType.EDITABLE);
         emergencyEdit.setText(emergencyContact, TextView.BufferType.EDITABLE);
 
-        child = user;
     }
 
     private void setUpDonebtn() {
@@ -138,9 +149,6 @@ public class EditChildActivity extends AppCompatActivity {
                 String teacherN = teacherNEdit.getText().toString();
                 String emergency = emergencyEdit.getText().toString();
 
-
-
-
                 child.setName(name);
                 child.setAddress(address);
                 child.setHomePhone(homeP);
@@ -153,7 +161,9 @@ public class EditChildActivity extends AppCompatActivity {
                 model.updateUser(child, this::getUpdatedUserBack);
                 finish();
             }
-            private void getUpdatedUserBack(User user){}
+            private void getUpdatedUserBack(User user){
+                finish();
+            }
         });
     }
 
@@ -175,15 +185,7 @@ public class EditChildActivity extends AppCompatActivity {
 
     }
 
-    private void extractDataFromIntent() {
 
-        Intent intent = getIntent();
-        if(intent != null) {
-            CHILD_ID = intent.getLongExtra(USER_ID, 1);
-            model.getUserById(this.CHILD_ID, this::getUserCallBack);
-
-        }
-    }
 }
 
 
