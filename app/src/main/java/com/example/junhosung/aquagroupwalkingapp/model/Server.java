@@ -312,10 +312,10 @@ public class Server extends AppCompatActivity {
         Call<User> caller = proxy.updateUser(user.getId(),user);
         ProxyBuilder.callProxy(Server.this,caller,this::responseForUpdateUser);
     }
-    public void setLastGpsLocation(User user,GpsLocation lastGpsLocation,String token,SimpleCallback<User> callback){
+    public void setLastGpsLocation(Long userId,GpsLocation lastGpsLocation,String token,SimpleCallback<User> callback){
         onReceiveToken(token);
         serverCallbackForUpdateUser = callback;
-        Call<User> caller = proxy.setLastGpsLocation(user.getId(),user,lastGpsLocation);
+        Call<User> caller = proxy.setLastGpsLocation(userId,lastGpsLocation);
         ProxyBuilder.callProxy(Server.this,caller,this::responseForSetLastGpsLocation);
     }
     public void getLastGpsLocation(User user,GpsLocation lastGpsLocation,String token,SimpleCallback<User> callback){

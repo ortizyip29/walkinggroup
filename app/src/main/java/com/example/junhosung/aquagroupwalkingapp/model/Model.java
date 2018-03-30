@@ -433,11 +433,11 @@ public class Model extends AppCompatActivity {
             server.updateUser(user, tokenForLogin, serverCallbackForUpdateUser);
         }
     }
-    public void setLastGPSLocation(User user,GpsLocation lastGpsLocation,SimpleCallback<User> callback){
+    public void setLastGPSLocation(Long userid, GpsLocation lastGpsLocation,SimpleCallback<User> callback){
         this.callbackForSetLastGpsLocation = callback;
         if(isUserLoggedin){
             Server server = new Server();
-            server.setLastGpsLocation(user,lastGpsLocation,tokenForLogin,callbackForSetLastGpsLocation);
+            server.setLastGpsLocation(userid,lastGpsLocation,tokenForLogin,callbackForSetLastGpsLocation);
         }
     }
     public void getLastGPSLocation(User user,GpsLocation lastGpsLocation,SimpleCallback<User> callback){

@@ -107,10 +107,10 @@ public interface WGServerProxy {
     Call<User> updateUser(@Path("id") Long userId, @Body User user);
 
     @POST("/users/{id}/lastGpsLocation")
-    Call<User> setLastGpsLocation(@Path("id") Long userId, User user, @Body GpsLocation lastGpsLocation);
+    Call<User> setLastGpsLocation(@Path("id") Long userId, @Body GpsLocation lastGpsLocation);
 
     @GET("/users/{id}/lastGpsLocation")
-    Call<User> getLastGpsLocation(@Path("id") Long userId, User user, @Body GpsLocation lastGpsLocation);
+    Call<User> getLastGpsLocation(@Path("id") Long userId,User user ,@Body GpsLocation lastGpsLocation);
 
     @GET("/messages")
     Call<List<Message>> getMessages();
