@@ -55,6 +55,8 @@ public class Model extends AppCompatActivity {
     private SimpleCallback callbackForNewMsgToGroup;
     private SimpleCallback callbackForNewMsgToParents;
     private SimpleCallback callbackForMsgMarkAsRead;
+    private SimpleCallback callbackForSetLastGpsLocation;
+    private SimpleCallback callbackForGetLastGpsLocation;
 
 
     //for internal model class
@@ -221,6 +223,12 @@ public class Model extends AppCompatActivity {
 
     private void responseForMsgMarkAsRead(User user) {
         this.callbackForMsgMarkAsRead.callback(user);
+    }
+    private void responseForSetGpsLocation(User user){
+        this.callbackForSetLastGpsLocation.callback(user);
+    }
+    private void responseForGetGpsLocation(User user){
+        this.callbackForGetLastGpsLocation.callback(user);
     }
 
 
@@ -423,6 +431,20 @@ public class Model extends AppCompatActivity {
         if(isUserLoggedin) {
             Server server = new Server();
             server.updateUser(user, tokenForLogin, serverCallbackForUpdateUser);
+        }
+    }
+    public void setLastGPSLocation(User user,GpsLocation lastGpsLocation,SimpleCallback<User> callback){
+        this.callbackForSetLastGpsLocation = callback;
+        if(isUserLoggedin){
+            Server server = new Server();
+            server.setLastGpsLocation(user,lastGpsLocation,tokenForLogin,callbackForSetLastGpsLocation);
+        }
+    }
+    public void getLastGPSLocation(User user,GpsLocation lastGpsLocation,SimpleCallback<User> callback){
+        this.callbackForGetLastGpsLocation = callback;
+        if(isUserLoggedin){
+            Server server = new Server();
+            server.getLastGpsLocation(user,lastGpsLocation,tokenForLogin,callbackForGetLastGpsLocation);
         }
     }
 

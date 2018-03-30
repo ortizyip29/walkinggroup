@@ -343,6 +343,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         currentUser.setLastGpsLocation(lastGpsLocation);
         Log.d("Albert", "Alert" + lastGpsLocation.getLat() +" "+ lastGpsLocation.getLng());
         Log.d("Albert", "Alert" + model.getCurrentUser());
+        //model.setLastGPSLocation(currentUser,lastGpsLocation,this :: myLocationCallback);
         model.updateUser(currentUser,this :: myLocationCallback);
     }
 
