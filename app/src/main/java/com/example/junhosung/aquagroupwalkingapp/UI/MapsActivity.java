@@ -334,16 +334,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void sendMyLocation() {
-        Log.d("tag","currentUerLat"+currentUserLat);
-      //  lastGpsLocation.setLat(currentUserLat);
-        //lastGpsLocation.setLng(currentUserLng);
-        //GpsLocation lastGpsLocation =  new GpsLocation(currentUserLat,currentUserLng,null);
         GpsLocation lastGpsLocation =  new GpsLocation(49.1208,-123.1210,null);
+        Log.d("tag","currentUerLat"+currentUserLat);
+        lastGpsLocation.setLat(currentUserLat);
+        lastGpsLocation.setLng(currentUserLng);
+        //GpsLocation lastGpsLocation =  new GpsLocation(currentUserLat,currentUserLng,null);
         currentUser = model.getCurrentUser();
         currentUser.setLastGpsLocation(lastGpsLocation);
         Log.d("Albert", "Alert" + lastGpsLocation.getLat() +" "+ lastGpsLocation.getLng());
         Log.d("Albert", "Alert" + model.getCurrentUser());
-        model.updateUser(currentUser,this :: myLocationCallback);
+        model.setLastGPSLocation(currentUser.getId(),lastGpsLocation,this::myLocationCallback);
+        //model.updateUser(currentUser,this :: myLocationCallback);
     }
 
     private void myLocationCallback(User currentUser) {
