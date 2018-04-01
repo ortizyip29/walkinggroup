@@ -33,7 +33,6 @@ public class User {
     private String customJson;
 
 
-
     public User(){
     }
 
