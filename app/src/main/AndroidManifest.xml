@@ -75,7 +75,8 @@
         <activity android:name=".UI.DeleteMonitoredByActivity" />
         <activity android:name=".UI.ParentDashboard" />
         3
-        <activity android:name=".UI.GetListOfUserFromListOfID"></activity>
+        <activity android:name=".UI.GetListOfUserFromListOfID" />
+        <activity android:name=".UI.UserLeaderboardActivity"></activity>
     </application>
 
 </manifest>

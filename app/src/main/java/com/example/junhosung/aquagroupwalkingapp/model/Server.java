@@ -3,6 +3,8 @@ package com.example.junhosung.aquagroupwalkingapp.model;
 import com.example.junhosung.aquagroupwalkingapp.SimpleCallback;
 import com.example.junhosung.aquagroupwalkingapp.proxy.ProxyBuilder;
 import com.example.junhosung.aquagroupwalkingapp.proxy.WGServerProxy;
+
+import android.media.MediaRouter;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
@@ -59,6 +61,9 @@ public class Server extends AppCompatActivity {
     private SimpleCallback serverCallbackForNewMsgToGroup;
     private SimpleCallback serverCallbackForNewMsgToParents;
     private SimpleCallback serverCallbackForMsgMarkAsRead;
+    private SimpleCallback serverCallbackForSetLastGpsLocation;
+    private SimpleCallback serverCallbackForGetLastGpsLocation;
+
 
 
 
@@ -157,6 +162,12 @@ public class Server extends AppCompatActivity {
 
     private void responseForMsgMarkAsRead(User user) {
         serverCallbackForMsgMarkAsRead.callback(user);
+    }
+    private void responseForSetLastGpsLocation(User user){
+        serverCallbackForSetLastGpsLocation.callback(user);
+    }
+    private void responseForGetLastGpsLocation(User user){
+        serverCallbackForGetLastGpsLocation.callback(user);
     }
 
 
@@ -300,6 +311,18 @@ public class Server extends AppCompatActivity {
         serverCallbackForUpdateUser = callback;
         Call<User> caller = proxy.updateUser(user.getId(),user);
         ProxyBuilder.callProxy(Server.this,caller,this::responseForUpdateUser);
+    }
+    public void setLastGpsLocation(Long userId,GpsLocation lastGpsLocation,String token,SimpleCallback<User> callback){
+        onReceiveToken(token);
+        serverCallbackForUpdateUser = callback;
+        Call<User> caller = proxy.setLastGpsLocation(userId,lastGpsLocation);
+        ProxyBuilder.callProxy(Server.this,caller,this::responseForSetLastGpsLocation);
+    }
+    public void getLastGpsLocation(User user,GpsLocation lastGpsLocation,String token,SimpleCallback<User> callback){
+        onReceiveToken(token);
+        serverCallbackForUpdateUser = callback;
+        Call<User> caller = proxy.getLastGpsLocation(user.getId(),user,lastGpsLocation);
+        ProxyBuilder.callProxy(Server.this,caller,this::responseForGetLastGpsLocation);
     }
 
     public void getUserUnreadMessages(Long userId, String readUnread,String token, SimpleCallback<List<Message>> callback) {

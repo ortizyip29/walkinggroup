@@ -120,17 +120,15 @@ public class EditChildActivity extends AppCompatActivity {
                 String name = nameEdit.getText().toString();
                 int birthM;
                 if(birthMEdit.getText().toString().matches("")){
-                    //
+                    birthM = 0;
                 }else{
                     birthM = Integer.parseInt(birthMEdit.getText().toString());
-                    child.setBirthMonth(birthM);
                 }
                 int birthY;
                 if(birthYEdit.getText().toString().matches("")){
-                    //
+                    birthY = 0;
                 }else{
                     birthY = Integer.parseInt(birthYEdit.getText().toString());
-                    child.setBirthYear(birthY);
                 }
 
                 String address = addressEdit.getText().toString();
@@ -144,11 +142,13 @@ public class EditChildActivity extends AppCompatActivity {
                 }
 
 
-                    String grade = gradeEdit.getText().toString();
+                String grade = gradeEdit.getText().toString();
                 String teacherN = teacherNEdit.getText().toString();
                 String emergency = emergencyEdit.getText().toString();
 
                 child.setName(name);
+                child.setBirthYear(birthY);
+                child.setBirthMonth(birthM);
                 child.setAddress(address);
                 child.setHomePhone(homeP);
                 child.setCellPhone(mobile);

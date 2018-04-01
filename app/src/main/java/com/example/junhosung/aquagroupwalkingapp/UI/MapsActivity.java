@@ -23,6 +23,9 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -71,6 +74,32 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     boolean cancelTimer = false;
     LatLng markLatLng = new LatLng(0.00, 0.00);
 
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.otherUserDetails:
+                startActivity(new Intent(MapsActivity.this, GroupsLeaderOfActivity.class));
+                return true;
+            case R.id.monitors:
+                startActivity(new Intent(MapsActivity.this, MapOptionsActivity.class));
+                return true;
+            case R.id.manageGroups:
+                startActivity(new Intent(MapsActivity.this, GroupManagementActivity.class));
+                return true;
+            case R.id.editUser:
+                startActivity(new Intent(MapsActivity.this, EditAccountActivity.class));
+                return true;
+                default:
+                return super.onOptionsItemSelected(item);
+
+        }
+        //respond to menu item selection
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,17 +146,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 100, 1, new LocationListener() {
                 @Override
                 public void onLocationChanged(Location location) {
-                    // LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
-                    LatLng currentLocation = new LatLng(currentUser.getLastGpsLocation().getLat(), currentUser.getLastGpsLocation().getLng());
+                    LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                    //LatLng currentLocation = new LatLng(currentUser.getLastGpsLocation().getLat(), currentUser.getLastGpsLocation().getLng());
                     Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
                     if (myRadius != null || marker != null) {
                         mapDisplay.clear();
                     }
 
                     try {
-                        //geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 0);
-                        geocoder.getFromLocation(currentUser.getLastGpsLocation().getLat(), currentUser.getLastGpsLocation().getLng(), 0);
-                        Toast.makeText(getApplicationContext(), "Our location is Latitude: " + currentUser.getLastGpsLocation().getLat() + "  Longitude: " + currentUser.getLastGpsLocation().getLng() + "  Location uploaded", Toast.LENGTH_SHORT).show();
+                        //
+                        geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 0);
+                        //geocoder.getFromLocation(currentUser.getLastGpsLocation().getLat(), currentUser.getLastGpsLocation().getLng(), 0);
+                        Toast.makeText(getApplicationContext(), "Our location is Latitude: " +location.getLatitude() + "  Longitude: " + location.getLongitude() + "  Location uploaded", Toast.LENGTH_SHORT).show();
                         mapDisplay.setMapType(GoogleMap.MAP_TYPE_NORMAL);
                         marker = new MarkerOptions().position(currentLocation).title("I'm Here");
                         mapDisplay.addMarker(marker);
@@ -315,6 +345,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void sendLocationSever() {
+        currentGroup = model.getCurrentGroupInUseByUser();
         setLatList = Arrays.asList(currentUserLat);
         setLngList = Arrays.asList(currentUserLng);
         currentGroup.setRouteLatArray(setLatList);
@@ -332,15 +363,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void sendMyLocation() {
-        Log.d("tag","currentUerLat"+currentUserLat);
-      //  lastGpsLocation.setLat(currentUserLat);
-        //lastGpsLocation.setLng(currentUserLng);
-        //GpsLocation lastGpsLocation =  new GpsLocation(currentUserLat,currentUserLng,null);
         GpsLocation lastGpsLocation =  new GpsLocation(49.1208,-123.1210,null);
+        Log.d("tag","currentUerLat"+currentUserLat);
+        lastGpsLocation.setLat(currentUserLat);
+        lastGpsLocation.setLng(currentUserLng);
+        //GpsLocation lastGpsLocation =  new GpsLocation(currentUserLat,currentUserLng,null);
+        currentUser = model.getCurrentUser();
         currentUser.setLastGpsLocation(lastGpsLocation);
         Log.d("Albert", "Alert" + lastGpsLocation.getLat() +" "+ lastGpsLocation.getLng());
         Log.d("Albert", "Alert" + model.getCurrentUser());
-        model.updateUser(currentUser,this :: myLocationCallback);
+        model.setLastGPSLocation(currentUser.getId(),lastGpsLocation,this::myLocationCallback);
+        //model.updateUser(currentUser,this :: myLocationCallback);
     }
 
     private void myLocationCallback(User currentUser) {
@@ -348,18 +381,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void groupAttributesCallback(Group group) {
-        currentGroup = group;
-        model.getCurrentGroupInUseByUser().getGroupDescription();
-        groupLatArray = new Double[currentGroup.getRouteLatArray().size()];
-        groupLngArray = new Double[currentGroup.getRouteLngArray().size()];
+        //currentGroup = group;
+       //group = model.getCurrentGroupInUseByUser().getGroupDescription();
+      /*  groupLatArray = new Double[group.getRouteLatArray().size()];
+        groupLngArray = new Double[group.getRouteLngArray().size()];
         markLatLng = new LatLng(groupLatArray[groupLatArray.length - 1], groupLngArray[groupLngArray.length - 1]);
         Log.d("tag", "holy" + groupLngArray[groupLngArray.length - 1]);
-        if (currentGroup.getRouteLatArray().size() < 1) {
+        if (group.getRouteLatArray().size() < 1) {
             Log.d("tag", "No groups have route array");
             //markLatLng = new LatLng(49.2829, -123.1411);
         } else {
             markLatLng = new LatLng(groupLatArray[groupLatArray.length - 1], groupLngArray[groupLngArray.length - 1]);
-        }
+        }*/
     }
 
     private void groupNameCallback(List<Group> groups) {
@@ -399,6 +432,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onFinish() {
                 prevLat = currentUserLat;
                 prevLng = currentUserLng;
+                currentUser = model.getCurrentUser();
+                currentGroup = model.getCurrentGroupInUseByUser();
                 locationUpdate();
                 sendLocationSever();
                 secondElapsed = 0;

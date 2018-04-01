@@ -4,6 +4,7 @@ package com.example.junhosung.aquagroupwalkingapp.proxy;
  * Created by Junho Sung on 3/9/2018.
  */
 
+import com.example.junhosung.aquagroupwalkingapp.model.GpsLocation;
 import com.example.junhosung.aquagroupwalkingapp.model.Group;
 import com.example.junhosung.aquagroupwalkingapp.model.Message;
 import com.example.junhosung.aquagroupwalkingapp.model.User;
@@ -104,6 +105,12 @@ public interface WGServerProxy {
 
     @POST("/users/{id}")
     Call<User> updateUser(@Path("id") Long userId, @Body User user);
+
+    @POST("/users/{id}/lastGpsLocation")
+    Call<User> setLastGpsLocation(@Path("id") Long userId, @Body GpsLocation lastGpsLocation);
+
+    @GET("/users/{id}/lastGpsLocation")
+    Call<User> getLastGpsLocation(@Path("id") Long userId,User user ,@Body GpsLocation lastGpsLocation);
 
     @GET("/messages")
     Call<List<Message>> getMessages();
