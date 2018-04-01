@@ -28,6 +28,10 @@ public class User {
     private List<User> monitorsUsers = new ArrayList<>();
     private List<Group> memberOfGroups = new ArrayList<>();
     private List<Group> leadsGroups = new ArrayList<>();
+    private int currentPoints;
+    private int totalPointsEarned;
+    private String customJson;
+
 
 
     public User(){
@@ -194,6 +198,30 @@ public class User {
 
     public void setLastGpsLocation(GpsLocation lastGpsLocation) {
         this.lastGpsLocation = lastGpsLocation;
+    }
+
+    public int getCurrentPoints() {
+        return currentPoints;
+    }
+
+    public void setCurrentPoints(int currentPoints) {
+        this.currentPoints = currentPoints;
+    }
+
+    public int getTotalPointsEarned() {
+        return totalPointsEarned;
+    }
+
+    public void setTotalPointsEarned(int totalPointsEarned) {
+        this.totalPointsEarned = totalPointsEarned;
+    }
+
+    public String getCustomJson() {
+        return customJson;
+    }
+
+    public void setCustomJson(String customJson) {
+        this.customJson = customJson;
     }
 
 
