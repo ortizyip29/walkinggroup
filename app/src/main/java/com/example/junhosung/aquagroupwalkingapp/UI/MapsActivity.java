@@ -23,6 +23,9 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -71,6 +74,32 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     boolean cancelTimer = false;
     LatLng markLatLng = new LatLng(0.00, 0.00);
 
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.otherUserDetails:
+                startActivity(new Intent(MapsActivity.this, GroupsLeaderOfActivity.class));
+                return true;
+            case R.id.monitors:
+                startActivity(new Intent(MapsActivity.this, MapOptionsActivity.class));
+                return true;
+            case R.id.manageGroups:
+                startActivity(new Intent(MapsActivity.this, GroupManagementActivity.class));
+                return true;
+            case R.id.editUser:
+                startActivity(new Intent(MapsActivity.this, EditAccountActivity.class));
+                return true;
+                default:
+                return super.onOptionsItemSelected(item);
+
+        }
+        //respond to menu item selection
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

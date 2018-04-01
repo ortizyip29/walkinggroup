@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/about"
+        android:title="About" />
+    <item android:id="@+id/help"
+        android:title="Help" />
+
+
+    <item android:id="@+id/otherUserDetails"
+        android:title="Other Users Details" />
+
+
+    <item android:id="@+id/monitors"
+        android:title="Monitors" />
+
+
+    <item android:id="@+id/manageGroups"
+        android:title="Manage Group" />
+
+    <item android:id="@+id/editUser"
+        android:title="Edit Info" />
+
+
+</menu>
