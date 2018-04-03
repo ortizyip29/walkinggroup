@@ -31,6 +31,7 @@ public class User {
     private int currentPoints;
     private int totalPointsEarned;
     private String customJson;
+    private List<PermissionRequest> pendingPermissionRequests;
 
 
     public User(){
