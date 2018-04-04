@@ -41,6 +41,8 @@ public class MessagePanelActivity extends AppCompatActivity {
 
         setupBtnNewMsg();
         setupBtnOldMsg();
+        setupBtnPermissions();
+        
 
         model.getUserUnreadMessages(model.getCurrentUser().getId(),unread,this::responseGetUserUnreadMessages);
 
@@ -78,6 +80,7 @@ public class MessagePanelActivity extends AppCompatActivity {
 
     }
 
+
     private void responseGetUserUnreadMessages(List<Message> messages) {
         unreadMessages = messages;
 
@@ -107,6 +110,18 @@ public class MessagePanelActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void setupBtnPermissions() {
+        Button btnPermission = (Button) findViewById(R.id.btnPermission);
+        btnPermission.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MessagePanelActivity.this, ViewPermissionsActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
 
 
 

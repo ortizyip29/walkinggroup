@@ -162,11 +162,14 @@ public interface WGServerProxy {
     @GET("/permissions/{id}")
     Call<PermissionRequest> getPermissionById(@Path("id") long permissionId);
 
+    @GET("/permissions/")
+    Call<PermissionRequest> getPermissionByUserId(@Query("userId") long userId);
+
+    @GET("/permissions/")
+    Call<List<PermissionRequest>> getPermissionByUserIdPending(@Query("userId") long userId, @Query("statusForUser") PermissionStatus pending);
+
     @POST("/permissions/{id}")
-    Call<PermissionRequest> approveOrDenyPermissionRequest(
-            @Path("id") long permissionId,
-            @Body PermissionStatus status
-    );
+    Call<Void> approveDenyPermissionRequest(@Path("id") long permissionId, @Body PermissionStatus approvedOrDenied);
 
     enum PermissionStatus {
         PENDING,

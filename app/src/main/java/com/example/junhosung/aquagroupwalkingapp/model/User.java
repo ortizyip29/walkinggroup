@@ -224,6 +224,14 @@ public class User {
         this.customJson = customJson;
     }
 
+    public List<PermissionRequest> getPendingPermissionRequests() {
+        return pendingPermissionRequests;
+    }
+
+    public void setPendingPermissionRequests(List<PermissionRequest> pendingPermissionRequests) {
+        this.pendingPermissionRequests = pendingPermissionRequests;
+    }
+
 
     @Override
     public String toString() {
