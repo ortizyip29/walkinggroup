@@ -6,4 +6,30 @@
     android:layout_height="match_parent"
     tools:context="com.example.junhosung.aquagroupwalkingapp.UI.UserLeaderboardActivity">
 
+    <TextView
+        android:id="@+id/leaderboardtitle"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:text="            Leaderboard"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="25dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/leaderboardLV"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ListView
+        android:id="@+id/leaderboardLV"
+        android:layout_width="344dp"
+        android:layout_height="439dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/leaderboardtitle" />
 </android.support.constraint.ConstraintLayout>
