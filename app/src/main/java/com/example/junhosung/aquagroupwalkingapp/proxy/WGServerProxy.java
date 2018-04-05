@@ -157,13 +157,13 @@ public interface WGServerProxy {
     Call<Void> deleteMsg(@Path("id") Long messageId);
 
     @GET("/permissions")
-    Call<List<PermissionRequest>> getPermissions();
+    Call<List<PermissionRequest>> getPermission();
 
     @GET("/permissions/{id}")
     Call<PermissionRequest> getPermissionById(@Path("id") long permissionId);
 
     @GET("/permissions/")
-    Call<PermissionRequest> getPermissionByUserId(@Query("userId") long userId);
+    Call<List<PermissionRequest>> getPermissionByUserId(@Query("userId") long userId);
 
     @GET("/permissions/")
     Call<List<PermissionRequest>> getPermissionByUserIdPending(@Query("userId") long userId, @Query("statusForUser") PermissionStatus pending);

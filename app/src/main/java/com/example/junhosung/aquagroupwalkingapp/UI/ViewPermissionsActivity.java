@@ -1,12 +1,15 @@
 package com.example.junhosung.aquagroupwalkingapp.UI;
 
 import android.graphics.Color;
+import android.icu.text.UnicodeSetSpanner;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.junhosung.aquagroupwalkingapp.R;
 import com.example.junhosung.aquagroupwalkingapp.model.Model;
@@ -16,6 +19,8 @@ import com.example.junhosung.aquagroupwalkingapp.model.User;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.junhosung.aquagroupwalkingapp.proxy.WGServerProxy.PermissionStatus.APPROVED;
+import static com.example.junhosung.aquagroupwalkingapp.proxy.WGServerProxy.PermissionStatus.DENIED;
 import static com.example.junhosung.aquagroupwalkingapp.proxy.WGServerProxy.PermissionStatus.PENDING;
 
 public class ViewPermissionsActivity extends AppCompatActivity {
@@ -28,25 +33,36 @@ public class ViewPermissionsActivity extends AppCompatActivity {
     public class Clicked{
         public boolean clicked = false;
     }
+    private Button btnApprove;
+    private Button btnDeny;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_permissions);
 
-        model.getPermissionByUserIdPending(currentUser.getId(),PENDING,this::responseForGetPermissionByUserIdPending);
+        //model.getPermissionByUserIdPending(currentUser.getId(),PENDING,this::responseForGetPermissionByUserIdPending);
+        //model.getPermissionByUserId(currentUser.getId(),this::responseForGetPermissionByUserIdPending);
+        model.getPermission(this::responseForGetPermissionByUserIdPending);
     }
 
     private void responseForGetPermissionByUserIdPending(List<PermissionRequest> pending) {
         pendingRequests = pending;
+        isItemClicked = new ArrayList<>();
+        requestTxt = new String[pendingRequests.size()];
 
         for (int i = 0; i < pendingRequests.size(); i++) {
 
-            if (pendingRequests.get(i).getMessage() != null && !pendingRequests.get(i).getMessage().equals(""))
+            if (pendingRequests.get(i).getMessage() != null && !pendingRequests.get(i).getMessage().equals("")) {
+                requestTxt[i] = pendingRequests.get(i).getMessage() ;
+                isItemClicked.add(new ViewPermissionsActivity.Clicked());
+                Toast.makeText(ViewPermissionsActivity.this,""+pendingRequests.size(), Toast.LENGTH_LONG).show();
+            }
 
-            requestTxt[i] = pendingRequests.get(i).getMessage();
         }
 
+        setupApproveBtn();
+        setupDenyBtn();
         populateListView();
 
     }
@@ -78,5 +94,51 @@ public class ViewPermissionsActivity extends AppCompatActivity {
         });
 
     }
+
+    private void setupApproveBtn() {
+     btnApprove = (Button) findViewById(R.id.btnApprove);
+     btnApprove.setOnClickListener(new View.OnClickListener() {
+         @Override
+         public void onClick(View view) {
+             int counter = 0;
+             for(ViewPermissionsActivity.Clicked thisItem: isItemClicked){
+                 if(thisItem.clicked){
+                     model.approveDenyPermission(pendingRequests.get(counter).getId(),APPROVED,this::voidCallback);
+                 }
+                 counter++;
+             }
+         }
+         private void voidCallback(Void aVoid) {
+             Toast.makeText(ViewPermissionsActivity.this,"Success! Approved!",Toast.LENGTH_LONG).show();
+             populateListView();
+         }
+
+     });
+
+    }
+
+    private void setupDenyBtn() {
+        btnDeny = (Button) findViewById(R.id.btnDeny);
+        btnDeny.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int counter = 0;
+                for(ViewPermissionsActivity.Clicked thisItem: isItemClicked){
+                    if(thisItem.clicked){
+                        model.approveDenyPermission(pendingRequests.get(counter).getId(),DENIED,this::voidCallback);
+                    }
+                    counter++;
+                }
+            }
+            private void voidCallback(Void aVoid) {
+                Toast.makeText(ViewPermissionsActivity.this,"Success! Denied!",Toast.LENGTH_LONG).show();
+                populateListView();
+            }
+
+        });
+
+    }
+
+
 
 }

@@ -61,13 +61,13 @@ public class ProxyBuilder {
      * @return proxy object to call the server.
      */
 
-    public static WGServerProxy getProxy(String apiKey, String token, String tRue) {
+    public static WGServerProxy getProxy(String apiKey, String token, String permissionTrue) {
         // Enable Logging
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(logging)
-                .addInterceptor(new AddHeaderInterceptor(apiKey, token, tRue))
+                .addInterceptor(new AddHeaderInterceptor(apiKey, token, permissionTrue))
                 .build();
 
         // Build Retrofit proxy object for server
@@ -168,10 +168,10 @@ public class ProxyBuilder {
         private String token;
         private String permissionEnabled;
 
-        public AddHeaderInterceptor(String apiKey, String token, String tRue) {
+        public AddHeaderInterceptor(String apiKey, String token, String permissionTrue) {
             this.apiKey = apiKey;
             this.token = token;
-            this.permissionEnabled = tRue;
+            this.permissionEnabled = permissionTrue;
         }
 
         @Override
@@ -185,7 +185,7 @@ public class ProxyBuilder {
 
                 // code to enable permissions
 
-                builder.header("permissions_enabled",permissionEnabled);
+                builder.header("PERMISSIONS-ENABLED",permissionEnabled);
             }
             // Add Token
             if (token != null) {

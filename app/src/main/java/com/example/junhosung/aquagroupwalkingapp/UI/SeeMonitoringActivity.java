@@ -81,7 +81,6 @@ public class SeeMonitoringActivity extends AppCompatActivity {
         for(User user:users){
             Log.i(TAG,user.toString());
         }
-        // Toast.makeText(SeeMonitoringActivity.this,"this is runing!",Toast.LENGTH_LONG).show();
 
         updateDisplayListAndDeleteList(users);
         populateListView();
