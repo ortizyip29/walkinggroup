@@ -1,7 +1,6 @@
 package com.example.junhosung.aquagroupwalkingapp.UI;
 
 import android.graphics.Color;
-import android.icu.text.UnicodeSetSpanner;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -23,7 +22,7 @@ import static com.example.junhosung.aquagroupwalkingapp.proxy.WGServerProxy.Perm
 import static com.example.junhosung.aquagroupwalkingapp.proxy.WGServerProxy.PermissionStatus.DENIED;
 import static com.example.junhosung.aquagroupwalkingapp.proxy.WGServerProxy.PermissionStatus.PENDING;
 
-public class ViewPermissionsActivity extends AppCompatActivity {
+public class ViewPendingPermissionsActivity extends AppCompatActivity {
 
     private Model model = Model.getInstance();
     private List<PermissionRequest> pendingRequests;
@@ -41,9 +40,9 @@ public class ViewPermissionsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_permissions);
 
-        //model.getPermissionByUserIdPending(currentUser.getId(),PENDING,this::responseForGetPermissionByUserIdPending);
+        model.getPermissionByUserIdPending(currentUser.getId(),PENDING,this::responseForGetPermissionByUserIdPending);
         //model.getPermissionByUserId(currentUser.getId(),this::responseForGetPermissionByUserIdPending);
-        model.getPermission(this::responseForGetPermissionByUserIdPending);
+        //model.getPermission(this::responseForGetPermissionByUserIdPending);
     }
 
     private void responseForGetPermissionByUserIdPending(List<PermissionRequest> pending) {
@@ -55,8 +54,8 @@ public class ViewPermissionsActivity extends AppCompatActivity {
 
             if (pendingRequests.get(i).getMessage() != null && !pendingRequests.get(i).getMessage().equals("")) {
                 requestTxt[i] = pendingRequests.get(i).getMessage() ;
-                isItemClicked.add(new ViewPermissionsActivity.Clicked());
-                Toast.makeText(ViewPermissionsActivity.this,""+pendingRequests.size(), Toast.LENGTH_LONG).show();
+                isItemClicked.add(new ViewPendingPermissionsActivity.Clicked());
+                Toast.makeText(ViewPendingPermissionsActivity.this,""+pendingRequests.size(), Toast.LENGTH_LONG).show();
             }
 
         }
@@ -80,12 +79,12 @@ public class ViewPermissionsActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int itemNumber, long l) {
                 if(!isItemClicked.get(itemNumber).clicked){
                     view.setBackgroundColor(Color.GRAY);//mark for deletion
-                    ViewPermissionsActivity.Clicked click = new ViewPermissionsActivity.Clicked();
+                    ViewPendingPermissionsActivity.Clicked click = new ViewPendingPermissionsActivity.Clicked();
                     click.clicked = true;
                     isItemClicked.set(itemNumber,click); //mark for deletion
                 } else{
                     view.setBackgroundColor(Color.WHITE); //change back to normal view
-                    ViewPermissionsActivity.Clicked click = new ViewPermissionsActivity.Clicked();
+                    ViewPendingPermissionsActivity.Clicked click = new ViewPendingPermissionsActivity.Clicked();
                     click.clicked = false;
                     isItemClicked.set(itemNumber,click);//unmark for deletion
                 }
@@ -101,7 +100,7 @@ public class ViewPermissionsActivity extends AppCompatActivity {
          @Override
          public void onClick(View view) {
              int counter = 0;
-             for(ViewPermissionsActivity.Clicked thisItem: isItemClicked){
+             for(ViewPendingPermissionsActivity.Clicked thisItem: isItemClicked){
                  if(thisItem.clicked){
                      model.approveDenyPermission(pendingRequests.get(counter).getId(),APPROVED,this::voidCallback);
                  }
@@ -109,8 +108,27 @@ public class ViewPermissionsActivity extends AppCompatActivity {
              }
          }
          private void voidCallback(Void aVoid) {
-             Toast.makeText(ViewPermissionsActivity.this,"Success! Approved!",Toast.LENGTH_LONG).show();
+             Toast.makeText(ViewPendingPermissionsActivity.this,"Success! Approved!",Toast.LENGTH_LONG).show();
+             model.getPermissionByUserIdPending(currentUser.getId(),PENDING,this::responseForGetPermissionByUserIdPending);
+         }
+
+         private void responseForGetPermissionByUserIdPending(List<PermissionRequest> pending) {
+             pendingRequests = pending;
+             isItemClicked = new ArrayList<>();
+             requestTxt = new String[pendingRequests.size()];
+
+             for (int i = 0; i < pendingRequests.size(); i++) {
+
+                 if (pendingRequests.get(i).getMessage() != null && !pendingRequests.get(i).getMessage().equals("")) {
+                     requestTxt[i] = pendingRequests.get(i).getMessage();
+                     isItemClicked.add(new ViewPendingPermissionsActivity.Clicked());
+                     Toast.makeText(ViewPendingPermissionsActivity.this, "" + pendingRequests.size(), Toast.LENGTH_LONG).show();
+                 }
+
+             }
+
              populateListView();
+
          }
 
      });
@@ -123,7 +141,7 @@ public class ViewPermissionsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 int counter = 0;
-                for(ViewPermissionsActivity.Clicked thisItem: isItemClicked){
+                for(ViewPendingPermissionsActivity.Clicked thisItem: isItemClicked){
                     if(thisItem.clicked){
                         model.approveDenyPermission(pendingRequests.get(counter).getId(),DENIED,this::voidCallback);
                     }
@@ -131,9 +149,28 @@ public class ViewPermissionsActivity extends AppCompatActivity {
                 }
             }
             private void voidCallback(Void aVoid) {
-                Toast.makeText(ViewPermissionsActivity.this,"Success! Denied!",Toast.LENGTH_LONG).show();
-                populateListView();
+                model.getPermissionByUserIdPending(currentUser.getId(),PENDING,this::responseForGetPermissionByUserIdPending);
             }
+
+            private void responseForGetPermissionByUserIdPending(List<PermissionRequest> pending) {
+                pendingRequests = pending;
+                isItemClicked = new ArrayList<>();
+                requestTxt = new String[pendingRequests.size()];
+
+                for (int i = 0; i < pendingRequests.size(); i++) {
+
+                    if (pendingRequests.get(i).getMessage() != null && !pendingRequests.get(i).getMessage().equals("")) {
+                        requestTxt[i] = pendingRequests.get(i).getMessage();
+                        isItemClicked.add(new ViewPendingPermissionsActivity.Clicked());
+                        Toast.makeText(ViewPendingPermissionsActivity.this, "" + pendingRequests.size(), Toast.LENGTH_LONG).show();
+                    }
+
+                }
+
+                populateListView();
+
+            }
+
 
         });
 
