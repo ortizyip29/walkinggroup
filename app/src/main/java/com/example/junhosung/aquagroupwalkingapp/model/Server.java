@@ -4,7 +4,6 @@ import com.example.junhosung.aquagroupwalkingapp.SimpleCallback;
 import com.example.junhosung.aquagroupwalkingapp.proxy.ProxyBuilder;
 import com.example.junhosung.aquagroupwalkingapp.proxy.WGServerProxy;
 
-import android.media.MediaRouter;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
@@ -21,17 +20,17 @@ public class Server extends AppCompatActivity {
     //internal variable
     private static final String TAG = "Server Class";
     private WGServerProxy proxy;
-    private String tRue = "true";
+    private String permissionTrue = "true";
 
     //Server Class Internal Functions
     public Server(){
-        proxy = ProxyBuilder.getProxy("D43B2DCD-D2A8-49EF-AFCC-6B1E309D1B58", null,tRue);
+        proxy = ProxyBuilder.getProxy("D43B2DCD-D2A8-49EF-AFCC-6B1E309D1B58", null, permissionTrue);
     }
     private void onReceiveToken(String token) {
         // Replace the current proxy with one that uses the token!
         Log.w(TAG, "   --> NOW HAVE TOKEN: " + token);
         this.token = token;
-        proxy = ProxyBuilder.getProxy("D43B2DCD-D2A8-49EF-AFCC-6B1E309D1B58", token,tRue);
+        proxy = ProxyBuilder.getProxy("D43B2DCD-D2A8-49EF-AFCC-6B1E309D1B58", token, permissionTrue);
         //proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
     }
     //
@@ -66,6 +65,8 @@ public class Server extends AppCompatActivity {
     private SimpleCallback serverCallbackForGetLastGpsLocation;
     private SimpleCallback serverCallbackForApproveDenyPermission;
     private SimpleCallback serverCallbackForGetPermissionByUserIdPending;
+    private SimpleCallback serverCallbackForGetPermissionByUserId;
+    private SimpleCallback serverCallbackForGetPermission;
 
 
 
@@ -181,6 +182,13 @@ public class Server extends AppCompatActivity {
         serverCallbackForGetPermissionByUserIdPending.callback(pending);
     }
 
+    private void responseForGetPermissionByUserId(List<PermissionRequest> allReqs) {
+        serverCallbackForGetPermissionByUserId.callback(allReqs);
+    }
+
+    private void responseForGetPermission(List<PermissionRequest> allReqs) {
+        serverCallbackForGetPermission.callback(allReqs);
+    }
 
 
 
@@ -391,6 +399,22 @@ public class Server extends AppCompatActivity {
 
     }
 
+    public void getPermissionByUserId(Long userId, String token,
+                                             SimpleCallback<List<PermissionRequest>> callback) {
+        onReceiveToken(token);
+        serverCallbackForGetPermissionByUserId = callback;
+        Call<List<PermissionRequest>> caller = proxy.getPermissionByUserId(userId);
+        ProxyBuilder.callProxy(Server.this, caller, this::responseForGetPermissionByUserId);
+
+    }
+
+    public void getPermission( String token, SimpleCallback<List<PermissionRequest>> callback) {
+        onReceiveToken(token);
+        serverCallbackForGetPermission = callback;
+        Call<List<PermissionRequest>> caller = proxy.getPermission();
+        ProxyBuilder.callProxy(Server.this, caller, this::responseForGetPermission);
+
+    }
 
 
 }
