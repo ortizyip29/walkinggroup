@@ -7,6 +7,7 @@ package com.example.junhosung.aquagroupwalkingapp.proxy;
 import com.example.junhosung.aquagroupwalkingapp.model.GpsLocation;
 import com.example.junhosung.aquagroupwalkingapp.model.Group;
 import com.example.junhosung.aquagroupwalkingapp.model.Message;
+import com.example.junhosung.aquagroupwalkingapp.model.PermissionRequest;
 import com.example.junhosung.aquagroupwalkingapp.model.User;
 
 import java.util.List;
@@ -154,5 +155,26 @@ public interface WGServerProxy {
 
     @DELETE("/messages/{id}")
     Call<Void> deleteMsg(@Path("id") Long messageId);
+
+    @GET("/permissions")
+    Call<List<PermissionRequest>> getPermissions();
+
+    @GET("/permissions/{id}")
+    Call<PermissionRequest> getPermissionById(@Path("id") long permissionId);
+
+    @GET("/permissions/")
+    Call<PermissionRequest> getPermissionByUserId(@Query("userId") long userId);
+
+    @GET("/permissions/")
+    Call<List<PermissionRequest>> getPermissionByUserIdPending(@Query("userId") long userId, @Query("statusForUser") PermissionStatus pending);
+
+    @POST("/permissions/{id}")
+    Call<Void> approveDenyPermissionRequest(@Path("id") long permissionId, @Body PermissionStatus approvedOrDenied);
+
+    enum PermissionStatus {
+        PENDING,
+        APPROVED,
+        DENIED
+    }
 
 }

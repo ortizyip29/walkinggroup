@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.junhosung.aquagroupwalkingapp.R;
+import com.example.junhosung.aquagroupwalkingapp.model.Message;
 import com.example.junhosung.aquagroupwalkingapp.model.Model;
 import com.example.junhosung.aquagroupwalkingapp.model.User;
 
@@ -27,13 +28,14 @@ public class AddMonitoringActivity extends AppCompatActivity {
     String currentUserEmail = model.getCurrentUser().getEmail();
     User userMatch;
     private final String TAG = "AddMonitoringActivity";
+    private String permissionRequest = "I would like to monitor this person!";
+    private Message permissionsMsg;
+    private User targetUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_monitoree);
-
-        //model.addNewMonitors(Long.valueOf(107),Long.valueOf(196),this::responseAddNewMonitors);
 
         btnAddMonitoring = (Button) findViewById(R.id.btnAddMonitoring);
         btnAddMonitoring.setOnClickListener(new View.OnClickListener() {
@@ -49,8 +51,11 @@ public class AddMonitoringActivity extends AppCompatActivity {
 
             private void responseWithUserEmail(User user) {
               if(user!=null){
+                  targetUser = user;
+                  Long userId = user.getId();
+                  permissionsMsg = new Message(permissionRequest+"",false);
 
-                  model.addNewMonitors(model.getCurrentUser().getId(),user,this::responseAddNewMonitors);
+                  model.newMsgToParents(userId,permissionsMsg,this::responseToNewMsgToParents);
               }
 
               else {
@@ -61,13 +66,17 @@ public class AddMonitoringActivity extends AppCompatActivity {
 
             }
 
-            private void responseAddNewMonitors(List<User> users) {
-
-                Toast.makeText(AddMonitoringActivity.this,"Success",Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent();
-                setResult(Activity.RESULT_OK,intent);
-                finish();
+            private void responseToNewMsgToParents(Message msg) {
+                Toast.makeText(AddMonitoringActivity.this,"message sent",Toast.LENGTH_LONG).show();
             }
+
+//            private void responseAddNewMonitors(List<User> users) {
+//
+//                Toast.makeText(AddMonitoringActivity.this,"Success",Toast.LENGTH_SHORT).show();
+//                Intent intent = new Intent();
+//                setResult(Activity.RESULT_OK,intent);
+//                finish();
+//            }
         });
     }
 }

@@ -21,6 +21,18 @@ public class MessagePanelActivity extends AppCompatActivity {
     private List<Message> unreadMessages;
     String unread = "unread";
     private CountDownTimer timer;
+    private boolean isOnCreateDone = false;
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+
+        if (isOnCreateDone) {
+
+            model.getUserUnreadMessages(model.getCurrentUser().getId(),unread,this::responseGetUserUnreadMessages);
+
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,9 +41,12 @@ public class MessagePanelActivity extends AppCompatActivity {
 
         setupBtnNewMsg();
         setupBtnOldMsg();
+        setupBtnPermissions();
+        
 
         model.getUserUnreadMessages(model.getCurrentUser().getId(),unread,this::responseGetUserUnreadMessages);
 
+        isOnCreateDone = true;
 
         timer = new CountDownTimer(60000,1000) {
             @Override
@@ -65,6 +80,7 @@ public class MessagePanelActivity extends AppCompatActivity {
 
     }
 
+
     private void responseGetUserUnreadMessages(List<Message> messages) {
         unreadMessages = messages;
 
@@ -94,6 +110,18 @@ public class MessagePanelActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void setupBtnPermissions() {
+        Button btnPermission = (Button) findViewById(R.id.btnPermission);
+        btnPermission.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MessagePanelActivity.this, ViewPermissionsActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
 
 
 

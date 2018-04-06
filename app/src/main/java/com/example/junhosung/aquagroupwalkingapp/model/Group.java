@@ -17,6 +17,7 @@ public class Group {
   //  private List<User> leadsGroups = new ArrayList<>();
     private String href;
     private List<Message> messages = new ArrayList<>();
+    private String customJson;
 
     public List<Message> getMessages() {
         return messages;
@@ -81,7 +82,13 @@ public class Group {
         return href;
     }
 
+    public String getCustomJson() {
+        return customJson;
+    }
 
+    public void setCustomJson(String customJson) {
+        this.customJson = customJson;
+    }
 
     @Override
     public String toString() {

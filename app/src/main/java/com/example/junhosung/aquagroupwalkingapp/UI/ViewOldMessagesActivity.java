@@ -15,7 +15,7 @@ public class ViewOldMessagesActivity extends AppCompatActivity {
 
 
     private Model model = Model.getInstance();
-    private List<Message> ReadMessages;
+    private List<Message> readMessages;
     private String unread = "read";
     private String[] content;
 
@@ -29,10 +29,10 @@ public class ViewOldMessagesActivity extends AppCompatActivity {
     }
 
     private void responseGetUserUnreadMessages(List<Message> messages) {
-        ReadMessages = messages;
-        content = new String[ReadMessages.size()];
-        for (int i = 0; i < ReadMessages.size(); i ++) {
-            content[i] = ReadMessages.get(i).getText();
+        readMessages = messages;
+        content = new String[readMessages.size()];
+        for (int i = 0; i < readMessages.size(); i ++) {
+            content[i] = readMessages.get(i).getText();
         }
 
         populateListView();
