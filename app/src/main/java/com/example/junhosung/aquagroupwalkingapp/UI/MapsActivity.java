@@ -453,6 +453,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         }.start();
     }
+    private void getGroupLocation(){
+        currentGroup = model.getCurrentGroupInUseByUser();
+        //String startingPoint = currentGroup.get
+    }
 
     private void atSchoolLocationTimer() {
         new CountDownTimer(600000, 1000) {

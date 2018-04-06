@@ -19,6 +19,26 @@ public class Group {
     private List<Message> messages = new ArrayList<>();
     private String customJson;
 
+    public String getStartingPoint() {
+        return startingPoint;
+    }
+
+    public void setStartingPoint(String startingPoint) {
+        this.startingPoint = startingPoint;
+    }
+
+    private String startingPoint;
+
+    public String getDestination() {
+        return destination;
+    }
+
+    public void setDestination(String destination) {
+        this.destination = destination;
+    }
+
+    private String destination;
+
     public List<Message> getMessages() {
         return messages;
     }
