@@ -94,6 +94,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             case R.id.leaderboard:
                 startActivity(new Intent(MapsActivity.this,UserLeaderboardActivity.class));
                 return true;
+            case R.id.viewMsg:
+                startActivity(new Intent(MapsActivity.this,MessagePanelActivity.class));
+                return true;
             case R.id.editUser:
                 startActivity(new Intent(MapsActivity.this, EditAccountActivity.class));
                 return true;
@@ -114,7 +117,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         setUpLogoutBtn();
         setUpViewGroupBtn();
         setUpParentDashboard();
-        setUpEditUserBtn();
+       // setUpEditUserBtn();
         Button btn = (Button) findViewById(R.id.monitorbtn);
         btn.setOnClickListener(new OnClickListener() {
             @Override
@@ -333,7 +336,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
     }
 
-    private void setUpEditUserBtn() {
+    /*private void setUpEditUserBtn() {
         Button editUserButton = (Button) findViewById(R.id.editUserBtn);
         editUserButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -342,7 +345,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 startActivity(intent);
             }
         });
-    }
+    }*/
 
     private void sendGroupCurrentLocation(Group group) {
     }
@@ -470,5 +473,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 Toast.makeText(getApplicationContext(),"ARRIVED at school,location update will stop",Toast.LENGTH_SHORT).show();
             }
         }.start();
+    }
+    private void arriveChecker(double userLat, double userlng, List<Double>  groupLat,List<Double> groupLng){
+        int routeLength = groupLat.size();
+        //if(userLat = groupLat){
+
+        //}
+
     }
 }
