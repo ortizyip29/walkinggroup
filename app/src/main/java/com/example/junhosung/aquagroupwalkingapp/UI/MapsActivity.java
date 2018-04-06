@@ -91,6 +91,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             case R.id.manageGroups:
                 startActivity(new Intent(MapsActivity.this, GroupManagementActivity.class));
                 return true;
+            case R.id.leaderboard:
+                startActivity(new Intent(MapsActivity.this,UserLeaderboardActivity.class));
+                return true;
             case R.id.editUser:
                 startActivity(new Intent(MapsActivity.this, EditAccountActivity.class));
                 return true;
