@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.example.junhosung.aquagroupwalkingapp.SimpleCallback;
 import com.example.junhosung.aquagroupwalkingapp.proxy.ProxyBuilder;
+import com.example.junhosung.aquagroupwalkingapp.proxy.WGServerProxy;
 
 import java.util.List;
 
@@ -57,6 +58,10 @@ public class Model extends AppCompatActivity {
     private SimpleCallback callbackForMsgMarkAsRead;
     private SimpleCallback callbackForSetLastGpsLocation;
     private SimpleCallback callbackForGetLastGpsLocation;
+    private SimpleCallback callbackForApproveDenyPermission;
+    private SimpleCallback callbackForGetPermissionByUserIdPending;
+    private SimpleCallback callbackForGetPermissionByUserId;
+    private SimpleCallback callbackForGetPermission;
 
 
     //for internal model class
@@ -101,17 +106,6 @@ public class Model extends AppCompatActivity {
 
     public void getGroupsOfUserNoCallToServer() {
     }
-
-
-
-
-
-
-
-
-
-
-
 
 
     //response methods from server
@@ -229,6 +223,22 @@ public class Model extends AppCompatActivity {
     }
     private void responseForGetGpsLocation(User user){
         this.callbackForGetLastGpsLocation.callback(user);
+    }
+
+    private void responseForApproveDenyPermssion(Void returnedNothing) {
+        this.callbackForApproveDenyPermission.callback(returnedNothing);
+    }
+
+    private void responseForGetPermissionByUserIdPending(List<PermissionRequest> pending) {
+        this.callbackForGetPermissionByUserIdPending.callback(pending);
+    }
+
+    private void responseForGetPermissionByUserId(List<PermissionRequest> allReqs) {
+        this.callbackForGetPermissionByUserId.callback(allReqs);
+    }
+
+    private void responseForGetPermission(List<PermissionRequest> allReqs) {
+        this.callbackForGetPermission.callback(allReqs);
     }
 
 
@@ -456,6 +466,39 @@ public class Model extends AppCompatActivity {
         }
     }
 
+    public void approveDenyPermission(Long permissionId, WGServerProxy.PermissionStatus approvedOrDenied, SimpleCallback<Void> callback) {
+        this.callbackForApproveDenyPermission = callback;
+        if (isUserLoggedin) {
+            Server server = new Server();
+            server.approveDenyPermission(permissionId, approvedOrDenied, tokenForLogin, this::responseForApproveDenyPermssion);
+        }
+    }
 
+    public void getPermissionByUserIdPending(Long userId, WGServerProxy.PermissionStatus pending,
+                                             SimpleCallback <List<PermissionRequest>> callback) {
+        this.callbackForGetPermissionByUserIdPending = callback;
+        if (isUserLoggedin) {
+            Server server = new Server();
+            server.getPermissionByUserIdPending(userId, pending, tokenForLogin, this::responseForGetPermissionByUserIdPending);
+        }
+    }
+
+    public void getPermissionByUserId(Long userId, SimpleCallback <List<PermissionRequest>> callback) {
+        this.callbackForGetPermissionByUserId = callback;
+        if (isUserLoggedin) {
+            Server server = new Server();
+            server.getPermissionByUserId(userId, tokenForLogin, this::responseForGetPermissionByUserId);
+        }
+
+    }
+
+    public void getPermission(SimpleCallback <List<PermissionRequest>> callback) {
+        this.callbackForGetPermission = callback;
+        if (isUserLoggedin) {
+            Server server = new Server();
+            server.getPermission(tokenForLogin, this::responseForGetPermission);
+        }
+
+    }
 
 }

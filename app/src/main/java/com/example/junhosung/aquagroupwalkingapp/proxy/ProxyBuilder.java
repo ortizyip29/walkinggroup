@@ -51,7 +51,7 @@ public class ProxyBuilder {
      * @return proxy object to call the server.
      */
     public static WGServerProxy getProxy(String apiKey) {
-        return getProxy(apiKey, null);
+        return getProxy(apiKey, null, "true");
     }
 
     /**
@@ -61,13 +61,13 @@ public class ProxyBuilder {
      * @return proxy object to call the server.
      */
 
-    public static WGServerProxy getProxy(String apiKey, String token) {
+    public static WGServerProxy getProxy(String apiKey, String token, String permissionTrue) {
         // Enable Logging
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(logging)
-                .addInterceptor(new AddHeaderInterceptor(apiKey, token))
+                .addInterceptor(new AddHeaderInterceptor(apiKey, token, permissionTrue))
                 .build();
 
         // Build Retrofit proxy object for server
@@ -166,10 +166,12 @@ public class ProxyBuilder {
     private static class AddHeaderInterceptor implements Interceptor {
         private String apiKey;
         private String token;
+        private String permissionEnabled;
 
-        public AddHeaderInterceptor(String apiKey, String token) {
+        public AddHeaderInterceptor(String apiKey, String token, String permissionTrue) {
             this.apiKey = apiKey;
             this.token = token;
+            this.permissionEnabled = permissionTrue;
         }
 
         @Override
@@ -180,11 +182,16 @@ public class ProxyBuilder {
             // Add API header
             if (apiKey != null) {
                 builder.header("apiKey", apiKey);
+
+                // code to enable permissions
+
+                builder.header("PERMISSIONS-ENABLED",permissionEnabled);
             }
             // Add Token
             if (token != null) {
                 builder.header("Authorization", token);
             }
+
             Request modifiedRequest = builder.build();
 
             return chain.proceed(modifiedRequest);

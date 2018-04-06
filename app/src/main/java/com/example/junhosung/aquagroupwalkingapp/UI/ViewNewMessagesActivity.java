@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.junhosung.aquagroupwalkingapp.R;
@@ -13,6 +14,8 @@ import com.example.junhosung.aquagroupwalkingapp.model.GetListOfUserFromListOfID
 import com.example.junhosung.aquagroupwalkingapp.model.Message;
 import com.example.junhosung.aquagroupwalkingapp.model.Model;
 import com.example.junhosung.aquagroupwalkingapp.model.User;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +30,7 @@ public class ViewNewMessagesActivity extends AppCompatActivity {
     private List<User> listOfUserIdOnly = new ArrayList<>();
     private List<User> listOfUser = new ArrayList<>();
     private String[] fromUserName;
+    private TextView txtNewMsg;
 
 
 
@@ -40,6 +44,9 @@ public class ViewNewMessagesActivity extends AppCompatActivity {
     }
 
     private void responseGetUserUnreadMessages(List<Message> messages) {
+        txtNewMsg = (TextView) findViewById(R.id.txtNewMsg);
+        txtNewMsg.setText(R.string.click_to_send_to_old_msg);
+
         unreadMessages = messages;
         text = new String[unreadMessages.size()];
         for (int i = 0; i < unreadMessages.size(); i ++) {
@@ -70,7 +77,6 @@ public class ViewNewMessagesActivity extends AppCompatActivity {
         populateListView();
 
     }
-
 
 
     private void populateListView() {

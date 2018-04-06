@@ -76,7 +76,9 @@
         <activity android:name=".UI.ParentDashboard" />
         3
         <activity android:name=".UI.GetListOfUserFromListOfID" />
-        <activity android:name=".UI.UserLeaderboardActivity"></activity>
+        <activity android:name=".UI.UserLeaderboardActivity" />
+        <activity android:name=".UI.ViewPendingPermissionsActivity" />
+        <activity android:name=".UI.ViewAllPermissionsActivity"></activity>
     </application>
 
 </manifest>
