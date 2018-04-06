@@ -23,7 +23,6 @@ public class PermissionRequest{
     private Set<Authorizor> authorizors;
     private String message;
 
-
     public Long getId() {
         return id;
     }
@@ -104,12 +103,46 @@ public class PermissionRequest{
         this.message = message;
     }
 
-
-
     public static class Authorizor {
         private Long id;
         private Set<User> users;
         private WGServerProxy.PermissionStatus status;
         private User whoApprovedOrDenied;
+
+        public void setId(Long id) {
+            this.id = id;
+        }
+
+        public Long getId() {
+            return id;
+        }
+
+        public void setUsers(Set<User> users) {
+            this.users = users;
+        }
+
+        public Set<User> getUsers() {
+            return users;
+        }
+
+        public void setStatus(WGServerProxy.PermissionStatus status) {
+            this.status = status;
+        }
+
+        public WGServerProxy.PermissionStatus getStatus() {
+            return status;
+        }
+
+        public void setWhoApprovedOrDenied(User user) {
+            this.whoApprovedOrDenied = user;
+        }
+
+        public User getWhoApprovedOrDenied() {
+            return whoApprovedOrDenied;
+        }
+
+
     }
+
+
 }

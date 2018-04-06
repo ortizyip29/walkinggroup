@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.junhosung.aquagroupwalkingapp.R;
 import com.example.junhosung.aquagroupwalkingapp.model.Message;
@@ -42,6 +41,7 @@ public class MessagePanelActivity extends AppCompatActivity {
         setupBtnNewMsg();
         setupBtnOldMsg();
         setupBtnPermissions();
+        setupBtnAllPermissions();
         
 
         model.getUserUnreadMessages(model.getCurrentUser().getId(),unread,this::responseGetUserUnreadMessages);
@@ -116,13 +116,21 @@ public class MessagePanelActivity extends AppCompatActivity {
         btnPermission.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MessagePanelActivity.this, ViewPermissionsActivity.class);
+                Intent intent = new Intent(MessagePanelActivity.this, ViewPendingPermissionsActivity.class);
                 startActivity(intent);
             }
         });
     }
 
-
-
+    private void setupBtnAllPermissions() {
+        Button btnPermission = (Button) findViewById(R.id.btnAllPermission);
+        btnPermission.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MessagePanelActivity.this, ViewAllPermissionsActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
 
 }

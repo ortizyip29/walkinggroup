@@ -60,6 +60,8 @@ public class Model extends AppCompatActivity {
     private SimpleCallback callbackForGetLastGpsLocation;
     private SimpleCallback callbackForApproveDenyPermission;
     private SimpleCallback callbackForGetPermissionByUserIdPending;
+    private SimpleCallback callbackForGetPermissionByUserId;
+    private SimpleCallback callbackForGetPermission;
 
 
     //for internal model class
@@ -229,6 +231,14 @@ public class Model extends AppCompatActivity {
 
     private void responseForGetPermissionByUserIdPending(List<PermissionRequest> pending) {
         this.callbackForGetPermissionByUserIdPending.callback(pending);
+    }
+
+    private void responseForGetPermissionByUserId(List<PermissionRequest> allReqs) {
+        this.callbackForGetPermissionByUserId.callback(allReqs);
+    }
+
+    private void responseForGetPermission(List<PermissionRequest> allReqs) {
+        this.callbackForGetPermission.callback(allReqs);
     }
 
 
@@ -473,6 +483,22 @@ public class Model extends AppCompatActivity {
         }
     }
 
+    public void getPermissionByUserId(Long userId, SimpleCallback <List<PermissionRequest>> callback) {
+        this.callbackForGetPermissionByUserId = callback;
+        if (isUserLoggedin) {
+            Server server = new Server();
+            server.getPermissionByUserId(userId, tokenForLogin, this::responseForGetPermissionByUserId);
+        }
 
+    }
+
+    public void getPermission(SimpleCallback <List<PermissionRequest>> callback) {
+        this.callbackForGetPermission = callback;
+        if (isUserLoggedin) {
+            Server server = new Server();
+            server.getPermission(tokenForLogin, this::responseForGetPermission);
+        }
+
+    }
 
 }
