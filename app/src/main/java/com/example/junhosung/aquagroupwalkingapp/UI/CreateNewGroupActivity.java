@@ -15,6 +15,8 @@ import com.example.junhosung.aquagroupwalkingapp.model.User;
 
 import java.util.List;
 
+import javax.security.auth.Destroyable;
+
 public class CreateNewGroupActivity extends AppCompatActivity {
 
     Model model = Model.getInstance();
@@ -35,6 +37,9 @@ public class CreateNewGroupActivity extends AppCompatActivity {
             }
         });
     }
+    private void addressToCoordinatesConverter(String start,String dest){
+
+    }
 
     private void wireupAddNewGroupBtn() {
         Button Btn = (Button) findViewById(R.id.btnAddGroup);
@@ -49,6 +54,8 @@ public class CreateNewGroupActivity extends AppCompatActivity {
                 } else{
                     Group group = new Group();
                     group.setGroupDescription(groupName);
+                    group.setStartingPoint(groupMeetingPlace);
+                    group.setDestination(groupDestination);
                     group.setLeader(model.getCurrentUser());
                     Log.i(TAG,group.toString());
                     model.createNewGroup(group,this::responseForCreateNewUser);
