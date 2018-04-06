@@ -44,11 +44,34 @@ public class UserLeaderboardActivity extends AppCompatActivity{
         });
     }
     private void populateListView(List<User> users){
-        //String[] userList = {"piggy bank","yipper"};
+        //String[] displayLeaderboard = {"piggy bank","yipper"};
+        List<String> displayLeaderboard = new ArrayList<>();
         List<String> userList = new ArrayList<>();
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,R.layout.list_users,userList);
+        List<Integer> userPoints = new ArrayList<>();
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,R.layout.list_users,displayLeaderboard);
         for(User user:users){
-            userList.add(user.getName()+"         :         " +user.getTotalPointsEarned()+"  Total Points Earned");
+            //displayLeaderboard.add(user.getName()+"         :         " +user.getTotalPointsEarned()+"  Total Points Earned");
+            userList.add(user.getName());
+            userPoints.add(user.getTotalPointsEarned());
+        }
+        String[] userListInStr= new String[userList.size()];
+        userList.toArray(userListInStr);
+        Integer[] userPointsArr = new Integer[userPoints.size()];
+        userPoints.toArray(userPointsArr);
+        for(int i=1; i<userPointsArr.length; i++) {
+            int temp;
+            String nametemp;
+            if(userPointsArr[i-1] < userPointsArr[i]) {
+                nametemp = userListInStr[i-1];
+                temp = userPointsArr[i-1];
+                userPointsArr[i-1] = userPointsArr[i];
+                userListInStr[i-1] = userListInStr[i];
+                userPointsArr[i] = temp;
+                userListInStr[i] = nametemp;
+            }
+        }
+        for(int i=0;i<userListInStr.length;i++){
+            displayLeaderboard.add(i+1+". "+userListInStr[i]+"         :         " +userPointsArr[i]+"  Total Points Earned");
         }
         ListView memberListView = (ListView) findViewById(R.id.leaderboardLV);
         memberListView.setAdapter(adapter);
