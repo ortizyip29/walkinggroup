@@ -98,6 +98,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             case R.id.viewMsg:
                 startActivity(new Intent(MapsActivity.this,MessagePanelActivity.class));
                 return true;
+            case R.id.userShop:
+                startActivity(new Intent(MapsActivity.this,ShopActivity.class));
+                return true;
             case R.id.editUser:
                 startActivity(new Intent(MapsActivity.this, EditAccountActivity.class));
                 return true;

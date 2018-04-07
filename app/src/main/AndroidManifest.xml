@@ -75,6 +75,7 @@
         <activity android:name=".UI.DeleteMonitoredByActivity" />
         <activity android:name=".UI.ParentDashboard" />
         <activity android:name=".UI.UserLeaderboardActivity" />
+        <activity android:name=".UI.ShopActivity"/>
         <activity android:name=".UI.ViewPendingPermissionsActivity" />
         <activity android:name=".UI.ViewAllPermissionsActivity"></activity>
     </application>
