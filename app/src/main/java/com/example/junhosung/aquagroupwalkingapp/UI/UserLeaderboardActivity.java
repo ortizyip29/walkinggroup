@@ -20,7 +20,10 @@ import java.util.List;
 public class UserLeaderboardActivity extends AppCompatActivity{
     Model model = Model.getInstance();
     User currentUser = model.getCurrentUser();
+    //List<String> userList = new ArrayList<>();
+    List<String> displayLeaderboard = new ArrayList<>();
     List<String> userList = new ArrayList<>();
+    List<Integer> userPoints = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,12 +48,11 @@ public class UserLeaderboardActivity extends AppCompatActivity{
     }
     private void populateListView(List<User> users){
         //String[] displayLeaderboard = {"piggy bank","yipper"};
-        List<String> displayLeaderboard = new ArrayList<>();
-        List<String> userList = new ArrayList<>();
-        List<Integer> userPoints = new ArrayList<>();
+        displayLeaderboard.remove(displayLeaderboard);
+        userList.remove(userList);
+        userPoints.remove(userPoints);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,R.layout.list_users,displayLeaderboard);
         for(User user:users){
-            //displayLeaderboard.add(user.getName()+"         :         " +user.getTotalPointsEarned()+"  Total Points Earned");
             userList.add(user.getName());
             userPoints.add(user.getTotalPointsEarned());
         }
@@ -87,7 +89,7 @@ public class UserLeaderboardActivity extends AppCompatActivity{
         int currentPoints = currentUser.getCurrentPoints();
         TextView textviewDisplay = (TextView)findViewById(R.id.displayCurrentUser);
         if(currentPoints<30){
-            textviewDisplay.setText("You currently have "+model.getCurrentUser().getCurrentPoints()+" points and ranked rookie");
+            textviewDisplay.setText("   You currently have "+model.getCurrentUser().getCurrentPoints()+" points and ranked rookie");
 
         }
         else if(currentPoints>=30&&currentPoints<60){
