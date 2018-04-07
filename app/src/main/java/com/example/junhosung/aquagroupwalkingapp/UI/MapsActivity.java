@@ -43,10 +43,8 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -99,6 +97,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 return true;
             case R.id.editUser:
                 startActivity(new Intent(MapsActivity.this, EditAccountActivity.class));
+                return true;
+                case R.id.editGroup:
+                startActivity(new Intent(MapsActivity.this, EditGroupActivity.class));
                 return true;
                 default:
                 return super.onOptionsItemSelected(item);
@@ -419,6 +420,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             LatLng markLocation = new LatLng(49.1217 , -123.1207);
             groupDisplayArray[i] = groupsDisplay.get(i);
             //getCoordinates();
+
             mapDisplay.addMarker(groupMarker = new MarkerOptions().position(markLocation).title(groupDisplayArray[i]).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
             //Log.d("tag", "who are these groups" + groupDisplayArray[i]);
         }
