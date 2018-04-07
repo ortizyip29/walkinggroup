@@ -77,7 +77,8 @@
         <activity android:name=".UI.UserLeaderboardActivity" />
         <activity android:name=".UI.ShopActivity"/>
         <activity android:name=".UI.ViewPendingPermissionsActivity" />
-        <activity android:name=".UI.ViewAllPermissionsActivity"></activity>
+        <activity android:name=".UI.ViewAllPermissionsActivity" />
+        <activity android:name=".UI.EditGroupActivity"></activity>
     </application>
 
 </manifest>

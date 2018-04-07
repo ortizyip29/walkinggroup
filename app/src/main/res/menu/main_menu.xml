@@ -28,7 +28,9 @@
         android:id="@+id/viewMsg"
         android:title="View Messages" />
     <item
+        android:id="@+id/editGroup"
+        android:title="edit Group " />
+    <item
         android:id="@+id/userShop"
         android:title="Rewards Shop" />
-
 </menu>
