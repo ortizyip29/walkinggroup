@@ -35,6 +35,7 @@ import android.widget.Toast;
 import com.example.junhosung.aquagroupwalkingapp.R;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
@@ -97,6 +98,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             case R.id.viewMsg:
                 startActivity(new Intent(MapsActivity.this,MessagePanelActivity.class));
                 return true;
+            case R.id.userShop:
+                startActivity(new Intent(MapsActivity.this,ShopActivity.class));
+                return true;
             case R.id.editUser:
                 startActivity(new Intent(MapsActivity.this, EditAccountActivity.class));
                 return true;
@@ -106,7 +110,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         //respond to menu item selection
     }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,7 +120,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         setUpLogoutBtn();
         setUpViewGroupBtn();
         setUpParentDashboard();
-       // setUpEditUserBtn();
         Button btn = (Button) findViewById(R.id.monitorbtn);
         btn.setOnClickListener(new OnClickListener() {
             @Override
@@ -336,17 +338,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
     }
 
-    /*private void setUpEditUserBtn() {
-        Button editUserButton = (Button) findViewById(R.id.editUserBtn);
-        editUserButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MapsActivity.this, EditAccountActivity.class);
-                startActivity(intent);
-            }
-        });
-    }*/
-
     private void sendGroupCurrentLocation(Group group) {
     }
 
@@ -369,17 +360,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void sendMyLocation() {
-        GpsLocation lastGpsLocation =  new GpsLocation(49.1208,-123.1210,null);
         Log.d("tag","currentUerLat"+currentUserLat);
-        lastGpsLocation.setLat(currentUserLat);
-        lastGpsLocation.setLng(currentUserLng);
+        //  lastGpsLocation.setLat(currentUserLat);
+        //lastGpsLocation.setLng(currentUserLng);
         //GpsLocation lastGpsLocation =  new GpsLocation(currentUserLat,currentUserLng,null);
+        GpsLocation lastGpsLocation =  new GpsLocation(49.1208,-123.1210,null);
         currentUser = model.getCurrentUser();
         currentUser.setLastGpsLocation(lastGpsLocation);
         Log.d("Albert", "Alert" + lastGpsLocation.getLat() +" "+ lastGpsLocation.getLng());
         Log.d("Albert", "Alert" + model.getCurrentUser());
-        model.setLastGPSLocation(currentUser.getId(),lastGpsLocation,this::myLocationCallback);
-        //model.updateUser(currentUser,this :: myLocationCallback);
+        model.updateUser(currentUser,this :: myLocationCallback);
     }
 
     private void myLocationCallback(User currentUser) {
@@ -388,7 +378,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private void groupAttributesCallback(Group group) {
         //currentGroup = group;
-       //group = model.getCurrentGroupInUseByUser().getGroupDescription();
+        //group = model.getCurrentGroupInUseByUser().getGroupDescription();
       /*  groupLatArray = new Double[group.getRouteLatArray().size()];
         groupLngArray = new Double[group.getRouteLngArray().size()];
         markLatLng = new LatLng(groupLatArray[groupLatArray.length - 1], groupLngArray[groupLngArray.length - 1]);
@@ -456,10 +446,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         }.start();
     }
-    private void getGroupLocation(){
-        currentGroup = model.getCurrentGroupInUseByUser();
-        //String startingPoint = currentGroup.get
-    }
 
     private void atSchoolLocationTimer() {
         new CountDownTimer(600000, 1000) {
@@ -474,11 +460,5 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         }.start();
     }
-    private void arriveChecker(double userLat, double userlng, List<Double>  groupLat,List<Double> groupLng){
-        int routeLength = groupLat.size();
-        //if(userLat = groupLat){
 
-        //}
-
-    }
 }

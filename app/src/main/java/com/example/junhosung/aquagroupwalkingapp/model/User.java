@@ -3,11 +3,14 @@ package com.example.junhosung.aquagroupwalkingapp.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.String.valueOf;
+
 /**
  * Simple User class to store the data the server expects and returns.
  * (Incomplete: Needs support for monitoring and groups).
  */
 public class User {
+    private Rewards rewards = new Rewards();
     private Long id;
     private String name;
     private String email;
@@ -244,6 +247,7 @@ public class User {
                 ", monitorsUsers=" + monitorsUsers +
                 ", memberOfGroups=" + memberOfGroups +
                 ", leadsGroups=" + leadsGroups +
+                ", rewards=" + valueOf(this.rewards.currTheme)+
                 '}';
     }
 
@@ -258,6 +262,57 @@ public class User {
         }
         return false;
     }
-}
 
+
+    public String setTitle(String title){
+        this.rewards.currTitle = title;
+        return this.rewards.currTitle;
+
+    }
+
+    public int setTheme(int theme){
+        this.rewards.currTheme = theme;
+        return this.rewards.currTheme;
+    }
+
+    public String[] getTitles(){
+        return this.rewards.getListTitles();
+
+    }
+
+    public int[] getThemes(){
+        return this.rewards.getListThemes();
+
+    }
+
+    public String getCurrTitle(){
+        return this.rewards.currTitle;
+    }
+
+    public int getCurrThemeID(){
+        return this.rewards.currTheme;
+    }
+
+    public int getCurrColor(){
+        return this.rewards.currButtonColor;
+    }
+    public void addTheme(int themeID){
+        this.rewards.addTheme(themeID);
+    }
+
+    public int[] getButtonColors() {
+        return this.rewards.userButtonColors;
+    }
+
+    public int getCurrThemeCount(){
+        return this.rewards.themeCount;
+    }
+
+    public int getColorCount(){
+        return this.rewards.colorCount;
+    }
+    public int getTitleCount(){
+        return this.rewards.titleCount;
+    }
+}
 
