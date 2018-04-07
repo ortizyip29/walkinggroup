@@ -74,6 +74,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     boolean cancelTimer = false;
     LatLng markLatLng = new LatLng(0.00, 0.00);
 
+    int defaultTheme = R.style.AppTheme;                            //0
+    int lowTierTheme = android.R.style.Theme_Light;                 //1
+    int darkTheme = android.R.style.ThemeOverlay_Material_Dark;     //2
+    int lightTheme = android.R.style.ThemeOverlay_Material_Light;   //3
+    int holoTheme = android.R.style.Theme_Holo_NoActionBar;         //4
+
     public boolean onCreateOptionsMenu(Menu menu) {
 
         MenuInflater inflater = getMenuInflater();
@@ -107,6 +113,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(model.getUserCurrentThemeID(model.getCurrentUser()));
         setContentView(R.layout.activity_maps);
         TextView updateDisplay = (TextView) findViewById(R.id.textViewUpdate);
         TextView updateTime = (TextView) findViewById(R.id.textViewTimeUpdate);
@@ -115,7 +122,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         setUpViewGroupBtn();
         setUpParentDashboard();
         setUpEditUserBtn();
+        setUpShopBtn();
         Button btn = (Button) findViewById(R.id.monitorbtn);
+        btn.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
         btn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -137,6 +146,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         Log.d("tag", "WHAT GROUP ARE WE  " + model.getCurrentGroupInUseByUser().getGroupDescription());
 
     }
+
 
     // circle now set 500 meter radius from myself
     private void locationUpdate() {
@@ -292,6 +302,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private void setUpLogoutBtn() {
         Button btn = (Button) findViewById(R.id.btnLogout);
+        btn.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -303,6 +314,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private void setUpViewGroupBtn() {
         Button groupButton = (Button) findViewById(R.id.viewGroupBtn);
+        groupButton.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
         groupButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -314,6 +326,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private void setUpUpdateBtn() {
         Button updateButton = (Button) findViewById(R.id.parentDashboardBtn);
+        updateButton.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
         updateButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -324,6 +337,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private void setUpParentDashboard() {
         Button parentDashButton = (Button) findViewById(R.id.parentDashboardBtn);
+        parentDashButton.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
         parentDashButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -342,6 +356,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 startActivity(intent);
             }
         });
+    }
+    private void setUpShopBtn() {
+        Button btn = (Button) findViewById(R.id.shopbtn);
+        btn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MapsActivity.this, ShopActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     private void sendGroupCurrentLocation(Group group) {

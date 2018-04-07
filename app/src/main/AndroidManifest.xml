@@ -77,7 +77,8 @@
         3
         <activity android:name=".UI.GetListOfUserFromListOfID" />
         <activity android:name=".UI.UserLeaderboardActivity" />
-        <activity android:name=".UI.ViewPermissionsActivity"></activity>
+        <activity android:name=".UI.ViewPermissionsActivity" />
+        <activity android:name=".UI.ShopActivity"></activity>
     </application>
 
 </manifest>
