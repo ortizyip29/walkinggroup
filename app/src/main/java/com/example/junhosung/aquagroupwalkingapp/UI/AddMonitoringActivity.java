@@ -31,6 +31,7 @@ public class AddMonitoringActivity extends AppCompatActivity {
     private String permissionRequest = "I would like to monitor this person!";
     private Message permissionsMsg;
     private User targetUser;
+    User currentUser = model.getCurrentUser();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,10 +53,8 @@ public class AddMonitoringActivity extends AppCompatActivity {
             private void responseWithUserEmail(User user) {
               if(user!=null){
                   targetUser = user;
-                  Long userId = user.getId();
-                  permissionsMsg = new Message(permissionRequest+"",false);
+                  model.addNewMonitors(currentUser.getId(),targetUser,this::responseAddNewMonitors);
 
-                  model.newMsgToParents(userId,permissionsMsg,this::responseToNewMsgToParents);
               }
 
               else {
@@ -67,16 +66,16 @@ public class AddMonitoringActivity extends AppCompatActivity {
             }
 
             private void responseToNewMsgToParents(Message msg) {
-                Toast.makeText(AddMonitoringActivity.this,"message sent",Toast.LENGTH_LONG).show();
+                //Toast.makeText(AddMonitoringActivity.this,"message sent",Toast.LENGTH_LONG).show();
             }
 
-//            private void responseAddNewMonitors(List<User> users) {
-//
-//                Toast.makeText(AddMonitoringActivity.this,"Success",Toast.LENGTH_SHORT).show();
-//                Intent intent = new Intent();
-//                setResult(Activity.RESULT_OK,intent);
-//                finish();
-//            }
+            private void responseAddNewMonitors(List<User> users) {
+
+                Toast.makeText(AddMonitoringActivity.this,"Success",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent();
+                setResult(Activity.RESULT_OK,intent);
+                finish();
+            }
         });
     }
 }
