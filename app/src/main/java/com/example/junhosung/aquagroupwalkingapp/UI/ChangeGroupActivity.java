@@ -22,6 +22,7 @@ public class ChangeGroupActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(model.themeToApply(model.getCurrentUser()));
         setContentView(R.layout.activity_change_group);
         setupBackBtn();
         setupListViewToDisplayGroups();
@@ -30,6 +31,7 @@ public class ChangeGroupActivity extends AppCompatActivity {
 
     private void setupBackBtn() {
     Button btn = (Button) findViewById(R.id.btnBackFromChangeGroup);
+    btn.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
     btn.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {

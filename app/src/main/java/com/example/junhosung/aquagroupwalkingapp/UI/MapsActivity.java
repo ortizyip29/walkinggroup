@@ -113,7 +113,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTheme(model.getUserCurrentThemeID(model.getCurrentUser()));
+        model.getCurrentUser().setTheme(4);
+        setTheme(model.themeToApply(currentUser));
+        model.getCurrentUser().setColor(4);
         setContentView(R.layout.activity_maps);
         TextView updateDisplay = (TextView) findViewById(R.id.textViewUpdate);
         TextView updateTime = (TextView) findViewById(R.id.textViewTimeUpdate);
@@ -123,6 +125,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         setUpParentDashboard();
         setUpEditUserBtn();
         setUpShopBtn();
+        setUpMyStuffbtn();
         Button btn = (Button) findViewById(R.id.monitorbtn);
         btn.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
         btn.setOnClickListener(new OnClickListener() {
@@ -145,6 +148,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         Log.d("tag", "Who am i" + model.getCurrentUser());
         Log.d("tag", "WHAT GROUP ARE WE  " + model.getCurrentGroupInUseByUser().getGroupDescription());
 
+    }
+
+    private void setUpMyStuffbtn() {
+        Button btn = (Button) findViewById(R.id.btnMystuff);
+        btn.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
+        btn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MapsActivity.this, MyStuffActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
 
@@ -349,6 +364,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private void setUpEditUserBtn() {
         Button editUserButton = (Button) findViewById(R.id.editUserBtn);
+        editUserButton.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
         editUserButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {

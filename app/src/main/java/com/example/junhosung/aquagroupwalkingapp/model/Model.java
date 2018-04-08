@@ -65,15 +65,20 @@ public class Model extends AppCompatActivity {
     private SimpleCallback callbackforthemes;
     private SimpleCallback callbackforColors;
     private SimpleCallback callbackforTitles;
-    int defaultTheme = R.style.AppTheme;                            //0
-    int lowTierTheme = android.R.style.Theme_Light;                 //1
-    int darkTheme = android.R.style.ThemeOverlay_Material_Dark_ActionBar;     //2
-    int lightTheme = android.R.style.ThemeOverlay_Material_Light;   //3
-    int holoTheme = android.R.style.Theme_Holo_NoActionBar;         //4
-
-    int[] rewardThemes = {1,2,3,4};
-    int blackbar ;
-
+    public int defaultTheme = R.style.AppTheme;                            //0
+    public int lowTierTheme = android.R.style.Theme_Light;                 //1
+    public int darkTheme = android.R.style.ThemeOverlay_Material_Dark_ActionBar;     //2
+    public int lightTheme = android.R.style.ThemeOverlay_Material_Light;   //3
+    public int holoTheme = android.R.style.Theme_Holo_NoActionBar;         //4
+    public int purple = android.R.color.holo_purple;
+    public int blue = android.R.color.holo_blue_dark;
+    public int green = android.R.color.holo_green_dark;
+    public int orange = android.R.color.holo_orange_dark;
+    public int red = android.R.color.holo_red_dark;
+    public int def = android.R.drawable.btn_default;
+    public int white = android.R.color.white;
+    int[] rewardThemes = {1, 2, 3, 4};
+    int blackbar;
 
     //for internal model class
     private Model() {
@@ -88,7 +93,7 @@ public class Model extends AppCompatActivity {
         return modelInstance;
     }
 
-    public void setCurrentUser(User user){
+    public void setCurrentUser(User user) {
         this.currentUser = user;
     }
 
@@ -198,6 +203,7 @@ public class Model extends AppCompatActivity {
     private void responseForUpdateGroupDetails(Group group) {
         callbackForUpdateGroupDetails.callback(group);
     }
+
     private void responseForAddNewUserToGroup(List<User> users) {
         this.callbackForAddNewUserToGroup.callback(users);
     }
@@ -229,10 +235,12 @@ public class Model extends AppCompatActivity {
     private void responseForMsgMarkAsRead(User user) {
         this.callbackForMsgMarkAsRead.callback(user);
     }
-    private void responseForSetGpsLocation(User user){
+
+    private void responseForSetGpsLocation(User user) {
         this.callbackForSetLastGpsLocation.callback(user);
     }
-    private void responseForGetGpsLocation(User user){
+
+    private void responseForGetGpsLocation(User user) {
         this.callbackForGetLastGpsLocation.callback(user);
     }
 
@@ -244,15 +252,15 @@ public class Model extends AppCompatActivity {
         this.callbackForGetPermissionByUserIdPending.callback(pending);
     }
 
-    private void responseForGettingUserThemes(List<String> themes){
+    private void responseForGettingUserThemes(List<String> themes) {
         this.callbackforthemes.callback(themes);
     }
 
-    private void responseForGettingUserColors(int[] colors){
+    private void responseForGettingUserColors(int[] colors) {
         this.callbackforColors.callback(colors);
     }
 
-    private void responseForGettingTitles(List<String> titles){
+    private void responseForGettingTitles(List<String> titles) {
         this.callbackforTitles.callback(titles);
     }
 
@@ -346,7 +354,7 @@ public class Model extends AppCompatActivity {
         this.callbackForStopMonitoredBy = callback;
         Server server = new Server();
         if (isUserLoggedin) {
-            server.stopMonitoredBy(userId,targetId,this.tokenForLogin,this::responseForStopMonitoredBy);
+            server.stopMonitoredBy(userId, targetId, this.tokenForLogin, this::responseForStopMonitoredBy);
         }
     }
 
@@ -366,26 +374,27 @@ public class Model extends AppCompatActivity {
         }
     }
 
-    public void getGroupDetailsById(Long groupId,SimpleCallback<Group> callback) {
+    public void getGroupDetailsById(Long groupId, SimpleCallback<Group> callback) {
         this.callbackForGetGroupDetailsById = callback;
         Server server = new Server();
         if (isUserLoggedin) {
-            server.getGroupDetailsById(groupId,this.tokenForLogin,this::responseForGetGroupDetailsById);
+            server.getGroupDetailsById(groupId, this.tokenForLogin, this::responseForGetGroupDetailsById);
 
         }
     }
 
-    public void updateGroupDetails(Long groupId, Group updatedGroup,SimpleCallback<Group> callback) {
+    public void updateGroupDetails(Long groupId, Group updatedGroup, SimpleCallback<Group> callback) {
         this.callbackForUpdateGroupDetails = callback;
         Server server = new Server();
         if (isUserLoggedin) {
-            server.updateGroupDetails(groupId,updatedGroup,this.tokenForLogin,this::responseForUpdateGroupDetails);
+            server.updateGroupDetails(groupId, updatedGroup, this.tokenForLogin, this::responseForUpdateGroupDetails);
         }
     }
-    public void addUserToGroup(Long groupId,User addUser,SimpleCallback<List<User>> callback){
+
+    public void addUserToGroup(Long groupId, User addUser, SimpleCallback<List<User>> callback) {
         this.callbackForAddNewUserToGroup = callback;
         Server server = new Server();
-        if (isUserLoggedin){
+        if (isUserLoggedin) {
             server.addNewUser(groupId, addUser, this.tokenForLogin, this::responseForAddNewUserToGroup);
         }
     }
@@ -393,21 +402,21 @@ public class Model extends AppCompatActivity {
     public void deleteMemberOfGroup(Long groupId, Long userId, SimpleCallback<Void> callback) {
         this.callbackForDeleteMemberOfGroup = callback;
         Server server = new Server();
-        if(isUserLoggedin) {
-            server.deleteMemberOfGroup(groupId,userId,this.tokenForLogin,this::responseForDeleteMemberOfGroup);
+        if (isUserLoggedin) {
+            server.deleteMemberOfGroup(groupId, userId, this.tokenForLogin, this::responseForDeleteMemberOfGroup);
         }
     }
 
     public void getMembersOfGroup(Long groupId, SimpleCallback<List<User>> callback) {
         this.callbackForGetMembersOfGroup = callback;
         Server server = new Server();
-        if(isUserLoggedin) {
+        if (isUserLoggedin) {
             server.getMembersOfGroup(groupId, this.tokenForLogin, this::responseForGetMembersOfGroups);
         }
     }
 
-    private void responseForUpdateUser(User user){
-        if(serverCallbackForUpdateUser!=null){
+    private void responseForUpdateUser(User user) {
+        if (serverCallbackForUpdateUser != null) {
             serverCallbackForUpdateUser.callback(user);
         }
     }
@@ -420,8 +429,8 @@ public class Model extends AppCompatActivity {
         this.callbackForGetUserUnreadMessages = callback;
         readUnread = "unread";
         Server server = new Server();
-        if(isUserLoggedin) {
-            server.getUserUnreadMessages(userId,readUnread, this.tokenForLogin, this::responseForGetUserUnreadMessages);
+        if (isUserLoggedin) {
+            server.getUserUnreadMessages(userId, readUnread, this.tokenForLogin, this::responseForGetUserUnreadMessages);
         }
     }
 
@@ -429,46 +438,48 @@ public class Model extends AppCompatActivity {
         this.callbackForGetUserReadMessages = callback;
         readUnread = "read";
         Server server = new Server();
-        if(isUserLoggedin) {
-            server.getUserReadMessages(userId,readUnread, this.tokenForLogin, this::responseForGetUserReadMessages);
+        if (isUserLoggedin) {
+            server.getUserReadMessages(userId, readUnread, this.tokenForLogin, this::responseForGetUserReadMessages);
         }
     }
 
     public void newMsgToGroup(Long groupId, Message msg, SimpleCallback<Message> callback) {
         this.callbackForNewMsgToGroup = callback;
         Server server = new Server();
-        if(isUserLoggedin) {
-            server.newMsgToGroup(groupId,msg,this.tokenForLogin,this::responseForNewMsgToGroup);
+        if (isUserLoggedin) {
+            server.newMsgToGroup(groupId, msg, this.tokenForLogin, this::responseForNewMsgToGroup);
         }
     }
 
     public void newMsgToParents(Long userId, Message msg, SimpleCallback<Message> callback) {
         this.callbackForNewMsgToParents = callback;
         Server server = new Server();
-        if(isUserLoggedin) {
-            server.newMsgToParents(userId,msg,this.tokenForLogin,this::responseForNewMsgToParents);
+        if (isUserLoggedin) {
+            server.newMsgToParents(userId, msg, this.tokenForLogin, this::responseForNewMsgToParents);
         }
     }
 
-    public void updateUser(User user,SimpleCallback<User> callback) {
+    public void updateUser(User user, SimpleCallback<User> callback) {
         this.serverCallbackForUpdateUser = callback;
-        if(isUserLoggedin) {
+        if (isUserLoggedin) {
             Server server = new Server();
             server.updateUser(user, tokenForLogin, serverCallbackForUpdateUser);
         }
     }
-    public void setLastGPSLocation(Long userid, GpsLocation lastGpsLocation,SimpleCallback<User> callback){
+
+    public void setLastGPSLocation(Long userid, GpsLocation lastGpsLocation, SimpleCallback<User> callback) {
         this.callbackForSetLastGpsLocation = callback;
-        if(isUserLoggedin){
+        if (isUserLoggedin) {
             Server server = new Server();
-            server.setLastGpsLocation(userid,lastGpsLocation,tokenForLogin,callbackForSetLastGpsLocation);
+            server.setLastGpsLocation(userid, lastGpsLocation, tokenForLogin, callbackForSetLastGpsLocation);
         }
     }
-    public void getLastGPSLocation(User user,GpsLocation lastGpsLocation,SimpleCallback<User> callback){
+
+    public void getLastGPSLocation(User user, GpsLocation lastGpsLocation, SimpleCallback<User> callback) {
         this.callbackForGetLastGpsLocation = callback;
-        if(isUserLoggedin){
+        if (isUserLoggedin) {
             Server server = new Server();
-            server.getLastGpsLocation(user,lastGpsLocation,tokenForLogin,callbackForGetLastGpsLocation);
+            server.getLastGpsLocation(user, lastGpsLocation, tokenForLogin, callbackForGetLastGpsLocation);
         }
     }
 
@@ -476,7 +487,7 @@ public class Model extends AppCompatActivity {
         this.callbackForMsgMarkAsRead = callback;
         if (isUserLoggedin) {
             Server server = new Server();
-            server.msgMarkAsRead(messageId,userId,sendTrue,tokenForLogin,this::responseForMsgMarkAsRead);
+            server.msgMarkAsRead(messageId, userId, sendTrue, tokenForLogin, this::responseForMsgMarkAsRead);
         }
     }
 
@@ -489,7 +500,7 @@ public class Model extends AppCompatActivity {
     }
 
     public void getPermissionByUserIdPending(Long userId, WGServerProxy.PermissionStatus pending,
-                                             SimpleCallback <List<PermissionRequest>> callback) {
+                                             SimpleCallback<List<PermissionRequest>> callback) {
         this.callbackForGetPermissionByUserIdPending = callback;
         if (isUserLoggedin) {
             Server server = new Server();
@@ -497,82 +508,87 @@ public class Model extends AppCompatActivity {
         }
     }
 
-    public void setUserTheme(User currentUser, int themeID){
+    public void setUserTheme(User currentUser, int themeID) {
         currentUser.setTheme(themeID);
-        }
+    }
 
-    public int getUserCurrentThemeID(User currentUser){
+    public int getUserCurrentThemeID(User currentUser) {
         return currentUser.getCurrThemeID();
     }
 
     //Must be called before setContent in every single activity in the app--------
-    public int themeToApply(User currentUser){
-        if (currentUser.getCurrThemeID() == 0){
+    public int themeToApply(User currentUser) {
+        if (currentUser.getCurrThemeID() == 0) {
             return defaultTheme;
-        }else if(currentUser.getCurrThemeID() == 1){
+        } else if (currentUser.getCurrThemeID() == 1) {
             return lowTierTheme;
-        }else if(currentUser.getCurrThemeID() == 2){
+        } else if (currentUser.getCurrThemeID() == 2) {
             return darkTheme;
-        }else if(currentUser.getCurrThemeID() == 3){
+        } else if (currentUser.getCurrThemeID() == 3) {
             return lightTheme;
-        }else if(currentUser.getCurrThemeID() == 4){
+        } else if (currentUser.getCurrThemeID() == 4) {
             return holoTheme;
-        }else{
+        } else {
             return defaultTheme;
         }
     }
 
-    public String convertThemes(int theme){
-       int temp = theme;
-       if (temp == 1) {
-           return "Cool Theme";
-       }else if (temp == 2){
-           return "Dark Theme";
-       }else if (temp == 3){
-           return "Light Theme";
-       }else if (temp == 4){
-           return "Holo Theme";
-       }else{
-           return null;
-       }
-    }
-    public String convertColors(int color){
-        int temp = color;
-        if (temp == 1){
-           return "white";
-        }else if( temp == 2){
-            return "blue";
-        }else if( temp == 3){
-            return "green";
-        }else if(temp == 4){
-            return "purple";
-        }else if(temp == 5){
-            return "orange";
-        }else if (temp == 6){
-            return "red";
-        }
-        return null;
-    }
-    public int getButtonColor(User currentUser){
-        int temp = currentUser.getCurrColor();
-        if (temp == 1){
-            return getResources().getColor(android.R.color.white);
-        }else if( temp == 2){
-            return getResources().getColor(android.R.color.holo_blue_dark);
-        }else if( temp == 3){
-            return getResources().getColor(android.R.color.holo_green_dark);
-        }else if(temp == 4){
-            return getResources().getColor(android.R.color.holo_purple);
-        }else if(temp == 5){
-            return getResources().getColor(android.R.color.holo_orange_dark);
-        }else if (temp == 6){
-            return getResources().getColor(android.R.color.holo_red_dark);
-        }else{
-            return android.R.drawable.btn_default;
+    public String convertThemes(int theme) {
+        int temp = theme;
+        if (temp == 1) {
+            return "Cool Theme";
+        } else if (temp == 2) {
+            return "Dark Theme";
+        } else if (temp == 3) {
+            return "Light Theme";
+        } else if (temp == 4) {
+            return "Holo Theme";
+        } else {
+            return "";
         }
     }
 
-    public int[] getUserButtonColors(User currentUser){
+    public String convertColors(int color) {
+        int temp = color;
+        if (temp == 1) {
+            return "White";
+        } else if (temp == 2) {
+            return "blue";
+        } else if (temp == 3) {
+            return "green";
+        } else if (temp == 4) {
+            return "purple";
+        } else if (temp == 5) {
+            return "orange";
+        } else if (temp == 6) {
+            return "red";
+        } else if (temp == 0) {
+            return "";
+        }
+        return "";
+    }
+
+    public int getButtonColor(User currentUser) {
+        int temp = currentUser.getCurrColor();
+        if (temp == 1) {
+            return white;
+        } else if (temp == 2) {
+            return blue;
+        } else if (temp == 3) {
+            return green;
+        } else if (temp == 4) {
+            return purple;
+            // getResources().getColor(android.R.color.holo_purple);
+        } else if (temp == 5) {
+            return orange;
+        } else if (temp == 6) {
+            return red;
+        } else {
+            return def;
+        }
+    }
+
+    public int[] getUserButtonColors(User currentUser) {
         return currentUser.getButtonColors();
     }
 
@@ -583,37 +599,42 @@ public class Model extends AppCompatActivity {
         int[] temp2 = currentUser.getThemes();
         int x = 0;
         for (int i = 0; i < currentUser.getCurrThemeCount(); i++) {
-            Log.i("inside the loop","hi");
-            for (int j = 1; j <= 4; j++) {
-                if (temp[i] == temp2[j]) {
-                    temp[i] = 0;
+
+            for (int j = 0; j < 4; j++) {
+                Log.i("Comparing temp ", "--------" + String.valueOf(temp[j]));
+                Log.i("Comparing temp 2: ", "  " + String.valueOf(temp2[i]));
+                if (temp[j] == temp2[i]) {
+                    Log.i("Temp 2 changed", "hi");
+                    temp[j] = 0;
 
                 }
             }
         }
 
         for (int i = 0; i < temp.length; i++) {
-            if (convertThemes(temp[i]) != null) {
-                availableThemes[x] = convertThemes(temp[i]);
-                Log.i("Insideee", "Theme isss" + availableThemes[x]);
-                x++;
+            Log.i("Buyable Theme ID: ", "-------" + String.valueOf(temp[i]));
+            //if (convertThemes(temp[i]) != null) {
+            availableThemes[x] = convertThemes(temp[i]);
+            Log.i("Buyable Themes", "This is " + availableThemes[x]);
+            x++;
 
-            }
+            //  }
         }
         return availableThemes;
     }
 
-    public String[] buyableColors(User currentUser, SimpleCallback<Void> callback){
+    public String[] buyableColors(User currentUser, SimpleCallback<Void> callback) {
         this.callbackforColors = callback;
         String[] availableColors = new String[6];
-        int[] temp = {1,2,3,4,5,6};
+        int[] temp = {1, 2, 3, 4, 5, 6};
         int[] temp2 = currentUser.getButtonColors();
         int x = 0;
         for (int i = 0; i < currentUser.getColorCount(); i++) {
-            Log.i("inside the loop","hi");
-            for (int j = 1; j <= 6; j++) {
-                if (temp[i] == temp2[j]) {
-                    temp[i] = 0;
+            for (int j = 0; j < 6; j++) {
+                Log.i("User Current has colors", "--------" + String.valueOf(temp[i]));
+                Log.i("Comparing: ", "  " + String.valueOf(temp2[j]));
+                if (temp[j] == temp2[i]) {
+                    temp[j] = 0;
 
                 }
                 Log.i("inside colors", "Value: " + temp[i]);
@@ -621,34 +642,34 @@ public class Model extends AppCompatActivity {
         }
 
         for (int i = 0; i < temp.length; i++) {
-            if (convertColors(temp[i]) != null) {
-                availableColors[x] = convertColors(temp[i]);
-                Log.i("Insideee", "Theme isss" + availableColors[x]);
-                x++;
+            //if (convertColors(temp[i]) != null) {
+            availableColors[x] = convertColors(temp[i]);
+            Log.i("Insideee", "Color isss " + availableColors[x]);
+            x++;
 
-            }
+            //}
         }
         return availableColors;
     }
 
-    public String[] buyableTitles(User currentUser, SimpleCallback<Void> callback){
+    public String[] buyableTitles(User currentUser, SimpleCallback<Void> callback) {
         this.callbackforTitles = callback;
         String[] availableTitles = new String[3];
         String[] temp = {"Walks too much, someone give me a ride", "King", "Iron Man"};
         String[] temp2 = currentUser.getTitles();
         int x = 0;
-        for(int i =0; i<currentUser.getTitleCount();i++){
-            for (int j =1; j<=5;j++){
-                if(temp[i].equals(temp2[j])){
-                    temp[i] = "";
+        for (int i = 0; i < currentUser.getTitleCount(); i++) {
+            for (int j = 0; j < 3; j++) {
+                if (temp[j].equals(temp2[i])) {
+                    temp[j] = " ";
                 }
             }
         }
-        for (int i = 0; i<temp.length; i++){
-           Log.i("inside Titles", "value is: " +temp[i]);
-            if(temp[i].equals("")){
+        for (int i = 0; i < temp.length; i++) {
+            Log.i("inside Titles", "value is: " + temp[i]);
+            if (temp[i].equals("")) {
 
-            }else{
+            } else {
                 availableTitles[x] = temp[i];
                 x++;
             }
@@ -656,31 +677,63 @@ public class Model extends AppCompatActivity {
         return availableTitles;
     }
 
-    public String[] purchasedThemes(User currentUser){
-        String[] boughtThemes = new String[5];
+    public String[] purchasedThemes(User currentUser) {
+        String[] boughtThemes = new String[4];
         int count = 0;
         int[] temp = currentUser.getThemes();
-        for(int i = 0; i<currentUser.getCurrThemeCount(); i++){
-            if(convertThemes(temp[i]) != null){
+        for (int i = 0; i < currentUser.getCurrThemeCount(); i++) {
+
+            if (convertThemes(temp[i]).equals("")) {
+
                 boughtThemes[count] = convertThemes(temp[i]);
+
+                count++;
+            } else {
+                boughtThemes[count] = "";
                 count++;
             }
         }
+
         return boughtThemes;
     }
 
-    public String[] purchasedColors(User currentUser){
+    public String[] purchasedColors(User currentUser) {
         String[] boughtColors = new String[6];
         int count = 0;
         int[] temp = currentUser.getButtonColors();
-        for(int i =0;i<currentUser.getColorCount();i++){
-            if(convertColors(temp[i]) != null){
+        for (int i = 0; i < currentUser.getColorCount(); i++) {
+            if (convertColors(temp[i]).equals("")) {
                 boughtColors[count] = convertThemes(temp[i]);
+                count++;
+            } else {
+                boughtColors[count] = "";
                 count++;
             }
         }
         return boughtColors;
     }
 
+    public String[] purchasedTitles(User currentUser) {
+        String[] boughtTitles = new String[4];
+        int count = 0;
+        String[] temp = currentUser.getTitles();
+        for (int i = 0; i < currentUser.getTitleCount(); i++) {
+            if (temp[i] != null) {
+                if (temp[i].equals("")) {
+                    boughtTitles[count] = "";
+                    count++;
+                } else {
+                    boughtTitles[count] = temp[i];
+                    count++;
+                }
+            } else {
+                boughtTitles[count] = "";
+                count++;
+            }
+
+        }
+        return boughtTitles;
+    }
 }
+
 

@@ -269,6 +269,9 @@ public class User {
         return this.rewards.currTitle;
 
     }
+    public void setColor(int color){
+        this.rewards.currButtonColor = color;
+    }
 
     public int setTheme(int theme){
         this.rewards.currTheme = theme;
@@ -298,6 +301,12 @@ public class User {
     }
     public void addTheme(int themeID){
         this.rewards.addTheme(themeID);
+    }
+    public void addTitle(String titleID){
+        this.rewards.addTitle(titleID);
+    }
+    public void addColor(int colorID){
+        this.rewards.addColor(colorID);
     }
 
     public int[] getButtonColors() {

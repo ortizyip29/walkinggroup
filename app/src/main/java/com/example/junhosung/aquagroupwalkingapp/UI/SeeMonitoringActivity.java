@@ -60,6 +60,7 @@ public class SeeMonitoringActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(model.themeToApply(model.getCurrentUser()));
         setContentView(R.layout.activity_see_monitoring);
         updateListOfMonitoring();
         setUpAddButton();
@@ -100,6 +101,7 @@ public class SeeMonitoringActivity extends AppCompatActivity {
 
     private void setUpAddButton() {
         btnAddMonitoring = (Button) findViewById(R.id.btnAddMonitoree);
+        btnAddMonitoring.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
         btnAddMonitoring.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -111,6 +113,7 @@ public class SeeMonitoringActivity extends AppCompatActivity {
 
     private void setUpDeleteButton() {
         btnDeleteMonitoring = (Button) findViewById(R.id.btnDeleteMonitoree);
+        btnDeleteMonitoring.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
         btnDeleteMonitoring.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -130,6 +133,7 @@ public class SeeMonitoringActivity extends AppCompatActivity {
 
     private void setUpEditButton() {
         btnEdit = (Button) findViewById(R.id.btnEdit);
+        btnEdit.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -22,6 +22,7 @@ public class ViewOldMessagesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(model.themeToApply(model.getCurrentUser()));
         setContentView(R.layout.activity_view_old_messages);
 
         model.getUserReadMessages(model.getCurrentUser().getId(),unread,this::responseGetUserUnreadMessages);

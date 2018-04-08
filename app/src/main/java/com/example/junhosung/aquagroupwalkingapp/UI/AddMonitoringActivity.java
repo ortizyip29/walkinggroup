@@ -35,9 +35,11 @@ public class AddMonitoringActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(model.themeToApply(model.getCurrentUser()));
         setContentView(R.layout.activity_add_monitoree);
 
         btnAddMonitoring = (Button) findViewById(R.id.btnAddMonitoring);
+        btnAddMonitoring.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
         btnAddMonitoring.setOnClickListener(new View.OnClickListener() {
 
             @Override

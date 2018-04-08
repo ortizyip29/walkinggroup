@@ -40,6 +40,7 @@ public class GroupManagementActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(model.themeToApply(model.getCurrentUser()));
         setContentView(R.layout.activity_group_management);
         TextView textViewGroups = (TextView)findViewById(R.id.textViewGroupName);
         TextView textViewMemberNames= (TextView)findViewById(R.id.textViewMember);
@@ -55,6 +56,7 @@ public class GroupManagementActivity extends AppCompatActivity {
     private void setupTempLaunchCheckGroupDetailActivityBtn() {
 
         Button button = (Button) findViewById(R.id.lastBtn);
+        button.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {  //  CheckGroupsDetails.class    // GroupsLeaderOfActivity
@@ -67,6 +69,7 @@ public class GroupManagementActivity extends AppCompatActivity {
 
     private void setupChangeGroupButton(){
         Button changeGroupButton = (Button)findViewById(R.id.changeGroups);
+        changeGroupButton.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
         changeGroupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -79,6 +82,7 @@ public class GroupManagementActivity extends AppCompatActivity {
 
     private void setupModifyGroupButton(){
         Button modifyGroupButton = (Button)findViewById(R.id.modGroups);
+        modifyGroupButton.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
         modifyGroupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,6 +94,7 @@ public class GroupManagementActivity extends AppCompatActivity {
 
     private void setupAddGroupButton(){
         Button addGroupButton = (Button)findViewById(R.id.createGroupBtn);
+        addGroupButton.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
         addGroupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -140,6 +145,7 @@ public class GroupManagementActivity extends AppCompatActivity {
 
     private void backToMapsButton(){
         Button  addbackToMapsButton= (Button)findViewById(R.id.backToMapBtn);
+        addbackToMapsButton.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
         addbackToMapsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
