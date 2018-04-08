@@ -49,6 +49,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
+import static java.lang.Math.abs;
 import static java.lang.Thread.sleep;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
@@ -132,6 +133,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         MapFragment mapFrag = ((MapFragment) getFragmentManager().findFragmentById(R.id.mapFrag));
         mapFrag.getMapAsync(this);
+        walkCompleteChecker();
         locationUpdate();
         locationTimer();
         //sendMyLocation(currentUser);
@@ -462,5 +464,31 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         }.start();
     }
+    private void walkCompleteChecker() {
+        int currentPoints = currentUser.getCurrentPoints();
+        int totalPoints = currentUser.getTotalPointsEarned();
+        GpsLocation userCoord = new GpsLocation(49.145, -123.1210, null);
+        Double[] routeLatArr = {49.1217, 49.12175, 49.145};
+        Double[] routeLngArr = {-123.1208, -123.1209, -123.1210};
+        double startLat = routeLatArr[0];
+        double startLng = routeLngArr[0];
+        assert routeLatArr.length == routeLngArr.length;
+        double destLat = routeLatArr[routeLatArr.length - 1];
+        double destLng = routeLatArr[routeLngArr.length - 1];
+        // if(userCoord.getLat()==destLat&&userCoord.getLng()==destLng){
+        if (abs(destLat - startLat) < 0.02 || abs(destLng - startLng) < 0.02) {
+            Toast.makeText(getApplicationContext(), "Sorry " + model.getCurrentUser().getName() + ", your walk is not long enough to be counted for rewards", Toast.LENGTH_LONG).show();
+        }
+        else {
+            currentPoints = currentPoints + 5;
+            totalPoints = totalPoints + 5;
+            currentUser.setCurrentPoints(currentPoints);
+            currentUser.setTotalPointsEarned(totalPoints);
+            model.updateUser(currentUser, this :: getUserUpdateCallBack);
+            Log.d("completewalk", "completewalk");
+            Log.d("", "let my check the points" + currentPoints + "  " + totalPoints);
+        }
+    }
+    private void getUserUpdateCallBack(User user){}
 
 }
