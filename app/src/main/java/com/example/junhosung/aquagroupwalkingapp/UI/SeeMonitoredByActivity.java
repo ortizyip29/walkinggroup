@@ -75,7 +75,7 @@ public class SeeMonitoredByActivity extends AppCompatActivity {
                 int counter = 0;
                 for(Clicked thisItem: isItemClicked){
                     if(thisItem.clicked){
-                        model.stopMonitoring(monitoredByList.get(counter).getId(),model.getCurrentUser().getId(),this::voidCallback);
+                        model.stopMonitoredBy(monitoredByList.get(counter).getId(),model.getCurrentUser().getId(),this::voidCallback);
                     }
                     counter++;
                 }

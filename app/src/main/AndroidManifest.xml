@@ -72,7 +72,7 @@
         <activity android:name=".UI.GroupsLeaderOfActivity" />
         <activity android:name=".UI.ListUsers" />
         <activity android:name=".UI.DeleteMonitoringActivity" />
-        <activity android:name=".UI.DeleteMonitoredByActivity" />
+        <activity android:name=".UI.DeleteMonitoredByActivity" />w
         <activity android:name=".UI.ParentDashboard" />
         <activity android:name=".UI.UserLeaderboardActivity" />
         <activity android:name=".UI.ShopActivity"/>

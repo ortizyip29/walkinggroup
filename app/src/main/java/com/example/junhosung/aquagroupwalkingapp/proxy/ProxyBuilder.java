@@ -185,7 +185,7 @@ public class ProxyBuilder {
 
                 // code to enable permissions
 
-                builder.header("PERMISSIONS-ENABLED",permissionEnabled);
+                builder.header("permissions-enabled",permissionEnabled);
             }
             // Add Token
             if (token != null) {
