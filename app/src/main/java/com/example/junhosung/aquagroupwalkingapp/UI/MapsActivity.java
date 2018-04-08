@@ -479,13 +479,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (abs(destLat - startLat) < 0.02 || abs(destLng - startLng) < 0.02) {
             Toast.makeText(getApplicationContext(), "Sorry " + model.getCurrentUser().getName() + ", your walk is not long enough to be counted for rewards", Toast.LENGTH_LONG).show();
         }
-        currentPoints = currentPoints + 5;
-        totalPoints = totalPoints + 5;
-        currentUser.setCurrentPoints(currentPoints);
-        currentUser.setTotalPointsEarned(totalPoints);
-        model.updateUser(currentUser, this :: getUserUpdateCallBack);
-        Log.d("completewalk", "completewalk");
-        Log.d("", "let my check the points" + currentPoints + "  " + totalPoints);
+        else {
+            currentPoints = currentPoints + 5;
+            totalPoints = totalPoints + 5;
+            currentUser.setCurrentPoints(currentPoints);
+            currentUser.setTotalPointsEarned(totalPoints);
+            model.updateUser(currentUser, this :: getUserUpdateCallBack);
+            Log.d("completewalk", "completewalk");
+            Log.d("", "let my check the points" + currentPoints + "  " + totalPoints);
+        }
     }
     private void getUserUpdateCallBack(User user){}
 
