@@ -46,6 +46,7 @@ public class ParentDashboard extends AppCompatActivity implements OnMapReadyCall
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(model.themeToApply(model.getCurrentUser()));
         setContentView(R.layout.activity_parent_dashboard);
         setupSendButton();
         setupViewButton();
@@ -63,6 +64,7 @@ public class ParentDashboard extends AppCompatActivity implements OnMapReadyCall
 
     private void setupViewButton() {
         Button viewButton = (Button) findViewById(R.id.viewMsgBtn);
+        viewButton.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
         viewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -74,6 +76,7 @@ public class ParentDashboard extends AppCompatActivity implements OnMapReadyCall
 
     private void setupSendButton() {
         Button sendButton = (Button) findViewById(R.id.sendMsgBtn);
+        sendButton.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

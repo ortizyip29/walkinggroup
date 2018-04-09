@@ -31,6 +31,7 @@ public class UserLeaderboardActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(model.themeToApply(model.getCurrentUser()));
         setContentView(R.layout.activity_user_leaderboard);
         populateListView();
       //  updateLeaderboard();

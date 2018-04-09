@@ -36,6 +36,7 @@ public class EditAccountActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(model.themeToApply(model.getCurrentUser()));
         setContentView(R.layout.activity_edit_account);
         nameEdit = (EditText) findViewById(R.id.editName);
         birthMEdit = (EditText) findViewById(R.id.editBirthM);
@@ -94,6 +95,7 @@ public class EditAccountActivity extends AppCompatActivity {
 
     private void setUpDonebtn() {
         Button btn = (Button) findViewById(R.id.btnDone);
+        btn.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -154,6 +156,7 @@ public class EditAccountActivity extends AppCompatActivity {
 
     private void setUpCancelbtn() {
         Button btn = (Button) findViewById(R.id.btnCancel);
+        btn.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -7,6 +7,8 @@ package com.example.junhosung.aquagroupwalkingapp.UI;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.annotation.LayoutRes;
+import android.support.v4.media.RatingCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -51,6 +53,7 @@ public class LoginActivity extends AppCompatActivity {
             loginEmail = SharedPreferenceLoginState.getEmail(LoginActivity.this);
             password = SharedPreferenceLoginState.getPassword(LoginActivity.this);
             model.logIn(loginEmail, password, returnNothing -> responseForLogin(returnNothing));
+
         }
 
 
@@ -129,6 +132,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void setupLoginbtn() {
         Button btn = (Button) findViewById(R.id.btnLogin);
+
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

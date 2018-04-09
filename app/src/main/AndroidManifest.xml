@@ -74,11 +74,12 @@
         <activity android:name=".UI.DeleteMonitoringActivity" />
         <activity android:name=".UI.DeleteMonitoredByActivity" />
         <activity android:name=".UI.ParentDashboard" />
+        3
+        <activity android:name=".UI.GetListOfUserFromListOfID" />
         <activity android:name=".UI.UserLeaderboardActivity" />
-        <activity android:name=".UI.ShopActivity"/>
-        <activity android:name=".UI.ViewPendingPermissionsActivity" />
-        <activity android:name=".UI.ViewAllPermissionsActivity" />
-        <activity android:name=".UI.EditGroupActivity"></activity>
+        <activity android:name=".UI.ViewPermissionsActivity" />
+        <activity android:name=".UI.ShopActivity" />
+        <activity android:name=".UI.MyStuffActivity"></activity>
     </application>
 
 </manifest>

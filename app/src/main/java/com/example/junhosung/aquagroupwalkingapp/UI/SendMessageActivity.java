@@ -23,6 +23,7 @@ public class SendMessageActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(model.themeToApply(model.getCurrentUser()));
         setContentView(R.layout.activity_send_message);
 
         setupMsgToGroupBtn();
@@ -32,6 +33,7 @@ public class SendMessageActivity extends AppCompatActivity {
 
     private void setupMsgToGroupBtn() {
         Button btnMsgGroup = (Button) findViewById(R.id.btnMsgGroup);
+        btnMsgGroup.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
         btnMsgGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -54,6 +56,7 @@ public class SendMessageActivity extends AppCompatActivity {
 
     private void setupMsgToParentsBtn() {
         Button btnMsgGroup = (Button) findViewById(R.id.btnMsgParent);
+        btnMsgGroup.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
         btnMsgGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -67,6 +70,7 @@ public class SendMessageActivity extends AppCompatActivity {
 
     private void setupMsgEmergencyBtn() {
         Button btnMsgGroup = (Button) findViewById(R.id.btnMsgEmergency);
+        btnMsgGroup.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
         btnMsgGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

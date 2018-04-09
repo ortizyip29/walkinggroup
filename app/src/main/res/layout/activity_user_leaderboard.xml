@@ -9,25 +9,29 @@
 
     <TextView
         android:id="@+id/leaderboardtitle"
-        android:layout_width="285dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="3dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
         android:text="            Leaderboard"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="25dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/displayCurrentUser"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/leaderboardLV"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ListView
         android:id="@+id/leaderboardLV"
-        android:layout_width="0dp"
-        android:layout_height="334dp"
-        android:layout_marginBottom="75dp"
-        android:layout_marginEnd="6dp"
-        android:layout_marginStart="6dp"
+        android:layout_width="344dp"
+        android:layout_height="439dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -50,8 +54,10 @@
         android:layout_marginBottom="13dp"
         android:text="TextView"
         app:layout_constraintBottom_toTopOf="@+id/leaderboardLV"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/leaderboardtitle" />
 
     <ScrollView
