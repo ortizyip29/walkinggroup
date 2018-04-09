@@ -8,8 +8,22 @@ import java.util.List;
  */
 
 public class Rewards {
+    public int[] getUserThemes() {
+        return userThemes;
+    }
+
     int[] userThemes = new int[4];
+
+    public int[] getUserButtonColors() {
+        return userButtonColors;
+    }
+
     int[] userButtonColors = new int[6]; //W,R,B,G,Y,P,P
+
+    public String[] getUserTitles() {
+        return userTitles;
+    }
+
     String[] userTitles = new String[4];
 
     int currTheme = 0;

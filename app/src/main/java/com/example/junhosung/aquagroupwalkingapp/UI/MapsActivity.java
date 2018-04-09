@@ -157,11 +157,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         getGroupNameOnMap();
         //sendLocationSever();
         getCoordinates();
+        testLocationSender();
         Log.d("tag", "Who am i" + model.getCurrentUser());
         Log.d("tag", "WHAT GROUP ARE WE  " + model.getCurrentGroupInUseByUser().getGroupDescription());
 
     }
-
+    private void testLocationSender(){
+        GpsLocation lastspot = new GpsLocation(49.145,-123.1210,null);
+        currentUser = model.getCurrentUser();
+        currentUser.setLastGpsLocation(lastspot);
+        model.setLastGPSLocation(currentUser.getId(),lastspot,this::testLocationCallback);
+    }
+    private void testLocationCallback(User user){};
     // circle now set 500 meter radius from myself
     private void locationUpdate() {
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -198,6 +205,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         sendLocationSever();
                         //sendMyLocation(currentUser);
                         sendMyLocation();
+                        walkCompleteChecker();
                         getGroupNameOnMap();
                         myRadius = mapDisplay.addCircle(new CircleOptions()
                                 .center(currentLocation)
@@ -254,6 +262,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         sendLocationSever();
                         //sendMyLocation(currentUser);
                         sendMyLocation();
+                        walkCompleteChecker();
                         getGroupNameOnMap();
                         myRadius = mapDisplay.addCircle(new CircleOptions()
                                 .center(currentLocation)
@@ -498,7 +507,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private void walkCompleteChecker() {
         int currentPoints = currentUser.getCurrentPoints();
         int totalPoints = currentUser.getTotalPointsEarned();
-        GpsLocation userCoord = new GpsLocation(49.145, -123.1210, null);
+        //GpsLocation userCoord = new GpsLocation(49.145, -123.1210, null);
+        GpsLocation userCoord = new GpsLocation(currentUserLat,currentUserLng,null);
         Double[] routeLatArr = {49.1217, 49.12175, 49.145};
         Double[] routeLngArr = {-123.1208, -123.1209, -123.1210};
         double startLat = routeLatArr[0];

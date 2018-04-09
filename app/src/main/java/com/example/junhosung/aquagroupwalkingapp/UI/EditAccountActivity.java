@@ -12,14 +12,15 @@ import android.widget.TextView.BufferType;
 import android.widget.Toast;
 
 import com.example.junhosung.aquagroupwalkingapp.R;
+import com.example.junhosung.aquagroupwalkingapp.model.GpsLocation;
 import com.example.junhosung.aquagroupwalkingapp.model.Model;
+import com.example.junhosung.aquagroupwalkingapp.model.Rewards;
 import com.example.junhosung.aquagroupwalkingapp.model.User;
 
 import java.util.List;
 
 public class EditAccountActivity extends AppCompatActivity {
     Model model = Model.getInstance();
-
     EditText nameEdit;
     EditText birthMEdit;
     EditText birthYEdit;
@@ -144,8 +145,6 @@ public class EditAccountActivity extends AppCompatActivity {
                 current.setGrade(grade);
                 current.setTeacherName(teacherN);
                 current.setEmergencyContactInfo(emergency);
-                current.setCurrentPoints(527);
-                current.setTotalPointsEarned(527);
                 model.updateUser(current, this::getUserUpdateCallBack);
                 finish();
 

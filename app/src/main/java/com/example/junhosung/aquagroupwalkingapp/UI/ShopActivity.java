@@ -54,7 +54,8 @@ public class ShopActivity extends AppCompatActivity {
         listColor = model.buyableColors(model.getCurrentUser(), this::voidCallback);
         listTitles = model.buyableTitles(model.getCurrentUser(), this::voidCallback);
         User currentUser = model.getCurrentUser();
-        currentUser.setCurrentPoints(100);
+        //currentUser.setCurrentPoints(100);
+        currentUser.getCurrentPoints();
         pts = (TextView) findViewById(R.id.points);
         pts.setText(String.valueOf(currentUser.getCurrentPoints()));
         temp = (TextView) findViewById(R.id.txtSelect);
