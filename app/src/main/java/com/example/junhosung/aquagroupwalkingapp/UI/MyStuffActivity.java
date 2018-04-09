@@ -73,7 +73,7 @@ public class MyStuffActivity extends AppCompatActivity {
             c2++;
         }
         int c3 = 0;
-        listTitles = model.purchasedTitles(model.getCurrentUser());
+       // listTitles = model.purchasedTitles(model.getCurrentUser());
         for (int i = 0; i < model.getCurrentUser().getTitleCount(); i++) {
                 l3[c3] = listTitles[i];
                 c3++;
