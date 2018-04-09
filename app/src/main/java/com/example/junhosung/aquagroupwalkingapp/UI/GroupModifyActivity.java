@@ -36,6 +36,7 @@ public class GroupModifyActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(model.themeToApply(model.getCurrentUser()));
         setContentView(R.layout.activity_group_modify);
         if(model.getCurrentGroupInUseByUser()!=null){
             currentUserID = model.getCurrentGroupInUseByUser().getId();
@@ -50,6 +51,7 @@ public class GroupModifyActivity extends AppCompatActivity {
 
     private void setUpBackbtn() {
         Button button = (Button) findViewById(R.id.btnBack);
+        button.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
         button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -60,6 +62,7 @@ public class GroupModifyActivity extends AppCompatActivity {
 
     private void setUpAddbtn() {
         Button button = (Button) findViewById(R.id.btnAdd);
+        button.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
         button.setOnClickListener(new View.OnClickListener(){
 
             private void voidCallback(Void aVoid){}
@@ -79,6 +82,7 @@ public class GroupModifyActivity extends AppCompatActivity {
 
     private void setUpDelbtn(){
         Button button = (Button) findViewById(R.id.btnDel);
+        button.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

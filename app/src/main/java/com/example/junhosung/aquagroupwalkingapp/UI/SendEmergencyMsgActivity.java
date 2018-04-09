@@ -23,6 +23,7 @@ public class SendEmergencyMsgActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(model.themeToApply(model.getCurrentUser()));
         setContentView(R.layout.activity_send_emergency_msg);
 
         emergencyMessage = "This is an emergency message!";
@@ -55,6 +56,7 @@ public class SendEmergencyMsgActivity extends AppCompatActivity {
 
 
         Button btnSendEmergency = (Button) findViewById(R.id.btnMsgEmergency);
+        btnSendEmergency.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
         btnSendEmergency.setOnClickListener(new View.OnClickListener() {
 
             @Override

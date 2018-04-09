@@ -31,12 +31,14 @@ public class AddMonitoredByActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(model.themeToApply(model.getCurrentUser()));
         setContentView(R.layout.activity_add_monitored_by);
 
         // this is here since the for loop inside the onClickListener gives me trouble about
         // calling usersOld.countUsers() from an inner class ...
 
         Button btnAddMonitoredBy = (Button) findViewById(R.id.btnAddNewMonitredBy);
+        btnAddMonitoredBy.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
         btnAddMonitoredBy.setOnClickListener(new View.OnClickListener() {
 
             @Override

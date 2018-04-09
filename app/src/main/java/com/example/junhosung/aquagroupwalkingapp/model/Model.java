@@ -1,5 +1,6 @@
 package com.example.junhosung.aquagroupwalkingapp.model;
 
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
@@ -75,6 +76,23 @@ public class Model extends AppCompatActivity {
     private SimpleCallback callbackForGetLastGpsLocation;
     private SimpleCallback callbackForApproveDenyPermission;
     private SimpleCallback callbackForGetPermissionByUserIdPending;
+    private SimpleCallback callbackforthemes;
+    private SimpleCallback callbackforColors;
+    private SimpleCallback callbackforTitles;
+    public int defaultTheme = R.style.AppTheme;                            //0
+    public int lowTierTheme = android.R.style.Theme_Light;                 //1
+    public int darkTheme = android.R.style.ThemeOverlay_Material_Dark_ActionBar;     //2
+    public int lightTheme = android.R.style.ThemeOverlay_Material_Light;   //3
+    public int holoTheme = android.R.style.Theme_Holo_NoActionBar;         //4
+    public int purple = android.R.color.holo_purple;
+    public int blue = android.R.color.holo_blue_dark;
+    public int green = android.R.color.holo_green_dark;
+    public int orange = android.R.color.holo_orange_dark;
+    public int red = android.R.color.holo_red_dark;
+    public int def = android.R.drawable.btn_default;
+    public int white = android.R.color.white;
+    int[] rewardThemes = {1, 2, 3, 4};
+    int blackbar;
     private SimpleCallback callbackForGetPermissionByUserId;
     private SimpleCallback callbackForGetPermission;
 
@@ -256,6 +274,17 @@ public class Model extends AppCompatActivity {
         this.callbackForGetPermission.callback(allReqs);
     }
 
+    private void responseForGettingUserThemes(List<String> themes) {
+        this.callbackforthemes.callback(themes);
+    }
+
+    private void responseForGettingUserColors(int[] colors) {
+        this.callbackforColors.callback(colors);
+    }
+
+    private void responseForGettingTitles(List<String> titles) {
+        this.callbackforTitles.callback(titles);
+    }
 
     //calls to server methods
     // Adding in currentUser
@@ -498,6 +527,9 @@ public class Model extends AppCompatActivity {
         }
     }
 
+    public void setUserTheme(User currentUser, int themeID) {
+        currentUser.setTheme(themeID);
+    }
     public void getPermissionByUserId(Long userId, SimpleCallback <List<PermissionRequest>> callback) {
         this.callbackForGetPermissionByUserId = callback;
         if (isUserLoggedin) {
@@ -700,5 +732,228 @@ public class Model extends AppCompatActivity {
         return boughtColors;
     }
 
+    public int getUserCurrentThemeID(User currentUser) {
+        return currentUser.getCurrThemeID();
+    }
 
+    //Must be called before setContent in every single activity in the app--------
+    public int themeToApply(User currentUser) {
+        if (currentUser.getCurrThemeID() == 0) {
+            return defaultTheme;
+        } else if (currentUser.getCurrThemeID() == 1) {
+            return lowTierTheme;
+        } else if (currentUser.getCurrThemeID() == 2) {
+            return darkTheme;
+        } else if (currentUser.getCurrThemeID() == 3) {
+            return lightTheme;
+        } else if (currentUser.getCurrThemeID() == 4) {
+            return holoTheme;
+        } else {
+            return defaultTheme;
+        }
+    }
+
+    public String convertThemes(int theme) {
+        int temp = theme;
+        if (temp == 1) {
+            return "Cool Theme";
+        } else if (temp == 2) {
+            return "Dark Theme";
+        } else if (temp == 3) {
+            return "Light Theme";
+        } else if (temp == 4) {
+            return "Holo Theme";
+        } else {
+            return "";
+        }
+    }
+
+    public String convertColors(int color) {
+        int temp = color;
+        if (temp == 1) {
+            return "White";
+        } else if (temp == 2) {
+            return "blue";
+        } else if (temp == 3) {
+            return "green";
+        } else if (temp == 4) {
+            return "purple";
+        } else if (temp == 5) {
+            return "orange";
+        } else if (temp == 6) {
+            return "red";
+        } else if (temp == 0) {
+            return "";
+        }
+        return "";
+    }
+
+    public int getButtonColor(User currentUser) {
+        int temp = currentUser.getCurrColor();
+        if (temp == 1) {
+            return white;
+        } else if (temp == 2) {
+            return blue;
+        } else if (temp == 3) {
+            return green;
+        } else if (temp == 4) {
+            return purple;
+            // getResources().getColor(android.R.color.holo_purple);
+        } else if (temp == 5) {
+            return orange;
+        } else if (temp == 6) {
+            return red;
+        } else {
+            return def;
+        }
+    }
+
+    public int[] getUserButtonColors(User currentUser) {
+        return currentUser.getButtonColors();
+    }
+
+    public String[] buyableThemes(User currentUser, SimpleCallback<Void> callback) {
+        this.callbackforthemes = callback;
+        String[] availableThemes = new String[4];
+        int[] temp = {1, 2, 3, 4};
+        int[] temp2 = currentUser.getThemes();
+        int x = 0;
+        for (int i = 0; i < currentUser.getCurrThemeCount(); i++) {
+
+            for (int j = 0; j < 4; j++) {
+                Log.i("Comparing temp ", "--------" + String.valueOf(temp[j]));
+                Log.i("Comparing temp 2: ", "  " + String.valueOf(temp2[i]));
+                if (temp[j] == temp2[i]) {
+                    Log.i("Temp 2 changed", "hi");
+                    temp[j] = 0;
+
+                }
+            }
+        }
+
+        for (int i = 0; i < temp.length; i++) {
+            Log.i("Buyable Theme ID: ", "-------" + String.valueOf(temp[i]));
+            //if (convertThemes(temp[i]) != null) {
+            availableThemes[x] = convertThemes(temp[i]);
+            Log.i("Buyable Themes", "This is " + availableThemes[x]);
+            x++;
+
+            //  }
+        }
+        return availableThemes;
+    }
+
+    public String[] buyableColors(User currentUser, SimpleCallback<Void> callback) {
+        this.callbackforColors = callback;
+        String[] availableColors = new String[6];
+        int[] temp = {1, 2, 3, 4, 5, 6};
+        int[] temp2 = currentUser.getButtonColors();
+        int x = 0;
+        for (int i = 0; i < currentUser.getColorCount(); i++) {
+            for (int j = 0; j < 6; j++) {
+                Log.i("User Current has colors", "--------" + String.valueOf(temp[i]));
+                Log.i("Comparing: ", "  " + String.valueOf(temp2[j]));
+                if (temp[j] == temp2[i]) {
+                    temp[j] = 0;
+
+                }
+                Log.i("inside colors", "Value: " + temp[i]);
+            }
+        }
+
+        for (int i = 0; i < temp.length; i++) {
+            //if (convertColors(temp[i]) != null) {
+            availableColors[x] = convertColors(temp[i]);
+            Log.i("Insideee", "Color isss " + availableColors[x]);
+            x++;
+
+            //}
+        }
+        return availableColors;
+    }
+
+    public String[] buyableTitles(User currentUser, SimpleCallback<Void> callback) {
+        this.callbackforTitles = callback;
+        String[] availableTitles = new String[3];
+        String[] temp = {"Walks too much, someone give me a ride", "King", "Iron Man"};
+        String[] temp2 = currentUser.getTitles();
+        int x = 0;
+        for (int i = 0; i < currentUser.getTitleCount(); i++) {
+            for (int j = 0; j < 3; j++) {
+                if (temp[j].equals(temp2[i])) {
+                    temp[j] = " ";
+                }
+            }
+        }
+        for (int i = 0; i < temp.length; i++) {
+            Log.i("inside Titles", "value is: " + temp[i]);
+            if (temp[i].equals("")) {
+
+            } else {
+                availableTitles[x] = temp[i];
+                x++;
+            }
+        }
+        return availableTitles;
+    }
+
+    public String[] purchasedThemes(User currentUser) {
+        String[] boughtThemes = new String[4];
+        int count = 0;
+        int[] temp = currentUser.getThemes();
+        for (int i = 0; i < currentUser.getCurrThemeCount(); i++) {
+
+            if (convertThemes(temp[i]).equals("")) {
+
+                boughtThemes[count] = convertThemes(temp[i]);
+
+                count++;
+            } else {
+                boughtThemes[count] = "";
+                count++;
+            }
+        }
+
+        return boughtThemes;
+    }
+
+    public String[] purchasedColors(User currentUser) {
+        String[] boughtColors = new String[6];
+        int count = 0;
+        int[] temp = currentUser.getButtonColors();
+        for (int i = 0; i < currentUser.getColorCount(); i++) {
+            if (convertColors(temp[i]).equals("")) {
+                boughtColors[count] = convertThemes(temp[i]);
+                count++;
+            } else {
+                boughtColors[count] = "";
+                count++;
+            }
+        }
+        return boughtColors;
+    }
+
+    public String[] purchasedTitles(User currentUser) {
+        String[] boughtTitles = new String[4];
+        int count = 0;
+        String[] temp = currentUser.getTitles();
+        for (int i = 0; i < currentUser.getTitleCount(); i++) {
+            if (temp[i] != null) {
+                if (temp[i].equals("")) {
+                    boughtTitles[count] = "";
+                    count++;
+                } else {
+                    boughtTitles[count] = temp[i];
+                    count++;
+                }
+            } else {
+                boughtTitles[count] = "";
+                count++;
+            }
+
+        }
+        return boughtTitles;
+    }
 }
+
+

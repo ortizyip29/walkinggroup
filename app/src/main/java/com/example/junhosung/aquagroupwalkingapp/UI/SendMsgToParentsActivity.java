@@ -21,6 +21,7 @@ public class SendMsgToParentsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(model.themeToApply(model.getCurrentUser()));
         setContentView(R.layout.activity_send_msg_to_parent);
 
         currentUser = model.getCurrentUser();
@@ -39,6 +40,7 @@ public class SendMsgToParentsActivity extends AppCompatActivity {
     private void setupBtnSendMsgParent() {
 
         Button btnSendMsgParent = (Button) findViewById(R.id.btnSendMsgParent);
+        btnSendMsgParent.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
         btnSendMsgParent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -44,8 +44,10 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -73,6 +75,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     boolean atSchool = false;
     boolean cancelTimer = false;
     LatLng markLatLng = new LatLng(0.00, 0.00);
+
+    int defaultTheme = R.style.AppTheme;                            //0
+    int lowTierTheme = android.R.style.Theme_Light;                 //1
+    int darkTheme = android.R.style.ThemeOverlay_Material_Dark;     //2
+    int lightTheme = android.R.style.ThemeOverlay_Material_Light;   //3
+    int holoTheme = android.R.style.Theme_Holo_NoActionBar;         //4
 
     public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -112,9 +120,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         //respond to menu item selection
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        model.getCurrentUser().setTheme(4);
+        setTheme(model.themeToApply(currentUser));
+        model.getCurrentUser().setColor(4);
         setContentView(R.layout.activity_maps);
         TextView updateDisplay = (TextView) findViewById(R.id.textViewUpdate);
         TextView updateTime = (TextView) findViewById(R.id.textViewTimeUpdate);
@@ -123,6 +135,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         setUpViewGroupBtn();
         setUpParentDashboard();
         Button btn = (Button) findViewById(R.id.monitorbtn);
+        btn.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
         btn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -300,6 +313,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private void setUpLogoutBtn() {
         Button btn = (Button) findViewById(R.id.btnLogout);
+        btn.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -311,6 +325,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private void setUpViewGroupBtn() {
         Button groupButton = (Button) findViewById(R.id.viewGroupBtn);
+        groupButton.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
         groupButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -322,6 +337,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private void setUpUpdateBtn() {
         Button updateButton = (Button) findViewById(R.id.parentDashboardBtn);
+        updateButton.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
         updateButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -332,10 +348,22 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private void setUpParentDashboard() {
         Button parentDashButton = (Button) findViewById(R.id.parentDashboardBtn);
+        parentDashButton.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
         parentDashButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MapsActivity.this, ParentDashboard.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void setUpEditUserBtn() {
+        Button editUserButton = (Button) findViewById(R.id.editUserBtn);
+        editUserButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MapsActivity.this, EditAccountActivity.class);
                 startActivity(intent);
             }
         });
@@ -363,16 +391,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void sendMyLocation() {
-        Log.d("tag","currentUerLat"+currentUserLat);
-        //  lastGpsLocation.setLat(currentUserLat);
-        //lastGpsLocation.setLng(currentUserLng);
-        //GpsLocation lastGpsLocation =  new GpsLocation(currentUserLat,currentUserLng,null);
         GpsLocation lastGpsLocation =  new GpsLocation(49.1208,-123.1210,null);
+        Log.d("tag","currentUerLat"+currentUserLat);
+        lastGpsLocation.setLat(currentUserLat);
+        lastGpsLocation.setLng(currentUserLng);
+        //GpsLocation lastGpsLocation =  new GpsLocation(currentUserLat,currentUserLng,null);
         currentUser = model.getCurrentUser();
         currentUser.setLastGpsLocation(lastGpsLocation);
         Log.d("Albert", "Alert" + lastGpsLocation.getLat() +" "+ lastGpsLocation.getLng());
         Log.d("Albert", "Alert" + model.getCurrentUser());
-        model.updateUser(currentUser,this :: myLocationCallback);
+        model.setLastGPSLocation(currentUser.getId(),lastGpsLocation,this::myLocationCallback);
+        //model.updateUser(currentUser,this :: myLocationCallback);
     }
 
     private void myLocationCallback(User currentUser) {
@@ -381,7 +410,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private void groupAttributesCallback(Group group) {
         //currentGroup = group;
-        //group = model.getCurrentGroupInUseByUser().getGroupDescription();
+       //group = model.getCurrentGroupInUseByUser().getGroupDescription();
       /*  groupLatArray = new Double[group.getRouteLatArray().size()];
         groupLngArray = new Double[group.getRouteLngArray().size()];
         markLatLng = new LatLng(groupLatArray[groupLatArray.length - 1], groupLngArray[groupLngArray.length - 1]);
@@ -412,7 +441,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             LatLng markLocation = new LatLng(49.1217 , -123.1207);
             groupDisplayArray[i] = groupsDisplay.get(i);
             //getCoordinates();
-
             mapDisplay.addMarker(groupMarker = new MarkerOptions().position(markLocation).title(groupDisplayArray[i]).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
             //Log.d("tag", "who are these groups" + groupDisplayArray[i]);
         }

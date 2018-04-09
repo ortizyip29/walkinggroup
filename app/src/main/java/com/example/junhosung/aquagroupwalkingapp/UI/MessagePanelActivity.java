@@ -36,6 +36,7 @@ public class MessagePanelActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(model.themeToApply(model.getCurrentUser()));
         setContentView(R.layout.activity_message_panel);
 
         setupBtnNewMsg();
@@ -91,6 +92,7 @@ public class MessagePanelActivity extends AppCompatActivity {
 
     private void setupBtnNewMsg() {
         Button btnNewMsg = (Button) findViewById(R.id.btnNewMsg);
+        btnNewMsg.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
         btnNewMsg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -102,6 +104,7 @@ public class MessagePanelActivity extends AppCompatActivity {
 
     private void setupBtnOldMsg() {
         Button btnOldMsg = (Button) findViewById(R.id.btnOldMsg);
+        btnOldMsg.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
         btnOldMsg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -113,6 +116,7 @@ public class MessagePanelActivity extends AppCompatActivity {
 
     private void setupBtnPermissions() {
         Button btnPermission = (Button) findViewById(R.id.btnPermission);
+        btnPermission.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
         btnPermission.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
