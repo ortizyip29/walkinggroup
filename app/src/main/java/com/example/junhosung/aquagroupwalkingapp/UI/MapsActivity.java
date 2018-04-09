@@ -111,7 +111,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             case R.id.editUser:
                 startActivity(new Intent(MapsActivity.this, EditAccountActivity.class));
                 return true;
-                case R.id.editGroup:
+            case R.id.themeChange:
+                startActivity(new Intent(MapsActivity.this,MyStuffActivity.class));
+                return true;
+            case R.id.editGroup:
                 startActivity(new Intent(MapsActivity.this, EditGroupActivity.class));
                 return true;
                 default:
@@ -132,9 +135,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         TextView updateTime = (TextView) findViewById(R.id.textViewTimeUpdate);
         setUpUpdateBtn();
         setUpLogoutBtn();
-        setUpViewGroupBtn();
+        //setUpViewGroupBtn();
         setUpParentDashboard();
-        Button btn = (Button) findViewById(R.id.monitorbtn);
+       /* Button btn = (Button) findViewById(R.id.monitorbtn);
         btn.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
         btn.setOnClickListener(new OnClickListener() {
             @Override
@@ -142,7 +145,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 Intent intent = new Intent(MapsActivity.this, MapOptionsActivity.class);
                 startActivity(intent);
             }
-        });
+        });*/
 
         MapFragment mapFrag = ((MapFragment) getFragmentManager().findFragmentById(R.id.mapFrag));
         mapFrag.getMapAsync(this);
@@ -323,7 +326,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
     }
 
-    private void setUpViewGroupBtn() {
+   /* private void setUpViewGroupBtn() {
         Button groupButton = (Button) findViewById(R.id.viewGroupBtn);
         groupButton.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
         groupButton.setOnClickListener(new OnClickListener() {
@@ -333,7 +336,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 startActivity(intent);
             }
         });
-    }
+    }*/
 
     private void setUpUpdateBtn() {
         Button updateButton = (Button) findViewById(R.id.parentDashboardBtn);
@@ -358,7 +361,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
     }
 
-    private void setUpEditUserBtn() {
+    /*private void setUpEditUserBtn() {
         Button editUserButton = (Button) findViewById(R.id.editUserBtn);
         editUserButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -367,7 +370,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 startActivity(intent);
             }
         });
-    }
+    }*/
 
     private void sendGroupCurrentLocation(Group group) {
     }
@@ -503,18 +506,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         assert routeLatArr.length == routeLngArr.length;
         double destLat = routeLatArr[routeLatArr.length - 1];
         double destLng = routeLatArr[routeLngArr.length - 1];
-        // if(userCoord.getLat()==destLat&&userCoord.getLng()==destLng){
-        if (abs(destLat - startLat) < 0.02 || abs(destLng - startLng) < 0.02) {
-            Toast.makeText(getApplicationContext(), "Sorry " + model.getCurrentUser().getName() + ", your walk is not long enough to be counted for rewards", Toast.LENGTH_LONG).show();
-        }
-        else {
-            currentPoints = currentPoints + 5;
-            totalPoints = totalPoints + 5;
-            currentUser.setCurrentPoints(currentPoints);
-            currentUser.setTotalPointsEarned(totalPoints);
-            model.updateUser(currentUser, this :: getUserUpdateCallBack);
-            Log.d("completewalk", "completewalk");
-            Log.d("", "let my check the points" + currentPoints + "  " + totalPoints);
+        if(userCoord.getLat()==destLat&&userCoord.getLng()==destLng) {
+            if (abs(destLat - startLat) < 0.02 || abs(destLng - startLng) < 0.02) {
+                Toast.makeText(getApplicationContext(), "Sorry " + model.getCurrentUser().getName() + ", your walk is not long enough to be counted for rewards", Toast.LENGTH_LONG).show();
+            } else {
+                currentPoints = currentPoints + 5;
+                totalPoints = totalPoints + 5;
+                currentUser.setCurrentPoints(currentPoints);
+                currentUser.setTotalPointsEarned(totalPoints);
+                model.updateUser(currentUser, this :: getUserUpdateCallBack);
+                Log.d("completewalk", "completewalk");
+                Log.d("", "let my check the points" + currentPoints + "  " + totalPoints);
+            }
         }
     }
     private void getUserUpdateCallBack(User user){}

@@ -33,18 +33,7 @@ public class Model extends AppCompatActivity {
     private List<User> currentListOfUsersForGroupInUseByUser; //for david -modify btn activity
     private Group currentGroupInUseByUser = new Group();
     private List<Group> usersGroups;
-    private SimpleCallback callbackforthemes;
-    private SimpleCallback callbackforColors;
-    private SimpleCallback callbackforTitles;
 
-    int defaultTheme = R.style.AppTheme;                            //0
-    int lowTierTheme = android.R.style.Theme_Light;                 //1
-    int darkTheme = android.R.style.ThemeOverlay_Material_Dark_ActionBar;     //2
-    int lightTheme = android.R.style.ThemeOverlay_Material_Light;   //3
-    int holoTheme = android.R.style.Theme_Holo_NoActionBar;         //4
-
-    int[] rewardThemes = {1,2,3,4};
-    int blackbar ;
 
 
 
@@ -526,10 +515,6 @@ public class Model extends AppCompatActivity {
             server.getPermissionByUserIdPending(userId, pending, tokenForLogin, this::responseForGetPermissionByUserIdPending);
         }
     }
-
-    public void setUserTheme(User currentUser, int themeID) {
-        currentUser.setTheme(themeID);
-    }
     public void getPermissionByUserId(Long userId, SimpleCallback <List<PermissionRequest>> callback) {
         this.callbackForGetPermissionByUserId = callback;
         if (isUserLoggedin) {
@@ -543,193 +528,11 @@ public class Model extends AppCompatActivity {
         this.callbackForGetPermission = callback;
         if (isUserLoggedin) {
             Server server = new Server();
-            server.getPermission(tokenForLogin, this::responseForGetPermission);
+            server.getPermission(tokenForLogin, this :: responseForGetPermission);
         }
-
     }
-    public void setUserTheme(User currentUser, int themeID){
+    public void setUserTheme(User currentUser, int themeID) {
         currentUser.setTheme(themeID);
-    }
-
-    public int getUserCurrentThemeID(User currentUser){
-        return currentUser.getCurrThemeID();
-    }
-
-    //Must be called before setContent in every single activity in the app--------
-    public int themeToApply(User currentUser){
-        if (currentUser.getCurrThemeID() == 0){
-            return defaultTheme;
-        }else if(currentUser.getCurrThemeID() == 1){
-            return lowTierTheme;
-        }else if(currentUser.getCurrThemeID() == 2){
-            return darkTheme;
-        }else if(currentUser.getCurrThemeID() == 3){
-            return lightTheme;
-        }else if(currentUser.getCurrThemeID() == 4){
-            return holoTheme;
-        }else{
-            return defaultTheme;
-        }
-    }
-
-    public String convertThemes(int theme){
-        int temp = theme;
-        if (temp == 1) {
-            return "Cool Theme";
-        }else if (temp == 2){
-            return "Dark Theme";
-        }else if (temp == 3){
-            return "Light Theme";
-        }else if (temp == 4){
-            return "Holo Theme";
-        }else{
-            return null;
-        }
-    }
-    public String convertColors(int color){
-        int temp = color;
-        if (temp == 1){
-            return "white";
-        }else if( temp == 2){
-            return "blue";
-        }else if( temp == 3){
-            return "green";
-        }else if(temp == 4){
-            return "purple";
-        }else if(temp == 5){
-            return "orange";
-        }else if (temp == 6){
-            return "red";
-        }
-        return null;
-    }
-    public int getButtonColor(User currentUser){
-        int temp = currentUser.getCurrColor();
-        if (temp == 1){
-            return getResources().getColor(android.R.color.white);
-        }else if( temp == 2){
-            return getResources().getColor(android.R.color.holo_blue_dark);
-        }else if( temp == 3){
-            return getResources().getColor(android.R.color.holo_green_dark);
-        }else if(temp == 4){
-            return getResources().getColor(android.R.color.holo_purple);
-        }else if(temp == 5){
-            return getResources().getColor(android.R.color.holo_orange_dark);
-        }else if (temp == 6){
-            return getResources().getColor(android.R.color.holo_red_dark);
-        }else{
-            return android.R.drawable.btn_default;
-        }
-    }
-
-    public int[] getUserButtonColors(User currentUser){
-        return currentUser.getButtonColors();
-    }
-
-    public String[] buyableThemes(User currentUser, SimpleCallback<Void> callback) {
-        this.callbackforthemes = callback;
-        String[] availableThemes = new String[4];
-        int[] temp = {1, 2, 3, 4};
-        int[] temp2 = currentUser.getThemes();
-        int x = 0;
-        for (int i = 0; i < currentUser.getCurrThemeCount(); i++) {
-            Log.i("inside the loop","hi");
-            for (int j = 1; j <= 4; j++) {
-                if (temp[i] == temp2[j]) {
-                    temp[i] = 0;
-
-                }
-            }
-        }
-
-        for (int i = 0; i < temp.length; i++) {
-            if (convertThemes(temp[i]) != null) {
-                availableThemes[x] = convertThemes(temp[i]);
-                Log.i("Insideee", "Theme isss" + availableThemes[x]);
-                x++;
-
-            }
-        }
-        return availableThemes;
-    }
-
-    public String[] buyableColors(User currentUser, SimpleCallback<Void> callback){
-        this.callbackforColors = callback;
-        String[] availableColors = new String[6];
-        int[] temp = {1,2,3,4,5,6};
-        int[] temp2 = currentUser.getButtonColors();
-        int x = 0;
-        for (int i = 0; i < currentUser.getColorCount(); i++) {
-            Log.i("inside the loop","hi");
-            for (int j = 1; j <= 6; j++) {
-                if (temp[i] == temp2[j]) {
-                    temp[i] = 0;
-
-                }
-                Log.i("inside colors", "Value: " + temp[i]);
-            }
-        }
-
-        for (int i = 0; i < temp.length; i++) {
-            if (convertColors(temp[i]) != null) {
-                availableColors[x] = convertColors(temp[i]);
-                Log.i("Insideee", "Theme isss" + availableColors[x]);
-                x++;
-
-            }
-        }
-        return availableColors;
-    }
-
-    public String[] buyableTitles(User currentUser, SimpleCallback<Void> callback){
-        this.callbackforTitles = callback;
-        String[] availableTitles = new String[3];
-        String[] temp = {"Walks too much, someone give me a ride", "King", "Iron Man"};
-        String[] temp2 = currentUser.getTitles();
-        int x = 0;
-        for(int i =0; i<currentUser.getTitleCount();i++){
-            for (int j =1; j<=5;j++){
-                if(temp[i].equals(temp2[j])){
-                    temp[i] = "";
-                }
-            }
-        }
-        for (int i = 0; i<temp.length; i++){
-            Log.i("inside Titles", "value is: " +temp[i]);
-            if(temp[i].equals("")){
-
-            }else{
-                availableTitles[x] = temp[i];
-                x++;
-            }
-        }
-        return availableTitles;
-    }
-
-    public String[] purchasedThemes(User currentUser){
-        String[] boughtThemes = new String[5];
-        int count = 0;
-        int[] temp = currentUser.getThemes();
-        for(int i = 0; i<currentUser.getCurrThemeCount(); i++){
-            if(convertThemes(temp[i]) != null){
-                boughtThemes[count] = convertThemes(temp[i]);
-                count++;
-            }
-        }
-        return boughtThemes;
-    }
-
-    public String[] purchasedColors(User currentUser){
-        String[] boughtColors = new String[6];
-        int count = 0;
-        int[] temp = currentUser.getButtonColors();
-        for(int i =0;i<currentUser.getColorCount();i++){
-            if(convertColors(temp[i]) != null){
-                boughtColors[count] = convertThemes(temp[i]);
-                count++;
-            }
-        }
-        return boughtColors;
     }
 
     public int getUserCurrentThemeID(User currentUser) {
@@ -954,6 +757,8 @@ public class Model extends AppCompatActivity {
         }
         return boughtTitles;
     }
+
+
 }
 
 
