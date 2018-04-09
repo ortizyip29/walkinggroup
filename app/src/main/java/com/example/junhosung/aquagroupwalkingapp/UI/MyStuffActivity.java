@@ -14,14 +14,18 @@ import android.widget.Toast;
 
 import com.example.junhosung.aquagroupwalkingapp.R;
 import com.example.junhosung.aquagroupwalkingapp.model.Model;
+import com.example.junhosung.aquagroupwalkingapp.model.Rewards;
 import com.example.junhosung.aquagroupwalkingapp.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.webkit.ConsoleMessage.MessageLevel.LOG;
+
 
 public class MyStuffActivity extends AppCompatActivity {
     private Model model = Model.getInstance();
+    User currentUser = model.getCurrentUser();
     String[] listTheme = new String[model.getCurrentUser().getCurrThemeCount()];
     String[] listColor = new String[model.getCurrentUser().getColorCount()];
     String[] listTitles= new String[model.getCurrentUser().getTitleCount()];
@@ -91,7 +95,8 @@ public class MyStuffActivity extends AppCompatActivity {
         populateListView3(l3);
         setUpSetBtn();
         updateLists(currentUser);
-
+        themeSetting();
+        getSavedThemeSetting();
     }
 
     private void setUpSetBtn() {
@@ -151,6 +156,30 @@ public class MyStuffActivity extends AppCompatActivity {
 
         });
         updateUI();
+    }
+    private void rewardsCallback(User user){};
+    private void themeSetting(){
+       String colorstr = String.valueOf(model.getCurrentUser().getCurrColor());
+       String titlestr = model.getCurrentUser().getCurrTitle();
+       String themestr = String.valueOf(model.getCurrentUser().getCurrThemeID());
+       String countcolor = String.valueOf(currentUser.getColorCount());
+       String themecount = String.valueOf(currentUser.getCurrThemeCount());
+       String titlecount = String.valueOf(currentUser.getTitleCount());
+       currentUser.setCustomJson(colorstr+"\\"+titlestr+"\\"+themestr+"\\"+countcolor+"\\"+themecount+"\\"+titlecount);
+       Log.d("","it went through");
+       model.updateUser(currentUser,this::rewardsCallback);
+    }
+
+    private void getSavedThemeSetting(){
+        String ourCustomJson = currentUser.getCustomJson();
+        char[] ourCustomJsonInChar = ourCustomJson.toCharArray();
+       // ourCustomJson.toCharArray().length
+       for(int i=0,n=ourCustomJsonInChar.length;i<n;i++){
+
+       }
+    }
+    private void getSavedRewards(){
+
     }
 
     private void updateUI() {

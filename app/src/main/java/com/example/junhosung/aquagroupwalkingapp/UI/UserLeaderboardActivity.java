@@ -109,20 +109,20 @@ public class UserLeaderboardActivity extends AppCompatActivity{
             textviewDisplay.setTextColor(Color.BLUE);
         }
         else if(currentPoints>=60&&currentPoints<90){
-            textviewDisplay.setText("You currently have "+model.getCurrentUser().getCurrentPoints()+" points and ranked veteran");
+            textviewDisplay.setText("You currently have "+model.getCurrentUser().getCurrentPoints()+" points and ranked Veteran");
             textviewDisplay.setTextColor(Color.RED);
         }
         else if(currentPoints>=90&&currentPoints<120){
-            textviewDisplay.setText("You currently have "+model.getCurrentUser().getCurrentPoints()+" points and ranked master");
+            textviewDisplay.setText("You currently have "+model.getCurrentUser().getCurrentPoints()+" points and ranked Master");
             textviewDisplay.setTextColor(Color.CYAN);
         }
         else if(currentPoints>=120&&currentPoints<500){
-            textviewDisplay.setText("You currently have "+model.getCurrentUser().getCurrentPoints()+" points and ranked King");
+            textviewDisplay.setText("You currently have "+model.getCurrentUser().getCurrentPoints()+" points and ranked Champion");
             textviewDisplay.setTextColor(Color.MAGENTA);
             //setContentView(R.layout.activity_user_leaderboard);
         }
         else{
-            textviewDisplay.setText("You currently have "+model.getCurrentUser().getCurrentPoints()+" points and ranked Iron Man");
+            textviewDisplay.setText("You currently have "+model.getCurrentUser().getCurrentPoints()+" points and ranked Hall of Famer");
             Toast.makeText(getApplicationContext(),"Congratuations "+model.getCurrentUser().getName()+"You have reached top title IRON MAN",Toast.LENGTH_LONG).show();
             textviewDisplay.setTextColor(Color.GREEN);
         }
