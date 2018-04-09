@@ -21,7 +21,6 @@ import java.util.List;
 
 public class EditAccountActivity extends AppCompatActivity {
     Model model = Model.getInstance();
-    Rewards reward = new Rewards();//remove me
     EditText nameEdit;
     EditText birthMEdit;
     EditText birthYEdit;
@@ -146,11 +145,6 @@ public class EditAccountActivity extends AppCompatActivity {
                 current.setGrade(grade);
                 current.setTeacherName(teacherN);
                 current.setEmergencyContactInfo(emergency);
-                current.setCurrentPoints(527); // remove me
-                current.setTotalPointsEarned(527); //remove me
-                String colorstr = String.valueOf(model.getCurrentUser().getCurrColor());
-                String titlestr = model.getCurrentUser().getCurrTitle();
-                String themestr = String.valueOf(model.getCurrentUser().getCurrThemeID());
                 model.updateUser(current, this::getUserUpdateCallBack);
                 finish();
 
