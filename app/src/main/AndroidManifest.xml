@@ -63,6 +63,7 @@
         <activity android:name=".UI.ViewOldMessagesActivity" />
         <activity android:name=".UI.EditAccountActivity" />
         <activity android:name=".UI.EditChildActivity" />
+        <activity android:name=".UI.EditGroupActivity"/>
         <activity android:name=".UI.SendMessageActivity" />
         <activity android:name=".UI.SendMsgToGroupActivity" />
         <activity android:name=".UI.SendEmergencyMsgActivity" />
@@ -74,11 +75,11 @@
         <activity android:name=".UI.DeleteMonitoringActivity" />
         <activity android:name=".UI.DeleteMonitoredByActivity" />w
         <activity android:name=".UI.ParentDashboard" />
+        <activity android:name=".UI.GetListOfUserFromListOfID" />
         <activity android:name=".UI.UserLeaderboardActivity" />
-        <activity android:name=".UI.ShopActivity"/>
-        <activity android:name=".UI.ViewPendingPermissionsActivity" />
-        <activity android:name=".UI.ViewAllPermissionsActivity" />
-        <activity android:name=".UI.EditGroupActivity"></activity>
+        <activity android:name=".UI.ViewPermissionsActivity" />
+        <activity android:name=".UI.ShopActivity" />
+        <activity android:name=".UI.MyStuffActivity"></activity>
     </application>
 
 </manifest>

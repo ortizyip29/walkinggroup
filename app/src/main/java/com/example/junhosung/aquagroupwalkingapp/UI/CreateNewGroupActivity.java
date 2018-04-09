@@ -24,12 +24,14 @@ public class CreateNewGroupActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(model.themeToApply(model.getCurrentUser()));
         setContentView(R.layout.activity_create_new_group);
         wireupBackBtn();
         wireupAddNewGroupBtn();
     }
     private void wireupBackBtn() {
         Button Btn = (Button) findViewById(R.id.btnBackFromCreateGroup);
+        Btn.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
         Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -43,6 +45,7 @@ public class CreateNewGroupActivity extends AppCompatActivity {
 
     private void wireupAddNewGroupBtn() {
         Button Btn = (Button) findViewById(R.id.btnAddGroup);
+        Btn.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
         Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -12,14 +12,15 @@ import android.widget.TextView.BufferType;
 import android.widget.Toast;
 
 import com.example.junhosung.aquagroupwalkingapp.R;
+import com.example.junhosung.aquagroupwalkingapp.model.GpsLocation;
 import com.example.junhosung.aquagroupwalkingapp.model.Model;
+import com.example.junhosung.aquagroupwalkingapp.model.Rewards;
 import com.example.junhosung.aquagroupwalkingapp.model.User;
 
 import java.util.List;
 
 public class EditAccountActivity extends AppCompatActivity {
     Model model = Model.getInstance();
-
     EditText nameEdit;
     EditText birthMEdit;
     EditText birthYEdit;
@@ -36,6 +37,7 @@ public class EditAccountActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(model.themeToApply(model.getCurrentUser()));
         setContentView(R.layout.activity_edit_account);
         nameEdit = (EditText) findViewById(R.id.editName);
         birthMEdit = (EditText) findViewById(R.id.editBirthM);
@@ -94,6 +96,7 @@ public class EditAccountActivity extends AppCompatActivity {
 
     private void setUpDonebtn() {
         Button btn = (Button) findViewById(R.id.btnDone);
+        btn.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -142,8 +145,6 @@ public class EditAccountActivity extends AppCompatActivity {
                 current.setGrade(grade);
                 current.setTeacherName(teacherN);
                 current.setEmergencyContactInfo(emergency);
-                current.setCurrentPoints(527);
-                current.setTotalPointsEarned(527);
                 model.updateUser(current, this::getUserUpdateCallBack);
                 finish();
 
@@ -154,6 +155,7 @@ public class EditAccountActivity extends AppCompatActivity {
 
     private void setUpCancelbtn() {
         Button btn = (Button) findViewById(R.id.btnCancel);
+        btn.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

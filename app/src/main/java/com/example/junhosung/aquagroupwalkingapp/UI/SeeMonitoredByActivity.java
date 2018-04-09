@@ -47,6 +47,7 @@ public class SeeMonitoredByActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(model.themeToApply(model.getCurrentUser()));
         setContentView(R.layout.activity_see_monitored_by);
         List<Boolean> isItemClicked = new ArrayList<>();
         setUpAddButton();
@@ -57,6 +58,7 @@ public class SeeMonitoredByActivity extends AppCompatActivity {
 
     private void setUpAddButton() {
         btnAddMonitoredBy = (Button) findViewById(R.id.btnAddMonitoredBy);
+        btnAddMonitoredBy.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
         btnAddMonitoredBy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -68,6 +70,7 @@ public class SeeMonitoredByActivity extends AppCompatActivity {
 
     private void setupDeleteBtn() {
         Button button = (Button) findViewById(R.id.btnEndMonitoredBy);
+        button.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
         button.setOnClickListener(new View.OnClickListener() {
 
             @Override

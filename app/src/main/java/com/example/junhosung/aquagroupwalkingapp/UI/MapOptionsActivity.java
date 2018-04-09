@@ -26,6 +26,7 @@ import java.util.List;
 import retrofit2.Call;
 
 public class MapOptionsActivity extends AppCompatActivity implements  GestureDetector.OnGestureListener{
+    private Model model = Model.getInstance();
     GestureDetector gestureDectector;
 
     @Override
@@ -77,11 +78,13 @@ public class MapOptionsActivity extends AppCompatActivity implements  GestureDet
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(model.themeToApply(model.getCurrentUser()));
         setContentView(R.layout.activity_map_options);
 
         this.gestureDectector = new GestureDetector(this,this);
     //    populatelistMonintering();
         seeMonitoringButton = (Button) findViewById(R.id.btnMapMonitor);
+        seeMonitoringButton.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
         seeMonitoringButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -92,6 +95,7 @@ public class MapOptionsActivity extends AppCompatActivity implements  GestureDet
 
 
         seeMonitoredByButton = (Button) findViewById(R.id.btnMapMonitoredBy);
+        seeMonitoredByButton.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
         seeMonitoredByButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

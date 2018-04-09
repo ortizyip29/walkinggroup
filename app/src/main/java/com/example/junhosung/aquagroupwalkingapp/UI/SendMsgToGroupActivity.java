@@ -25,6 +25,7 @@ public class SendMsgToGroupActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(model.themeToApply(model.getCurrentUser()));
         setContentView(R.layout.activity_send_msg_to_group);
 
 
@@ -45,6 +46,7 @@ public class SendMsgToGroupActivity extends AppCompatActivity {
 
 
         Button btnSendMsgGroup = (Button) findViewById(R.id.btnSendMsgGroup);
+        btnSendMsgGroup.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
         btnSendMsgGroup.setOnClickListener(new View.OnClickListener() {
 
             @Override

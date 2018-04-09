@@ -8,12 +8,27 @@ import java.util.List;
  */
 
 public class Rewards {
-    int[] userThemes = new int[10];
-    int[] userButtonColors = new int[10]; //W,R,B,G,Y,P,P
-    String[] userTitles = new String[10];
+    public int[] getUserThemes() {
+        return userThemes;
+    }
+
+    int[] userThemes = new int[4];
+
+    public int[] getUserButtonColors() {
+        return userButtonColors;
+    }
+
+    int[] userButtonColors = new int[6]; //W,R,B,G,Y,P,P
+
+    public String[] getUserTitles() {
+        return userTitles;
+    }
+
+    String[] userTitles = new String[4];
 
     int currTheme = 0;
     String currTitle = "Beginner";
+
     int currButtonColor = 0;
 
     int colorCount = 1;
@@ -41,6 +56,7 @@ public class Rewards {
     }
 
     public void addTitle(String newTitle){
+        userTitles[0] = "Beginner";
         userTitles[titleCount] = newTitle;
         titleCount++;
     }

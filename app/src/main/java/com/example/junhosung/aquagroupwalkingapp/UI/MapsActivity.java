@@ -44,8 +44,10 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -73,6 +75,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     boolean atSchool = false;
     boolean cancelTimer = false;
     LatLng markLatLng = new LatLng(0.00, 0.00);
+
+    int defaultTheme = R.style.AppTheme;                            //0
+    int lowTierTheme = android.R.style.Theme_Light;                 //1
+    int darkTheme = android.R.style.ThemeOverlay_Material_Dark;     //2
+    int lightTheme = android.R.style.ThemeOverlay_Material_Light;   //3
+    int holoTheme = android.R.style.Theme_Holo_NoActionBar;         //4
 
     public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -103,7 +111,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             case R.id.editUser:
                 startActivity(new Intent(MapsActivity.this, EditAccountActivity.class));
                 return true;
-                case R.id.editGroup:
+            case R.id.themeChange:
+                startActivity(new Intent(MapsActivity.this,MyStuffActivity.class));
+                return true;
+            case R.id.editGroup:
                 startActivity(new Intent(MapsActivity.this, EditGroupActivity.class));
                 return true;
                 default:
@@ -112,24 +123,29 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         //respond to menu item selection
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        model.getCurrentUser().setTheme(4);
+        setTheme(model.themeToApply(currentUser));
+        model.getCurrentUser().setColor(4);
         setContentView(R.layout.activity_maps);
         TextView updateDisplay = (TextView) findViewById(R.id.textViewUpdate);
         TextView updateTime = (TextView) findViewById(R.id.textViewTimeUpdate);
         setUpUpdateBtn();
         setUpLogoutBtn();
-        setUpViewGroupBtn();
+        //setUpViewGroupBtn();
         setUpParentDashboard();
-        Button btn = (Button) findViewById(R.id.monitorbtn);
+       /* Button btn = (Button) findViewById(R.id.monitorbtn);
+        btn.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
         btn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MapsActivity.this, MapOptionsActivity.class);
                 startActivity(intent);
             }
-        });
+        });*/
 
         MapFragment mapFrag = ((MapFragment) getFragmentManager().findFragmentById(R.id.mapFrag));
         mapFrag.getMapAsync(this);
@@ -141,11 +157,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         getGroupNameOnMap();
         //sendLocationSever();
         getCoordinates();
+        testLocationSender();
         Log.d("tag", "Who am i" + model.getCurrentUser());
         Log.d("tag", "WHAT GROUP ARE WE  " + model.getCurrentGroupInUseByUser().getGroupDescription());
 
     }
-
+    private void testLocationSender(){
+        GpsLocation lastspot = new GpsLocation(49.145,-123.1210,null);
+        currentUser = model.getCurrentUser();
+        currentUser.setLastGpsLocation(lastspot);
+        model.setLastGPSLocation(currentUser.getId(),lastspot,this::testLocationCallback);
+    }
+    private void testLocationCallback(User user){};
     // circle now set 500 meter radius from myself
     private void locationUpdate() {
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -182,6 +205,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         sendLocationSever();
                         //sendMyLocation(currentUser);
                         sendMyLocation();
+                        walkCompleteChecker();
                         getGroupNameOnMap();
                         myRadius = mapDisplay.addCircle(new CircleOptions()
                                 .center(currentLocation)
@@ -238,6 +262,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         sendLocationSever();
                         //sendMyLocation(currentUser);
                         sendMyLocation();
+                        walkCompleteChecker();
                         getGroupNameOnMap();
                         myRadius = mapDisplay.addCircle(new CircleOptions()
                                 .center(currentLocation)
@@ -300,6 +325,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private void setUpLogoutBtn() {
         Button btn = (Button) findViewById(R.id.btnLogout);
+        btn.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -309,8 +335,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
     }
 
-    private void setUpViewGroupBtn() {
+   /* private void setUpViewGroupBtn() {
         Button groupButton = (Button) findViewById(R.id.viewGroupBtn);
+        groupButton.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
         groupButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -318,10 +345,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 startActivity(intent);
             }
         });
-    }
+    }*/
 
     private void setUpUpdateBtn() {
         Button updateButton = (Button) findViewById(R.id.parentDashboardBtn);
+        updateButton.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
         updateButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -332,6 +360,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private void setUpParentDashboard() {
         Button parentDashButton = (Button) findViewById(R.id.parentDashboardBtn);
+        parentDashButton.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
         parentDashButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -340,6 +369,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
     }
+
+    /*private void setUpEditUserBtn() {
+        Button editUserButton = (Button) findViewById(R.id.editUserBtn);
+        editUserButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MapsActivity.this, EditAccountActivity.class);
+                startActivity(intent);
+            }
+        });
+    }*/
 
     private void sendGroupCurrentLocation(Group group) {
     }
@@ -363,16 +403,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void sendMyLocation() {
-        Log.d("tag","currentUerLat"+currentUserLat);
-        //  lastGpsLocation.setLat(currentUserLat);
-        //lastGpsLocation.setLng(currentUserLng);
-        //GpsLocation lastGpsLocation =  new GpsLocation(currentUserLat,currentUserLng,null);
         GpsLocation lastGpsLocation =  new GpsLocation(49.1208,-123.1210,null);
+        Log.d("tag","currentUerLat"+currentUserLat);
+        lastGpsLocation.setLat(currentUserLat);
+        lastGpsLocation.setLng(currentUserLng);
+        //GpsLocation lastGpsLocation =  new GpsLocation(currentUserLat,currentUserLng,null);
         currentUser = model.getCurrentUser();
         currentUser.setLastGpsLocation(lastGpsLocation);
         Log.d("Albert", "Alert" + lastGpsLocation.getLat() +" "+ lastGpsLocation.getLng());
         Log.d("Albert", "Alert" + model.getCurrentUser());
-        model.updateUser(currentUser,this :: myLocationCallback);
+        model.setLastGPSLocation(currentUser.getId(),lastGpsLocation,this::myLocationCallback);
+        //model.updateUser(currentUser,this :: myLocationCallback);
     }
 
     private void myLocationCallback(User currentUser) {
@@ -381,7 +422,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private void groupAttributesCallback(Group group) {
         //currentGroup = group;
-        //group = model.getCurrentGroupInUseByUser().getGroupDescription();
+       //group = model.getCurrentGroupInUseByUser().getGroupDescription();
       /*  groupLatArray = new Double[group.getRouteLatArray().size()];
         groupLngArray = new Double[group.getRouteLngArray().size()];
         markLatLng = new LatLng(groupLatArray[groupLatArray.length - 1], groupLngArray[groupLngArray.length - 1]);
@@ -412,7 +453,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             LatLng markLocation = new LatLng(49.1217 , -123.1207);
             groupDisplayArray[i] = groupsDisplay.get(i);
             //getCoordinates();
-
             mapDisplay.addMarker(groupMarker = new MarkerOptions().position(markLocation).title(groupDisplayArray[i]).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
             //Log.d("tag", "who are these groups" + groupDisplayArray[i]);
         }
@@ -467,7 +507,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private void walkCompleteChecker() {
         int currentPoints = currentUser.getCurrentPoints();
         int totalPoints = currentUser.getTotalPointsEarned();
-        GpsLocation userCoord = new GpsLocation(49.145, -123.1210, null);
+        //GpsLocation userCoord = new GpsLocation(49.145, -123.1210, null);
+        GpsLocation userCoord = new GpsLocation(currentUserLat,currentUserLng,null);
         Double[] routeLatArr = {49.1217, 49.12175, 49.145};
         Double[] routeLngArr = {-123.1208, -123.1209, -123.1210};
         double startLat = routeLatArr[0];
@@ -475,18 +516,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         assert routeLatArr.length == routeLngArr.length;
         double destLat = routeLatArr[routeLatArr.length - 1];
         double destLng = routeLatArr[routeLngArr.length - 1];
-        // if(userCoord.getLat()==destLat&&userCoord.getLng()==destLng){
-        if (abs(destLat - startLat) < 0.02 || abs(destLng - startLng) < 0.02) {
-            Toast.makeText(getApplicationContext(), "Sorry " + model.getCurrentUser().getName() + ", your walk is not long enough to be counted for rewards", Toast.LENGTH_LONG).show();
-        }
-        else {
-            currentPoints = currentPoints + 5;
-            totalPoints = totalPoints + 5;
-            currentUser.setCurrentPoints(currentPoints);
-            currentUser.setTotalPointsEarned(totalPoints);
-            model.updateUser(currentUser, this :: getUserUpdateCallBack);
-            Log.d("completewalk", "completewalk");
-            Log.d("", "let my check the points" + currentPoints + "  " + totalPoints);
+        if(userCoord.getLat()==destLat&&userCoord.getLng()==destLng) {
+            if (abs(destLat - startLat) < 0.02 || abs(destLng - startLng) < 0.02) {
+                Toast.makeText(getApplicationContext(), "Sorry " + model.getCurrentUser().getName() + ", your walk is not long enough to be counted for rewards", Toast.LENGTH_LONG).show();
+            } else {
+                currentPoints = currentPoints + 5;
+                totalPoints = totalPoints + 5;
+                currentUser.setCurrentPoints(currentPoints);
+                currentUser.setTotalPointsEarned(totalPoints);
+                model.updateUser(currentUser, this :: getUserUpdateCallBack);
+                Log.d("completewalk", "completewalk");
+                Log.d("", "let my check the points" + currentPoints + "  " + totalPoints);
+            }
         }
     }
     private void getUserUpdateCallBack(User user){}
