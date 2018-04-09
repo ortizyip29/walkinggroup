@@ -78,8 +78,11 @@
         <activity android:name=".UI.GetListOfUserFromListOfID" />
         <activity android:name=".UI.UserLeaderboardActivity" />
         <activity android:name=".UI.ViewPermissionsActivity" />
+        <activity android:name=".UI.ViewAllPermissionsActivity" />
         <activity android:name=".UI.ShopActivity" />
-        <activity android:name=".UI.MyStuffActivity"></activity>
-    </application>
+        <activity android:name=".UI.MyStuffActivity">
 
+        </activity>
+    </application>
+w
 </manifest>
