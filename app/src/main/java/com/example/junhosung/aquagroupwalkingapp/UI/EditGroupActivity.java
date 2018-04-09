@@ -34,8 +34,6 @@ public class EditGroupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_group);
 
         getCurrentUserInformation();
-        getGroupsForUser();
-        setupSpinnerToEditGroup();
         setupButtonToMakeLeader();
 
     }
@@ -72,9 +70,12 @@ public class EditGroupActivity extends AppCompatActivity {
     private void responseForGetCurrentUser(User user) {
         if(user!=null) {
             currentUser = user;
+            getGroupsForUser();
         } else {
             Log.e(TAG,"currentUser Returned Null");
         }
+
+
     }
 
     private void getGroupsForUser() {
@@ -94,6 +95,8 @@ public class EditGroupActivity extends AppCompatActivity {
 
     private void responseForGetGroups(List<Group> groups) {
         this.groupsCurrentUserPartOf = groups;
+        setupSpinnerToEditGroup();
+
     }
 
     private void setupSpinnerToEditGroup() {
