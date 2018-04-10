@@ -128,6 +128,7 @@ public class MessagePanelActivity extends AppCompatActivity {
 
     private void setupBtnAllPermissions() {
         Button btnPermission = (Button) findViewById(R.id.btnAllPermission);
+        btnPermission.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
         btnPermission.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

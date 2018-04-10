@@ -33,14 +33,8 @@ public class SendEmergencyMsgActivity extends AppCompatActivity {
         currentUser = model.getCurrentUser();
 
 
-        if (currentUser.getMonitoredByUsers().isEmpty()) {
-            Toast.makeText(this,"You don't have any 'parents' ... currently ... :( ",Toast.LENGTH_LONG).show();
-            finish();
-        }
 
-        else {
-            model.newMsgToParents(model.getCurrentUser().getId(),msgEmergency,this::responseToNewMsgToParents);
-        }
+        model.newMsgToParents(model.getCurrentUser().getId(),msgEmergency,this::responseToNewMsgToParents);
 
 
     }
@@ -53,7 +47,6 @@ public class SendEmergencyMsgActivity extends AppCompatActivity {
 
 
     private void setupBtnSendEmergency() {
-
 
         Button btnSendEmergency = (Button) findViewById(R.id.btnMsgEmergency);
         btnSendEmergency.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
