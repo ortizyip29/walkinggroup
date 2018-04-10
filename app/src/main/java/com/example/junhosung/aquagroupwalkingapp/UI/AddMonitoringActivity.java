@@ -17,19 +17,19 @@ import com.example.junhosung.aquagroupwalkingapp.model.User;
 
 import java.util.List;
 
+
+
+/**
+ *  Activity to add new monitors to your monitoring list.
+ */
+
 public class AddMonitoringActivity extends AppCompatActivity {
 
     private Button btnAddMonitoring;
     private Model model = Model.getInstance();
     List<User> usersServer = model.users.returnUsers();
-    String[] newList;
-    List<User> tempList;
-    User receivedUser;
     String currentUserEmail = model.getCurrentUser().getEmail();
-    User userMatch;
     private final String TAG = "AddMonitoringActivity";
-    private String permissionRequest = "I would like to monitor this person!";
-    private Message permissionsMsg;
     private User targetUser;
     User currentUser = model.getCurrentUser();
 
@@ -65,10 +65,6 @@ public class AddMonitoringActivity extends AppCompatActivity {
                   finish();
               }
 
-            }
-
-            private void responseToNewMsgToParents(Message msg) {
-                //Toast.makeText(AddMonitoringActivity.this,"message sent",Toast.LENGTH_LONG).show();
             }
 
             private void responseAddNewMonitors(List<User> users) {

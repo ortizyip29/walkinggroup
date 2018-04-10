@@ -16,6 +16,12 @@ import com.example.junhosung.aquagroupwalkingapp.model.UserCollection;
 
 import java.util.List;
 
+/**
+ *
+ * This class asks the User to write the email of the person the User would like to he monitored by.
+ *
+ */
+
 public class AddMonitoredByActivity extends AppCompatActivity {
 
     private Button btnAddMonitoring;
@@ -27,15 +33,11 @@ public class AddMonitoredByActivity extends AppCompatActivity {
     List<User> tempList;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTheme(model.themeToApply(model.getCurrentUser()));
         setContentView(R.layout.activity_add_monitored_by);
-
-        // this is here since the for loop inside the onClickListener gives me trouble about
-        // calling usersOld.countUsers() from an inner class ...
 
         Button btnAddMonitoredBy = (Button) findViewById(R.id.btnAddNewMonitredBy);
         btnAddMonitoredBy.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
@@ -43,6 +45,11 @@ public class AddMonitoredByActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
+
+                /**
+                 *   if the email is in our list of user emails, then send a call to server to add this person to the
+                 *   monitored by list and return to the previous activity.
+                 */
 
                 EditText newUser = (EditText) findViewById(R.id.typeEmail2);
                 String email = newUser.getText().toString();
@@ -61,6 +68,8 @@ public class AddMonitoredByActivity extends AppCompatActivity {
                 finish();
 
             }
+
+            // mandatory response function ... does nothing
 
             private void responseWithAddNewMonitoredBy(List<User> users) {
                 tempList = users;
