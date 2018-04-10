@@ -38,6 +38,7 @@ public class ViewPendingPermissionsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(model.themeToApply(model.getCurrentUser()));
         setContentView(R.layout.activity_view_permissions);
 
         model.getPermissionByUserIdPending(currentUser.getId(),PENDING,this::responseForGetPermissionByUserIdPending);

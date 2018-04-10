@@ -127,9 +127,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        model.getCurrentUser().setTheme(4);
+        //model.getCurrentUser().setTheme(4);
         setTheme(model.themeToApply(currentUser));
-        model.getCurrentUser().setColor(4);
+        //model.getCurrentUser().setColor(4);
         setContentView(R.layout.activity_maps);
         TextView updateDisplay = (TextView) findViewById(R.id.textViewUpdate);
         TextView updateTime = (TextView) findViewById(R.id.textViewTimeUpdate);

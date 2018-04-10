@@ -18,6 +18,7 @@ import com.example.junhosung.aquagroupwalkingapp.model.Model;
 import com.example.junhosung.aquagroupwalkingapp.model.User;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class UserLeaderboardActivity extends AppCompatActivity{
@@ -67,21 +68,35 @@ public class UserLeaderboardActivity extends AppCompatActivity{
             userList.add(user.getName());
             userPoints.add(user.getTotalPointsEarned());
         }
-        String[] userListInStr= new String[userList.size()];
+        String[] userListInStr = new String[userList.size()];
         userList.toArray(userListInStr);
         Integer[] userPointsArr = new Integer[userPoints.size()];
         userPoints.toArray(userPointsArr);
-        for(int i=1; i<userPointsArr.length; i++) {
-            int temp;
-            String nametemp;
-            if(userPointsArr[i-1] < userPointsArr[i]) {
-                nametemp = userListInStr[i-1];
-                temp = userPointsArr[i-1];
-                userPointsArr[i-1] = userPointsArr[i];
-                userListInStr[i-1] = userListInStr[i];
-                userPointsArr[i] = temp;
-                userListInStr[i] = nametemp;
+
+
+        for(int i=0;i<userPointsArr.length;i++) {
+            for (int j = i+1; j < userPointsArr.length; j++) {
+                int temp;
+                String nameTemp;
+                 if (userPointsArr[i] < userPointsArr[j]) {
+                    nameTemp = userListInStr[i];
+                     temp = userPointsArr[i];
+                     userPointsArr[i] = userPointsArr[j];
+                    userListInStr[i] = userListInStr[j];
+                    userPointsArr[j] = temp;
+                    userListInStr[j] = nameTemp;
+                }
             }
+        }
+
+        for(int i =0;i<userPointsArr.length;i++) {
+            String nameTemp = userListInStr[i];
+            int  temp = userPointsArr[i];
+            int j=userPointsArr.length-1-i;
+            userPointsArr[i] = userPointsArr[j];
+            userListInStr[i] = userListInStr[j];
+            userPointsArr[j] = temp;
+            userListInStr[j] = nameTemp;
         }
         for(int i=0;i<userListInStr.length;i++){
             displayLeaderboard.add(i+1+". "+userListInStr[i]+"         :         " +userPointsArr[i]+"  Total Points Earned");
@@ -123,7 +138,7 @@ public class UserLeaderboardActivity extends AppCompatActivity{
         }
         else{
             textviewDisplay.setText("You currently have "+model.getCurrentUser().getCurrentPoints()+" points and ranked Hall of Famer");
-            Toast.makeText(getApplicationContext(),"Congratuations "+model.getCurrentUser().getName()+"You have reached top title IRON MAN",Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),"Congratuations "+model.getCurrentUser().getName()+"You have reached hall of fame!!1",Toast.LENGTH_LONG).show();
             textviewDisplay.setTextColor(Color.GREEN);
         }
     return textviewDisplay;

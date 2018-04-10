@@ -74,7 +74,7 @@ public interface WGServerProxy {
     // Stop Being Monitored By a User: A stops being monitored by B
 
     @DELETE("/users/{idA}/monitoredByUsers/{idB}")
-    Call<List<User>> stopMonitoredBy(@Path("idA") Long userId, @Path("idB") Long targetId);
+    Call<Void> stopMonitoredBy(@Path("idA") Long userId, @Path("idB") Long targetId);
 
     @GET("/groups")
     Call<List<Group>> getGroups();

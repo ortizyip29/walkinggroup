@@ -266,7 +266,7 @@ public class Server extends AppCompatActivity {
     public void stopMonitoredBy(Long userId, Long targetId, String token, SimpleCallback<Void> callback) {
         onReceiveToken(token);
         serverCallbackForStopMonitoredBy = callback;
-        Call<Void> caller = proxy.stopMonitors(userId,targetId);
+        Call<Void> caller = proxy.stopMonitoredBy(userId,targetId);
         ProxyBuilder.callProxy(Server.this,caller,this::responseForStopMonitoredBy);
     }
 

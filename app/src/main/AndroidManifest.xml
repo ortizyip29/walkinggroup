@@ -38,7 +38,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        />
         <activity android:name=".UI.RegisterActivity" />
         <activity android:name=".UI.MapsActivity" />
         <activity android:name=".UI.SeeMonitoringActivity" />
@@ -75,11 +74,13 @@
         <activity android:name=".UI.DeleteMonitoringActivity" />
         <activity android:name=".UI.DeleteMonitoredByActivity" />
         <activity android:name=".UI.ParentDashboard" />
-        <activity android:name=".UI.GetListOfUserFromListOfID" />
         <activity android:name=".UI.UserLeaderboardActivity" />
         <activity android:name=".UI.ViewPermissionsActivity" />
+        <activity android:name=".UI.ViewAllPermissionsActivity" />
+        <activity android:name=".UI.ViewPendingPermissionsActivity" />
         <activity android:name=".UI.ShopActivity" />
-        <activity android:name=".UI.MyStuffActivity"></activity>
+        <activity android:name=".UI.MyStuffActivity">
+        </activity>
     </application>
 
 </manifest>

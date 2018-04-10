@@ -9,30 +9,30 @@
 
 
     <item android:id="@+id/otherUserDetails"
-        android:title="Other Users Details" />
+        android:title="View Other Users Details" />
 
 
     <item android:id="@+id/monitors"
-        android:title="Monitors" />
+        android:title="View Monitors/MonitoredBy" />
 
 
     <item android:id="@+id/manageGroups"
         android:title="Manage Group" />
 
     <item android:id="@+id/editUser"
-        android:title="Edit Info" />
+        android:title="Edit Your Info" />
     <item
         android:id="@+id/leaderboard"
         android:title="Leaderboard" />
     <item
         android:id="@+id/viewMsg"
-        android:title="View Messages" />
+        android:title="View Messages/Permissions" />
     <item
         android:id="@+id/editGroup"
-        android:title="edit Group " />
+        android:title="Edit Group" />
     <item
         android:id="@+id/themeChange"
-        android:title="Change Theme" />
+        android:title="Purchased Rewards" />
     <item
         android:id="@+id/userShop"
         android:title="Rewards Shop" />

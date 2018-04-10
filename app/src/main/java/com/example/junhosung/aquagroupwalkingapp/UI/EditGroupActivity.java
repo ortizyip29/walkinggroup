@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.junhosung.aquagroupwalkingapp.R;
 import com.example.junhosung.aquagroupwalkingapp.model.Group;
@@ -25,6 +26,7 @@ public class EditGroupActivity extends AppCompatActivity {
     private  User currentUser;
     private List<Group> groupsCurrentUserPartOf;
     private Group groupSelected;
+    private Model model = Model.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,9 +34,8 @@ public class EditGroupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_group);
 
         getCurrentUserInformation();
-        getGroupsForUser();
-        setupSpinnerToEditGroup();
         setupButtonToMakeLeader();
+
     }
 
     private void setupButtonToMakeLeader() {
@@ -43,9 +44,20 @@ public class EditGroupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(groupSelected!=null) {
+                    groupSelected.setLeader(currentUser);
+                    Long selectedGroupId = groupSelected.getId();
+                    model.updateGroupDetails(selectedGroupId,groupSelected,this::responseToUpdateGroupDetails);
+
                     //send permission to current user leader
+
+
                 }
             }
+
+            private void responseToUpdateGroupDetails(Group group) {
+                Toast.makeText(EditGroupActivity.this,"success!",Toast.LENGTH_LONG).show();
+            }
+
         });
     }
 
@@ -58,9 +70,12 @@ public class EditGroupActivity extends AppCompatActivity {
     private void responseForGetCurrentUser(User user) {
         if(user!=null) {
             currentUser = user;
+            getGroupsForUser();
         } else {
             Log.e(TAG,"currentUser Returned Null");
         }
+
+
     }
 
     private void getGroupsForUser() {
@@ -80,6 +95,8 @@ public class EditGroupActivity extends AppCompatActivity {
 
     private void responseForGetGroups(List<Group> groups) {
         this.groupsCurrentUserPartOf = groups;
+        setupSpinnerToEditGroup();
+
     }
 
     private void setupSpinnerToEditGroup() {
@@ -93,6 +110,7 @@ public class EditGroupActivity extends AppCompatActivity {
                     groupDetail.add(group.getGroupDescription());
                 }
             }
+
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.groups_details, groupDetail);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
