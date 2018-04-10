@@ -56,7 +56,6 @@ public class ViewPendingPermissionsActivity extends AppCompatActivity {
             if (pendingRequests.get(i).getMessage() != null && !pendingRequests.get(i).getMessage().equals("")) {
                 requestTxt[i] = pendingRequests.get(i).getMessage() ;
                 isItemClicked.add(new ViewPendingPermissionsActivity.Clicked());
-                Toast.makeText(ViewPendingPermissionsActivity.this,""+pendingRequests.size(), Toast.LENGTH_LONG).show();
             }
 
         }
@@ -107,6 +106,8 @@ public class ViewPendingPermissionsActivity extends AppCompatActivity {
                  }
                  counter++;
              }
+
+
          }
          private void voidCallback(Void aVoid) {
              Toast.makeText(ViewPendingPermissionsActivity.this,"Success! Approved!",Toast.LENGTH_LONG).show();
@@ -123,7 +124,6 @@ public class ViewPendingPermissionsActivity extends AppCompatActivity {
                  if (pendingRequests.get(i).getMessage() != null && !pendingRequests.get(i).getMessage().equals("")) {
                      requestTxt[i] = pendingRequests.get(i).getMessage();
                      isItemClicked.add(new ViewPendingPermissionsActivity.Clicked());
-                     Toast.makeText(ViewPendingPermissionsActivity.this, "" + pendingRequests.size(), Toast.LENGTH_LONG).show();
                  }
 
              }
@@ -163,7 +163,6 @@ public class ViewPendingPermissionsActivity extends AppCompatActivity {
                     if (pendingRequests.get(i).getMessage() != null && !pendingRequests.get(i).getMessage().equals("")) {
                         requestTxt[i] = pendingRequests.get(i).getMessage();
                         isItemClicked.add(new ViewPendingPermissionsActivity.Clicked());
-                        Toast.makeText(ViewPendingPermissionsActivity.this, "" + pendingRequests.size(), Toast.LENGTH_LONG).show();
                     }
 
                 }

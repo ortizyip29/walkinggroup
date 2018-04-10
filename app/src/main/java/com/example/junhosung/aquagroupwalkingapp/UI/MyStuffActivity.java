@@ -113,48 +113,78 @@ public class MyStuffActivity extends AppCompatActivity {
                         model.getCurrentUser().setTheme(listThemeID[buyPos]);
                         Toast.makeText(MyStuffActivity.this,"The Theme has been changed to " + tt, Toast.LENGTH_LONG).show();
                         Log.i("New Theme ", " " + String.valueOf(model.getCurrentUser().getCurrThemeID()));
+                        finish();
                     } else if (buyPos == 1) {
                         model.getCurrentUser().setTheme(listThemeID[buyPos]);
                         Toast.makeText(MyStuffActivity.this,"The Theme has been changed to " +tt , Toast.LENGTH_LONG).show();
                         Log.i("New Theme ", " " + String.valueOf(model.getCurrentUser().getCurrThemeID()));
+                        finish();
                     } else if (buyPos == 2) {
                         model.getCurrentUser().setTheme(listThemeID[buyPos]);
                         Toast.makeText(MyStuffActivity.this,"The Theme has been changed to " + tt, Toast.LENGTH_LONG).show();
                         Log.i("New Theme ", " " + String.valueOf(model.getCurrentUser().getCurrThemeID()));
+                        finish();
 
                     } else if (buyPos == 3) {
                         model.getCurrentUser().setTheme(listThemeID[buyPos]);
                         Toast.makeText(MyStuffActivity.this,"The Theme has been changed to " + tt, Toast.LENGTH_LONG).show();
                         Log.i("New Theme ", " " + String.valueOf(model.getCurrentUser().getCurrThemeID()));
+                        finish();
                     }
+
+                    finish();
+
                 } else if (buyC == 2) {
                     if (buyPos == 0) {
                         model.getCurrentUser().setColor(listColorID[buyPos]);
+                        Toast.makeText(MyStuffActivity.this,"The Button Color  has been changed to " + tt, Toast.LENGTH_LONG).show();
+                        finish();
                     } else if (buyPos == 1) {
                         model.getCurrentUser().setColor(listColorID[buyPos]);
+                        Toast.makeText(MyStuffActivity.this,"The Button Color  has been changed to " + tt, Toast.LENGTH_LONG).show();
+                        finish();
                     } else if (buyPos == 2) {
                         model.getCurrentUser().setColor(listColorID[buyPos]);
+                        Toast.makeText(MyStuffActivity.this,"The Button Color  has been changed to " + tt, Toast.LENGTH_LONG).show();
+                        finish();
                     } else if (buyPos == 3) {
                         model.getCurrentUser().setColor(listColorID[buyPos]);
+                        Toast.makeText(MyStuffActivity.this,"The Theme has been changed to " + tt, Toast.LENGTH_LONG).show();
+                        finish();
                     } else if (buyPos == 4) {
                         model.getCurrentUser().setColor(listColorID[buyPos]);
+                        Toast.makeText(MyStuffActivity.this,"The Button Color  has been changed to " + tt, Toast.LENGTH_LONG).show();
+                        finish();
                     } else if (buyPos == 5) {
                         model.getCurrentUser().setColor(listColorID[buyPos]);
+                        Toast.makeText(MyStuffActivity.this,"The Button Color  has been changed to " + tt, Toast.LENGTH_LONG).show();
+                        finish();
                     }
+
+                    finish();
+
                 } else if (buyC == 3) {
                     if (buyPos == 0) {
                        model.getCurrentUser().setTitle(tt);
+                        Toast.makeText(MyStuffActivity.this,"Your title has been changed to " + tt, Toast.LENGTH_LONG).show();
                     } else if (buyPos == 1) {
                         model.getCurrentUser().setTitle(tt);
+                        Toast.makeText(MyStuffActivity.this,"Your title has been changed to " + tt, Toast.LENGTH_LONG).show();
                     } else if (buyPos == 2) {
                         model.getCurrentUser().setTitle(tt);
+                        Toast.makeText(MyStuffActivity.this,"Your title has been changed to " + tt, Toast.LENGTH_LONG).show();
                     } else {
                         return;
                     }
+
+                    finish();
                 }
             }
 
         });
+
+
+
         updateUI();
     }
     private void rewardsCallback(User user){};

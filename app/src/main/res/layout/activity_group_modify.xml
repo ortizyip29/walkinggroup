@@ -7,57 +7,73 @@
     tools:context="com.example.junhosung.aquagroupwalkingapp.UI.GroupModifyActivity">
 
 
-    <LinearLayout
-        android:id="@+id/linearLayout5"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/txtgroup"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="15dp"
-            android:layout_marginTop="10dp"
-            android:text="Group Members:" />
+            android:layout_height="match_parent">
 
-        <ListView
-            android:id="@+id/listViewMemberOfCurrentGroup"
-            android:layout_marginLeft="5dp"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_marginTop="5dp" />
 
-        <Button
-            android:id="@+id/btnDel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Delete" />
 
-        <TextView
-            android:id="@+id/txtmonitoring"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Monitoring:" />
 
-        <ListView
-            android:id="@+id/listViewMemberThatCanBeAddedToCurrentGroup"
-            android:layout_marginLeft="5dp"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_marginTop="5dp" />
+            <LinearLayout
+                android:id="@+id/linearLayout5"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-        <Button
-            android:id="@+id/btnAdd"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Add" />
-        <Button
-            android:id="@+id/btnBack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Back" />
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/txtgroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Group Members:" />
+
+                <ListView
+                    android:id="@+id/listViewMemberOfCurrentGroup"
+                    android:layout_marginLeft="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="5dp" />
+
+                <Button
+                    android:id="@+id/btnDel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Delete" />
+
+                <TextView
+                    android:id="@+id/txtmonitoring"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Monitoring:" />
+
+                <ListView
+                    android:id="@+id/listViewMemberThatCanBeAddedToCurrentGroup"
+                    android:layout_marginLeft="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="5dp" />
+
+                <Button
+                    android:id="@+id/btnAdd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Add" />
+
+                <Button
+                    android:id="@+id/addSelfToGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Add Yourself"
+                    tools:layout_editor_absoluteX="164dp"
+                    tools:layout_editor_absoluteY="452dp" />
+
+
+
+            </LinearLayout>
+
+        </ScrollView>
 
 
 

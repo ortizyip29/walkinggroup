@@ -48,6 +48,7 @@ public class EditGroupActivity extends AppCompatActivity {
                     Long selectedGroupId = groupSelected.getId();
                     model.updateGroupDetails(selectedGroupId,groupSelected,this::responseToUpdateGroupDetails);
 
+
                     //send permission to current user leader
 
 
@@ -56,6 +57,7 @@ public class EditGroupActivity extends AppCompatActivity {
 
             private void responseToUpdateGroupDetails(Group group) {
                 Toast.makeText(EditGroupActivity.this,"success!",Toast.LENGTH_LONG).show();
+                finish();
             }
 
         });

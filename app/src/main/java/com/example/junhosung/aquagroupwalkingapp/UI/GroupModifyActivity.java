@@ -45,17 +45,23 @@ public class GroupModifyActivity extends AppCompatActivity {
         refreshPage();
         setUpAddbtn();
         setUpDelbtn();
-        setUpBackbtn();
+        setUpAddSelfToGroupBtn();
 
     }
 
-    private void setUpBackbtn() {
-        Button button = (Button) findViewById(R.id.btnBack);
+    private void setUpAddSelfToGroupBtn() {
+        Button button = (Button) findViewById(R.id.addSelfToGroup);
         button.setBackgroundResource(model.getButtonColor(model.getCurrentUser()));
         button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                finish();
+                if(currentGroup!=null ) {
+                    model.addUserToGroup(currentGroup.getId(),model.getCurrentUser(),this::reponseToAddSelfToGroup);
+                }
+            }
+
+            private void reponseToAddSelfToGroup(List<User> users) {
+                refreshPage();
             }
         });
     }

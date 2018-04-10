@@ -46,7 +46,6 @@ public class ViewAllPermissionsActivity extends AppCompatActivity {
             if (allRequests.get(i).getMessage() != null && !allRequests.get(i).getMessage().equals("")) {
                 requestTxt[i] = allRequests.get(i).getMessage() + "   " + allRequests.get(i).getStatus();
                 isItemClicked.add(new ViewAllPermissionsActivity.Clicked());
-                Toast.makeText(ViewAllPermissionsActivity.this, "" + allRequests.size(), Toast.LENGTH_LONG).show();
             }
 
         }
