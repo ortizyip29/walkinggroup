@@ -42,8 +42,7 @@ public class ViewPendingPermissionsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_permissions);
 
         model.getPermissionByUserIdPending(currentUser.getId(),PENDING,this::responseForGetPermissionByUserIdPending);
-        //model.getPermissionByUserId(currentUser.getId(),this::responseForGetPermissionByUserIdPending);
-        //model.getPermission(this::responseForGetPermissionByUserIdPending);
+
     }
 
     private void responseForGetPermissionByUserIdPending(List<PermissionRequest> pending) {

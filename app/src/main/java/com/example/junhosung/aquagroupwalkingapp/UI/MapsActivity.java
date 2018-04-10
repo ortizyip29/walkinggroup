@@ -162,6 +162,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         Log.d("tag", "WHAT GROUP ARE WE  " + model.getCurrentGroupInUseByUser().getGroupDescription());
 
     }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        recreate();
+    }
+
     private void testLocationSender(){
         GpsLocation lastspot = new GpsLocation(49.145,-123.1210,null);
         currentUser = model.getCurrentUser();
