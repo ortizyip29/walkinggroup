@@ -1,0 +1,1 @@
+This is the readMe for our walking group
